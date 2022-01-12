@@ -1,6 +1,6 @@
-<%-- 
-    Document   : login
-    Created on : Jan 12, 2022, 9:18:19 PM
+<%--
+    Document   : index
+    Created on : Jan 12, 2022, 9:53:30 PM
     Author     : kaine
 --%>
 
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>This is index!</h1>
     </body>
 </html>
