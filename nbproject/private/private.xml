@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/repositories/RepoConnector.java</file>
             <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/controllers/LoginServlet.java</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/WEB-INF/JSP/index.jsp</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/index.html</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/repositories/UserRepository.java</file>
             <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/controllers/IndexServlet.java</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/variables/routes.java</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/WEB-INF/JSP/login.jsp</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/entities/User.java</file>
         </group>
     </open-files>
 </project-private>
