@@ -17,10 +17,12 @@
                 <div>
                     <label>Username</label>
                     <input name="username" type="text" id="username"/>
+                     ${requestScope.usernameError}
                 </div>
                 <div>
                     <label>Password</label>
                     <input name="password" type="password" id="password"/>
+                     ${requestScope.passwordError}
                 </div>
                 <input type="submit" value="Send" id="send"/>
             </form>
