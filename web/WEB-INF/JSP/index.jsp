@@ -1,6 +1,6 @@
-<%-- 
-    Document   : login
-    Created on : Jan 12, 2022, 9:18:19 PM
+<%--
+    Document   : index
+    Created on : Jan 12, 2022, 9:53:30 PM
     Author     : kaine
 --%>
 
@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+<<<<<<< HEAD:web/WEB-INF/login.jsp
         <form>
             <div>
                 username: <input type="text" name="name">
@@ -19,5 +20,8 @@
                 <input type="submit" name="login">
             </div>
         </form>
+=======
+        <h1>This is index!</h1>
+>>>>>>> origin/master:web/WEB-INF/JSP/index.jsp
     </body>
 </html>
