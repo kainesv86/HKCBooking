@@ -41,5 +41,34 @@ public class GetVariable {
 
         return value.trim();
     }
+    public Float getFloat(String key, String label, float minValue, float maxValue, Float defaultValue){
+        String value = (String) this.request.getParameter(key);
+        Float number;
+        if(value == null|| value.isEmpty()){
+            if (defaultValue == null) {
+                request.setAttribute(key + "Error", label + " is required");
+                return null;
+            }
+            return defaultValue;
+        }
+        
+        try {
+            number = Float.parseFloat(value);
+        } catch (Exception e) {
+            request.setAttribute(key +"Error", label + " must be a number ");
+            return null;
+        }
+        
+        if(number >= maxValue ){
+            request.setAttribute(key+"Error", label + " must less than " + maxValue);
+            return null;
+        }
+        if(number < minValue){
+            request.setAttribute(key +"Error", label + " must large than or equal " + minValue);
+            return null;
+        }
+        
+        return number;
+    }
 
 }
