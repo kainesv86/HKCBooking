@@ -19,7 +19,7 @@ public class GetVariable {
         this.request = request;
     }
 
-    public String GetString(String key, String label, int maxLength, int minLength, String defaultValue) {
+    public String getString(String key, String label, int maxLength, int minLength, String defaultValue) {
         String value = (String) this.request.getParameter(key);
         if (value == null || value.trim().isEmpty()) {
             if (defaultValue == null) {

@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.User;
+import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -36,9 +37,16 @@ public class LoginServlet extends HttpServlet {
      */
     protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        System.out.println(username + " " + password);
+
+        GetVariable gv = new GetVariable(request);
+
+        String username = gv.getString("username", "Username", 30, 8, null);
+        String password = gv.getString("password", "Password", 30, 8, null);
+
+        if (username == null || password == null) {
+            return false;
+        }
+
         request.setAttribute("info", username + password);
         return true;
     }
