@@ -41,6 +41,7 @@ public class GetVariable {
 
         return value.trim();
     }
+    
     public Float getFloat(String key, String label, float minValue, float maxValue, Float defaultValue){
         String value = (String) this.request.getParameter(key);
         Float number;
