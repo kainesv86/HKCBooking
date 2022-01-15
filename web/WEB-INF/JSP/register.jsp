@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : register
     Created on : Jan 12, 2022, 11:56:43 PM
     Author     : ASUS
@@ -10,8 +10,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-    </head>
-    <body>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="./common/navbar.jsp"></jsp:include>
+        </head>
+        <body>
 
         <%
             String username_err = "", email_err = "", pwd_err = "", cfpwd_err = "";
