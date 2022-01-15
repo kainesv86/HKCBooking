@@ -35,7 +35,7 @@ public class GetVariable {
         }
 
         if (value.trim().length() < minLength) {
-            request.setAttribute(key + "Error", label + " is greater than or equal " + minLength + " character(s)");
+            request.setAttribute(key + "Error ", label + " is greater than or equal " + minLength + " character(s)");
             return null;
         }
 
@@ -70,6 +70,37 @@ public class GetVariable {
         }
         
         return number;
+    }
+
+    public Integer getInt(String key, String label, int minValue, int maxValue,
+            Integer defaultValue) {
+
+        String valueInt = (String) request.getParameter(key);
+        Integer numValue;
+
+        if (valueInt == null || valueInt.isEmpty()) {
+            if (defaultValue == null) {
+                request.setAttribute(key + "Error", label + " is required");
+                return null; 
+            }
+            return defaultValue;
+        }
+        try {
+            numValue = Integer.parseInt(valueInt);
+        } catch (Exception e) {
+            request.setAttribute(key + "Error", label + " is an Integer");
+            return null;
+        }
+        if (numValue < minValue) {
+            request.setAttribute(key + "Error", label + " is less than or equal" + minValue);
+            return null;
+        }
+        if (numValue > maxValue) {
+            request.setAttribute(key + "Error", label + "  is greater than or equal" + maxValue);
+            return null;
+        }
+
+        return numValue;
     }
 
 }
