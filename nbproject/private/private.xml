@@ -6,11 +6,9 @@
         <group/>
 =======
         <group>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/controllers/LoginServlet.java</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/controllers/IndexServlet.java</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/entities/User.java</file>
-            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/helper/GetVariable.java</file>
+            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/helper/GetVariable.java</file>
+            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/controllers/LoginServlet.java</file>
+            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/web/WEB-INF/JSP/login.jsp</file>
         </group>
 >>>>>>> origin/master
     </open-files>
