@@ -4,7 +4,7 @@
     <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
             <div class="flex items-center px-2 lg:px-0">
-                <div class="flex items-center">
+                <a class="flex items-center" href="IndexServlet">
                     <div class="w-10 h-10">
                         <svg  viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_512_6848)">
@@ -20,7 +20,7 @@
                         </svg>
                     </div>
                     <p class="text-white text-3xl">HKCBooking</p>
-                </div>
+                </a>
                 <div class="hidden lg:block lg:ml-6">
                     <div class="flex space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
