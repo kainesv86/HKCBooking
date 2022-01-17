@@ -2,16 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
-<<<<<<< HEAD
-=======
         <group>
             <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/helper/GetVariable.java</file>
             <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/controllers/LoginServlet.java</file>
             <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/web/WEB-INF/JSP/login.jsp</file>
         </group>
->>>>>>> origin/master
-=======
->>>>>>> main/test
+        <group>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/controllers/LoginServlet.java</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/repositories/UserRepository.java</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/entities/User.java</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/src/java/helper/GetVariable.java</file>
+            <file>file:/C:/Users/kaine/Documents/NetBeansProjects/HKCBooking/web/WEB-INF/JSP/login.jsp</file>
+        </group>
     </open-files>
 </project-private>
