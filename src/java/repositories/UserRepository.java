@@ -43,7 +43,7 @@ public class UserRepository {
             while (rs.next()) {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                list.add(new User(username, password));
+//                list.add(new User(username, password));
             }
             return list;
         } finally {
