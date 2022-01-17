@@ -8,17 +8,17 @@ public class User {
     private String fullname;
     private String address;
     private String phone;
-    private int roleId;
+    private String role;
     private String email;
 
-    public User(int userId, String username, String password, String fullname, String address, String phone, int roleId, String email) {
+    public User(int userId, String username, String password, String fullname, String address, String phone, String role, String email) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.fullname = fullname;
         this.address = address;
         this.phone = phone;
-        this.roleId = roleId;
+        this.role = role;
         this.email = email;
     }
 
@@ -70,12 +70,12 @@ public class User {
         this.phone = phone;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {
@@ -86,4 +86,5 @@ public class User {
         this.email = email;
     }
 
+    
 }
