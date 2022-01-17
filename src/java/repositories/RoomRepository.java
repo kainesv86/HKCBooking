@@ -10,5 +10,6 @@ package repositories;
  * @author DELL
  */
 public class RoomRepository {
-    
+
+    private String roomId;
 }
