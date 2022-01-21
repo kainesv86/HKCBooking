@@ -6,19 +6,14 @@
 package controllers;
 
 import entities.User;
-import entities.UserLogin;
 import helper.GetVariable;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import repositories.UserRepository;
 
 /**
@@ -38,39 +33,66 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
 
+        // Get login form variable
         GetVariable gv = new GetVariable(request);
-//        String username = request.getParameter("username");
-//        String password = request.getParameter("password");
-        String username = gv.getString("username", "Username", 30, 8, null);
-        String password = gv.getString("password", "Password", 30, 6, null);
-        String messageError = "";
-        UserRepository ad = new UserRepository();
-        UserLogin ul = ad.checkLoginAccounts(username, password);
-        if (ul == null) {
-            messageError = "Incorrect account or password!!!";
-            request.setAttribute("messageError", messageError);
+        String username = gv.getString("username", "Username", 8, 30, null);
+        String password = gv.getString("password", "Password", 8, 30, null);
+
+        if (username == null || password == null) {
             return false;
-        } else {
-            request.setAttribute("info", username + password);
-            return true;
         }
 
+        // Get user from database
+        UserRepository ad = new UserRepository();
+
+        User user = ad.getUserByUsername(username);
+
+        System.out.println("Hello Hung loz");
+
+        //Check user exist
+        if (user == null) {
+            request.setAttribute("messageError", "Username or password is incorect");
+            return false;
+        }
+
+        // Check password
+        if (user.getPassword() != null && !password.equals(user.getPassword())) {
+            request.setAttribute("messageError", "Username or password is incorect");
+            return false;
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("userId", user.getUserId());
+        session.setAttribute("fullname", user.getFullname());
+        return true;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId != null) {
+            response.sendRedirect("IndexServlet");
+            return;
+        }
+
         request.getRequestDispatcher("WEB-INF/JSP/login.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (processRequest(request, response)) {
-            response.sendRedirect("IndexServlet");
-            return;
+        try {
+            if (processRequest(request, response)) {
+                response.sendRedirect("IndexServlet");
+                return;
+            }
+        } catch (Exception ex) {
+            System.out.println("Something got error");
         }
         request.getRequestDispatcher("WEB-INF/JSP/login.jsp").forward(request, response);
     }

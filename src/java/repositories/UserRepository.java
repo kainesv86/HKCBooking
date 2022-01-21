@@ -7,13 +7,11 @@ package repositories;
 
 import controllers.RepoConnector;
 import entities.User;
-import entities.UserLogin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import utils.ConnectDB;
 
 /**
  *
@@ -84,40 +82,23 @@ public class UserRepository {
         
 =======
 
-    public UserLogin checkLoginAccounts(String username, String password) {
+    public User getUserByUsername(String username) throws Exception {
         try {
-            String query = "SELECT * FROM hkcbooking_user where username= ? and password= ?";
-            repo = new ConnectDB().getConnection();
-            preStm = repo.prepareStatement(query);
-            preStm.setString(1, username);
-            preStm.setString(2, password);
-            rs = preStm.executeQuery();
-            while (rs.next()) {
-                UserLogin u = new UserLogin(rs.getString(2), rs.getString(3));
-                return u;
-            }
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return null;
-    }
-
-    public User getUserByUsernam(String username) {
-        try {
-            String query = "SELECT * FROM hkcbooking_user where username= ?";
-            repo = new ConnectDB().getConnection();
+            String query = "SELECT * FROM hkcbooking_user where username=?";
+            repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(query);
             preStm.setString(1, username);
             rs = preStm.executeQuery();
             while (rs.next()) {
                 User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                         rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
                 return u;
             }
 
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            this.closeRepo();
         }
         return null;
 >>>>>>> main/test
