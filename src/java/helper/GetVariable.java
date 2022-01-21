@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package helper;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- *
- * @author kaine
- */
+
 public class GetVariable {
 
     HttpServletRequest request;
@@ -75,7 +68,7 @@ public class GetVariable {
     public Integer getInt(String key, String label, int minValue, int maxValue,
             Integer defaultValue) {
 
-        String valueInt = (String) request.getParameter(key);
+        String valueInt = (String) this.request.getParameter(key);
         Integer numValue;
 
         if (valueInt == null || valueInt.isEmpty()) {

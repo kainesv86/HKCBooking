@@ -1,4 +1,4 @@
-<%-- Document : login Created on : Jan 12, 2022, 9:18:19 PM Author : kaine --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -9,19 +9,29 @@
         <jsp:include page="./common/navbar.jsp"></jsp:include>
         </head>
         <body>
-            <div>
-                <form method="POST" action="LoginServlet">
-                    <div>
-                        <label>Username</label>
-                        <input name="username" type="text" id="username" />
+        <%
+            String messageError = "";
+            if (request.getAttribute("messageError") != null) {
+                messageError = (String) request.getAttribute("messageError");
+            }
+        %>
+
+        <div>
+            <form method="POST" action="LoginServlet">
+                <div>
+                    <label>Username</label>
+                    <input name="username" type="text" id="username" style="border: 1px black solid"/>
                     ${requestScope.usernameError}
                 </div>
                 <div>
                     <label>Password</label>
-                    <input name="password" type="password" id="password" />
+                    <input name="password" type="password" id="password" style="border: 1px black solid" />
                     ${requestScope.passwordError}
                 </div>
-                <input type="submit" value="Send" id="send" />
+                <div>                   
+                    <p style="color: red"><%=messageError%></p>
+                </div>
+                <input type="submit" value="Login" id="send" style="border: 1px black solid; border-radius: 5%"/>
             </form>
         </div>
     </body>
