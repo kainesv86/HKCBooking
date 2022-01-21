@@ -6,10 +6,12 @@
 package controllers;
 
 import entities.User;
+import entities.UserLogin;
 import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -39,26 +41,30 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         GetVariable gv = new GetVariable(request);
-
+//        String username = request.getParameter("username");
+//        String password = request.getParameter("password");
         String username = gv.getString("username", "Username", 30, 8, null);
-        String password = gv.getString("password", "Password", 30, 8, null);
-
-        if (username == null || password == null) {
+        String password = gv.getString("password", "Password", 30, 6, null);
+        String messageError = "";
+        UserRepository ad = new UserRepository();
+        UserLogin ul = ad.checkLoginAccounts(username, password);
+        if (ul == null) {
+            messageError = "Incorrect account or password!!!";
+            request.setAttribute("messageError", messageError);
             return false;
+        } else {
+            request.setAttribute("info", username + password);
+            return true;
         }
 
-        request.setAttribute("info", username + password);
-        return true;
     }
 
- 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("WEB-INF/JSP/login.jsp").forward(request, response);
     }
 
-  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
