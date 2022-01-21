@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package helper;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- *
- * @author kaine
- */
+
 public class GetVariable {
 
     HttpServletRequest request;
@@ -19,7 +12,7 @@ public class GetVariable {
         this.request = request;
     }
 
-    public String getString(String key, String label, int maxLength, int minLength, String defaultValue) {
+    public String getString(String key, String label, int minLength, int maxLength, String defaultValue) {
         String value = (String) this.request.getParameter(key);
         if (value == null || value.trim().isEmpty()) {
             if (defaultValue == null) {
@@ -35,53 +28,53 @@ public class GetVariable {
         }
 
         if (value.trim().length() < minLength) {
-            request.setAttribute(key + "Error ", label + " is greater than or equal " + minLength + " character(s)");
+            request.setAttribute(key + "Error", label + " is greater than or equal " + minLength + " character(s)");
             return null;
         }
 
         return value.trim();
     }
-    
-    public Float getFloat(String key, String label, float minValue, float maxValue, Float defaultValue){
+
+    public Float getFloat(String key, String label, float minValue, float maxValue, Float defaultValue) {
         String value = (String) this.request.getParameter(key);
         Float number;
-        if(value == null|| value.isEmpty()){
+        if (value == null || value.isEmpty()) {
             if (defaultValue == null) {
                 request.setAttribute(key + "Error", label + " is required");
                 return null;
             }
             return defaultValue;
         }
-        
+
         try {
             number = Float.parseFloat(value);
         } catch (Exception e) {
-            request.setAttribute(key +"Error", label + " must be a number ");
+            request.setAttribute(key + "Error", label + " must be a number ");
             return null;
         }
-        
-        if(number >= maxValue ){
-            request.setAttribute(key+"Error", label + " must less than " + maxValue);
+
+        if (number >= maxValue) {
+            request.setAttribute(key + "Error", label + " must less than " + maxValue);
             return null;
         }
-        if(number < minValue){
-            request.setAttribute(key +"Error", label + " must large than or equal " + minValue);
+        if (number < minValue) {
+            request.setAttribute(key + "Error", label + " must large than or equal " + minValue);
             return null;
         }
-        
+
         return number;
     }
 
     public Integer getInt(String key, String label, int minValue, int maxValue,
             Integer defaultValue) {
 
-        String valueInt = (String) request.getParameter(key);
+        String valueInt = (String) this.request.getParameter(key);
         Integer numValue;
 
         if (valueInt == null || valueInt.isEmpty()) {
             if (defaultValue == null) {
                 request.setAttribute(key + "Error", label + " is required");
-                return null; 
+                return null;
             }
             return defaultValue;
         }

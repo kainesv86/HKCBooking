@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import guard.UseGuard;
 import java.io.IOException;
 //import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -61,7 +62,7 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("pwd_err", pwd_err);
             check = false;
         }
-        if (cfpassword.equals("") || !cfpassword.equals(password) ) {
+        if (cfpassword.equals("") || !cfpassword.equals(password)) {
             cfpwd_err = "Confirm password is not valid!";
         }
 //        if (cfpassword.equals(check))
@@ -85,6 +86,13 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (useGuard.useAuth()) {
+            response.sendRedirect("IndexServlet");
+            return;
+        }
+
         request.getRequestDispatcher("WEB-INF/JSP/register.jsp").forward(request, response);
     }
 
