@@ -6,8 +6,17 @@
 package controllers;
 
 import entities.User;
+import entities.UserLogin;
 import helper.GetVariable;
 import java.io.IOException;
+<<<<<<< HEAD
+=======
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+>>>>>>> origin/test
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,18 +44,37 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         GetVariable gv = new GetVariable(request);
+<<<<<<< HEAD
 
         String username = gv.getString("username", "Username", 8, 30, null);
         String password = gv.getString("password", "Password", 8, 30, null);
 
         System.out.println(username + " : " + password);
         if (username == null || password == null) {
+=======
+//        String username = request.getParameter("username");
+//        String password = request.getParameter("password");
+        String username = gv.getString("username", "Username", 30, 8, null);
+        String password = gv.getString("password", "Password", 30, 6, null);
+        String messageError = "";
+        UserRepository ad = new UserRepository();
+        UserLogin ul = ad.checkLoginAccounts(username, password);
+        if (ul == null) {
+            messageError = "Incorrect account or password!!!";
+            request.setAttribute("messageError", messageError);
+>>>>>>> origin/test
             return false;
+        } else {
+            request.setAttribute("info", username + password);
+            return true;
         }
 
+<<<<<<< HEAD
         HttpSession session = request.getSession();
         session.setAttribute("fullname", "Pham Vinh Tai");
         return true;
+=======
+>>>>>>> origin/test
     }
 
     @Override
