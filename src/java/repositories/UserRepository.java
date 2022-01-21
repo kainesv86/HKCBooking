@@ -72,7 +72,7 @@ public class UserRepository {
         return null;
     }
 
-    public User getUserByUsernam(String username) {
+    public User getUserByUsername(String username) {
         try {
             String query = "SELECT * FROM hkcbooking_user where username= ?";
             repo = new ConnectDB().getConnection();
