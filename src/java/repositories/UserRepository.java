@@ -5,7 +5,7 @@
  */
 package repositories;
 
-import controllers.RepoConnector;
+
 import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,7 +52,7 @@ public class UserRepository {
             this.closeRepo();
         }
     }
-<<<<<<< HEAD
+
     public int registerUser(User user)throws ClassNotFoundException, SQLException {
         
         
@@ -79,8 +79,8 @@ public class UserRepository {
         } catch (Exception e) {
         }
                 return result;
-        
-=======
+    }
+
 
     public User getUserByUsername(String username) throws Exception {
         try {
@@ -101,6 +101,6 @@ public class UserRepository {
             this.closeRepo();
         }
         return null;
->>>>>>> main/test
+
     }
 }
