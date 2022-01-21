@@ -5,6 +5,7 @@
  */
 package repositories;
 
+import controllers.RepoConnector;
 import entities.User;
 import entities.UserLogin;
 import java.sql.Connection;
