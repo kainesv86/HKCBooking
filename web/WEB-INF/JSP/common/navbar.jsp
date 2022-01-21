@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% String fullname = (String) session.getAttribute("fullname");%>
-<nav class="bg-rose-600">
+<nav class="bg-rose-600 z-index-1">
     <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
             <div class="flex items-center px-2 lg:px-0">
@@ -31,20 +31,6 @@
                     </div>
                 </div>
             </div>
-            <!--            <div class="flex-1 flex justify-center px-2 lg:ml-6 lg:justify-end">
-                            <div class="max-w-lg w-full lg:max-w-xs">
-                                <label for="search" class="sr-only">Search</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                         Heroicon name: solid/search
-                                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <input id="search" name="search" class="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-gray-700 text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-white focus:ring-white focus:text-gray-900 sm:text-sm" placeholder="Search" type="search">
-                                </div>
-                            </div>
-                        </div>-->
             <div class="flex lg:hidden">
                 <!-- Mobile menu button -->
                 <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
@@ -75,7 +61,7 @@
                 <div class="flex items-center">
                     <c:choose>
                         <c:when test="${fullname != null}">
-                            <div class="flex">
+                            <div class="flex items-center">
                                 <button type="button" class="flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                                     <span class="sr-only">View notifications</span>
                                     <!-- Heroicon name: outline/bell -->
@@ -86,28 +72,25 @@
 
                                 <!-- Profile dropdown -->
                                 <div class="ml-4 relative flex-shrink-0">
-                                    <div class="relative group">
-                                        <button type="button" class="bg-gray-800 rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white " id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <div class="flex items-center">
+                                        <p class="font-semibold text-white"><%=fullname%></p>
+                                        <div class="relative group">
                                             <span class="sr-only">Open user menu</span>
-                                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                        </button>
+                                            <button class="h-16 w-16 flex justify-center items-center">
+                                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M16 2.6665C8.64002 2.6665 2.66669 8.63984 2.66669 15.9998C2.66669 23.3598 8.64002 29.3332 16 29.3332C23.36 29.3332 29.3334 23.3598 29.3334 15.9998C29.3334 8.63984 23.36 2.6665 16 2.6665ZM16 6.6665C18.2134 6.6665 20 8.45317 20 10.6665C20 12.8798 18.2134 14.6665 16 14.6665C13.7867 14.6665 12 12.8798 12 10.6665C12 8.45317 13.7867 6.6665 16 6.6665ZM16 25.5998C12.6667 25.5998 9.72002 23.8932 8.00002 21.3065C8.04002 18.6532 13.3334 17.1998 16 17.1998C18.6534 17.1998 23.96 18.6532 24 21.3065C22.28 23.8932 19.3334 25.5998 16 25.5998Z" fill="#FFFDFD"/>
+                                                </svg>
 
-                                        <!--
-                                          Dropdown menu, show/hide based on menu state.
-
-                                          Entering: "transition ease-out duration-100"
-                                            From: "transform opacity-0 scale-95"
-                                            To: "transform opacity-100 scale-100"
-                                          Leaving: "transition ease-in duration-75"
-                                            From: "transform opacity-100 scale-100"
-                                            To: "transform opacity-0 scale-95"
-                                        -->
-                                        <div class="absolute right-0 top-8 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none group-hover:block bg-gray-100" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                                            <!-- Active: "bg-gray-100", Not Active: "" -->
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                            </button>
+                                            <div class="group-focus:block hover:block hidden absolute right-0 top-3/4 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none group-hover:block bg-gray-100" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                                <!-- Active: "bg-gray-100", Not Active: "" -->
+                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-tl-md rounded-tr-md" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-1">Booking History</a>
+                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-bl-md rounded-br-md" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                            </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>

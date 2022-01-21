@@ -49,8 +49,6 @@ public class LoginServlet extends HttpServlet {
 
         User user = ad.getUserByUsername(username);
 
-        System.out.println("Hello Hung loz");
-
         //Check user exist
         if (user == null) {
             request.setAttribute("messageError", "Username or password is incorect");
