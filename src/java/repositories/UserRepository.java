@@ -99,12 +99,12 @@ public class UserRepository {
         return null;
     }
 
-    public User getUserByUserId(String id) throws Exception {
+    public User getUserByUserId(Integer id) throws Exception {
         try {
             String query = "SELECT * FROM hkcbooking_user where userId=?";
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(query);
-            preStm.setString(1, id);
+            preStm.setInt(1, id);
             rs = preStm.executeQuery();
             while (rs.next()) {
                 User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),

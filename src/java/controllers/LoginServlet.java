@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.User;
+import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -70,10 +71,9 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
+        UseGuard useGuard = new UseGuard(request, response);
 
-        if (userId != null) {
+        if (useGuard.useAuth()) {
             response.sendRedirect("IndexServlet");
             return;
         }

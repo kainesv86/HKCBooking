@@ -38,7 +38,7 @@ public class UseGuard {
 
     public boolean useAuth() {
         HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute("userId");
 
         try {
             if (userId == null) {
