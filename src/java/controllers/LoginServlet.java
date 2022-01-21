@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -35,14 +36,16 @@ public class LoginServlet extends HttpServlet {
 
         GetVariable gv = new GetVariable(request);
 
-        String username = gv.getString("username", "Username", 30, 8, null);
-        String password = gv.getString("password", "Password", 30, 8, null);
+        String username = gv.getString("username", "Username", 8, 30, null);
+        String password = gv.getString("password", "Password", 8, 30, null);
 
+        System.out.println(username + " : " + password);
         if (username == null || password == null) {
             return false;
         }
 
-        request.setAttribute("info", username + password);
+        HttpSession session = request.getSession();
+        session.setAttribute("fullname", "Pham Vinh Tai");
         return true;
     }
 
