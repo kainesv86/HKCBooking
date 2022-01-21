@@ -92,8 +92,10 @@
                     <img class="absolute inset-0 h-full w-full object-cover" src="https://img1.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg" alt="" />
                 </div>
 
+
             </div>
         </div>
     </div>
 </body>
+
 </html>

@@ -5,10 +5,12 @@
  */
 package repositories;
 
+
 import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +53,35 @@ public class UserRepository {
         }
     }
 
+    public int registerUser(User user)throws ClassNotFoundException, SQLException {
+        
+        
+        String INSERT_USER_SQL ="INSERT INTO hkcbooking_user"+
+                "(username,password,fullname,address,phone,role,email) VALUES" +
+                "(?,?,?,?,?,?,?)";
+        int result = 0;
+        try {
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(INSERT_USER_SQL);
+            preStm.setString(1, user.getUsername());
+            preStm.setString(2, user.getPassword());
+            preStm.setString(3, user.getFullname());
+            preStm.setString(4, user.getAddress());
+            preStm.setString(5, user.getPhone());
+            preStm.setString(6, user.getRole());
+            preStm.setString(7, user.getEmail());
+            
+            
+            result = preStm.executeUpdate();
+            preStm.setString(result, INSERT_USER_SQL);
+            System.out.println(preStm);
+           
+        } catch (Exception e) {
+        }
+                return result;
+    }
+
+
     public User getUserByUsername(String username) throws Exception {
         try {
             String query = "SELECT * FROM hkcbooking_user where username=?";
@@ -70,5 +101,6 @@ public class UserRepository {
             this.closeRepo();
         }
         return null;
+
     }
 }
