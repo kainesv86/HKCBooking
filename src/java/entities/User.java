@@ -3,6 +3,8 @@ package entities;
 public class User {
 
     private int userId;
+
+   
     private String username;
     private String password;
     private String fullname;
@@ -10,7 +12,10 @@ public class User {
     private String phone;
     private String role;
     private String email;
-
+    
+    public User() {
+        }
+    
     public User(int userId, String username, String password, String fullname, String address, String phone, String role, String email) {
         this.userId = userId;
         this.username = username;

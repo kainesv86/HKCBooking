@@ -32,27 +32,42 @@
         %>
 
 
-        <form method="POST" action="RegisterServlet">
+        <form method="POST" action="UserServlet">
             <h1>SIGN UP</h1>
             <div>
-                <!--<label>Username</label>-->
+                <label>Username</label>
                 <input name="username" type="text" id="username" placeholder="username"/>
                 <p style="color: red"><%=username_err%></p>
             </div>
             <div>
-                <!--<label>Email</label>-->
-                <input name="email" type="text" id="email" placeholder="abc@gmail.com.vn"/>
-                <p style="color: red"><%=email_err%></p>
-            </div>
-            <div>
-                <!--<label>Password</label>-->
+                <label>Password</label>
                 <input name="password" type="password" id="password" placeholder="password"/>
                 <p style="color: red"><%=pwd_err%></p>
             </div>
             <div>
-                <!--<label>Confirm-Password</label>-->
+                <label>Confirm-Password</label>
                 <input name="cfpassword" type="password" id="cfpassword" placeholder="confirm-password"/>
                 <p style="color: red"><%=cfpwd_err%></p>
+            </div>
+            <div>
+                <label>Full Name</label>
+                <input name="fullname" type="text" id="fullname" placeholder="fullname"/>
+                <p style="color: red"><%=username_err%></p>
+            </div>
+            <div>
+                <label>Address</label>
+                <input name="address" type="text" id="address" placeholder="address"/>
+                <p style="color: red"><%=username_err%></p>
+            </div>
+            <div>
+                <label>Phone</label>
+                <input name="phone" type="text" id="phone" placeholder="phone"/>
+                <p style="color: red"><%=username_err%></p>
+            </div>
+            <div>
+                <label>Email</label>
+                <input name="email" type="text" id="email" placeholder="abc@gmail.com.vn"/>
+                <p style="color: red"><%=email_err%></p>
             </div>
             <input type="submit" value="Register" id="register"/>
         </form>

@@ -18,11 +18,11 @@ public class RepoConnector {
     public static Connection connectDatabase() {
         Connection connection = null;
         String id = "localhost";
-        String instanceName = "MSSQLSERVER";
+        String instanceName = "SQLEXPRESS";
         String port = "1433";
-        String db = "HKCBooking";
+        String db = "HKC";
         String username = "sa";
-        String password = "1234567890";
+        String password = "1";
 
         String urlDatabase = String.format("jdbc:sqlserver://%s\\%s:%s;databaseName=%s;user=%s;password=%s", id, instanceName, port, db, username, password);
 
