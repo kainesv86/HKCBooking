@@ -2,16 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/entities/UserLogin.java</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/controllers/LoginServlet.java</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/helper/GetVariable.java</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/controllers/RegisterServlet.java</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/controllers/IndexServlet.java</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/repositories/UserRepository.java</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/src/java/entities/User.java</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/web/WEB-INF/JSP/register.jsp</file>
-            <file>file:/D:/SEM4/PRJ301/BaiTap/HKCBooking/web/WEB-INF/JSP/login.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

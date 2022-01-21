@@ -47,6 +47,7 @@
                                         </div>
                                         <p class="mt-2 text-sm text-red-600" id="password">${requestScope.passwordError}</p>
                                     </div>
+                                    <p class="mt-2 text-sm text-red-600" id="username">${requestScope.messageError}</p>
 
                                     <div class="text-right">
                                         <a href="RegisterServlet" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Register an account?</a>
