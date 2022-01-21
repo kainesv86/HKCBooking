@@ -18,7 +18,11 @@ public class RepoConnector {
     public static Connection connectDatabase() {
         Connection connection = null;
         String id = "localhost";
+<<<<<<< HEAD
         String instanceName = "SQLEXPRESS";
+=======
+        String instanceName = "SQLSERVER";
+>>>>>>> main/test
         String port = "1433";
         String db = "HKC";
         String username = "sa";
