@@ -15,8 +15,8 @@
 
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
-                <div class="min-h-full flex flex-1 px-80 pt-16">
-                    <form class="space-y-8 divide-y divide-gray-200 w-full border-gray-700 border-2 p-4 rounded-md h-fit">
+                <div class="min-h-full flex flex-1 px-96 pt-16">
+                    <form class="space-y-8 divide-y divide-gray-200 w-full border-rose-600 border-2 p-4 rounded-md h-fit">
                         <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
                             <div class="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
                                 <div>

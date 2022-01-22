@@ -32,23 +32,18 @@
                             <div class="mt-8">
                                 <div class="mt-6">
                                     <form action="LoginServlet" method="POST" class="space-y-6">
-                                        <div>
-                                            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                                            <div class="mt-1">
-                                                <input id="username" name="username" type="text" autocomplete="username" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                            </div>
-                                            <p class="mt-2 text-sm text-red-600" id="username">${requestScope.usernameError}</p>
-                                    </div>
-
-                                    <div class="space-y-1">
-                                        <label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
-                                        <div class="mt-1">
-                                            <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                        </div>
-                                        <p class="mt-2 text-sm text-red-600" id="password">${requestScope.passwordError}</p>
-                                    </div>
-                                    <p class="mt-2 text-sm text-red-600" id="username">${requestScope.messageError}</p>
-
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="username" />
+                                        <jsp:param name="type" value="text" />
+                                        <jsp:param name="label" value="Username" />
+                                        <jsp:param name="error" value="${requestScope.errorUsername}"/>
+                                    </jsp:include>
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="password" />
+                                        <jsp:param name="type" value="password" />
+                                        <jsp:param name="label" value="Password" />
+                                        <jsp:param name="error" value="${requestScope.errorPassword}"/>
+                                    </jsp:include>
                                     <div class="text-right">
                                         <a href="RegisterServlet" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Register an account?</a>
                                     </div>
