@@ -5,7 +5,6 @@
  */
 package repositories;
 
-
 import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,12 +52,11 @@ public class UserRepository {
         }
     }
 
-    public int registerUser(User user)throws ClassNotFoundException, SQLException {
-        
-        
-        String INSERT_USER_SQL ="INSERT INTO hkcbooking_user"+
-                "(username,password,fullname,address,phone,role,email) VALUES" +
-                "(?,?,?,?,?,?,?)";
+    public int registerUser(User user) throws ClassNotFoundException, SQLException {
+
+        String INSERT_USER_SQL = "INSERT INTO hkcbooking_user"
+                + "(username,password,fullname,address,phone,role,email) VALUES"
+                + "(?,?,?,?,?,?,?)";
         int result = 0;
         try {
             repo = RepoConnector.connectDatabase();
@@ -70,17 +68,15 @@ public class UserRepository {
             preStm.setString(5, user.getPhone());
             preStm.setString(6, user.getRole());
             preStm.setString(7, user.getEmail());
-            
-            
+
             result = preStm.executeUpdate();
             preStm.setString(result, INSERT_USER_SQL);
             System.out.println(preStm);
-           
+
         } catch (Exception e) {
         }
-                return result;
+        return result;
     }
-
 
     public User getUserByUsername(String username) throws Exception {
         try {
@@ -101,6 +97,26 @@ public class UserRepository {
             this.closeRepo();
         }
         return null;
+    }
 
+    public User getUserByUserId(Integer id) throws Exception {
+        try {
+            String query = "SELECT * FROM hkcbooking_user where userId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            preStm.setInt(1, id);
+            rs = preStm.executeQuery();
+            while (rs.next()) {
+                User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+                return u;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            this.closeRepo();
+        }
+        return null;
     }
 }
