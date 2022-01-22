@@ -32,18 +32,21 @@
                             <div class="mt-8">
                                 <div class="mt-6">
                                     <form action="LoginServlet" method="POST" class="space-y-6">
+
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="username" />
                                         <jsp:param name="type" value="text" />
                                         <jsp:param name="label" value="Username" />
-                                        <jsp:param name="error" value="${requestScope.errorUsername}"/>
+                                        <jsp:param name="error" value="${requestScope.usernameError}"/>
                                     </jsp:include>
+
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="password" />
                                         <jsp:param name="type" value="password" />
                                         <jsp:param name="label" value="Password" />
-                                        <jsp:param name="error" value="${requestScope.errorPassword}"/>
+                                        <jsp:param name="error" value="${requestScope.passwordError}"/>
                                     </jsp:include>
+
                                     <div class="text-right">
                                         <a href="RegisterServlet" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Register an account?</a>
                                     </div>
