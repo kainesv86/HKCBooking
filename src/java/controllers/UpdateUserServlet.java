@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import guard.UseGuard;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -37,7 +38,7 @@ public class UpdateUserServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateUserServlet</title>");            
+            out.println("<title>Servlet UpdateUserServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UpdateUserServlet at " + request.getContextPath() + "</h1>");
@@ -58,7 +59,14 @@ public class UpdateUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (!useGuard.useAuth()) {
+            response.sendRedirect("LoginServlet");
+            return;
+        }
+
+        request.getRequestDispatcher("/WEB-INF/JSP/userdetails.jsp").forward(request, response);
     }
 
     /**

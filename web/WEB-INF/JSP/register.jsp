@@ -30,51 +30,49 @@
 
                             <div class="mt-8">
                                 <div class="mt-6">
-                                    <form action="LoginServlet" method="POST" class="space-y-6">
-                                        <div>
-                                            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                                            <div class="mt-1">
-                                                <input id="username" name="username" type="text" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                            </div>
-                                            <p class="mt-2 text-sm text-red-600" id="username">${requestScope.usernameError}</p>
-                                    </div>
+                                    <form action="RegisterServlet" method="POST" class="space-y-6">
 
-                                    <div class="space-y-1">
-                                        <label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
-                                        <div class="mt-1">
-                                            <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                        </div>
-                                        <p class="mt-2 text-sm text-red-600" id="password">${requestScope.passwordError}</p>
-                                    </div>
-                                    <div class="space-y-1">
-                                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700"> Confirm Password </label>
-                                        <div class="mt-1">
-                                            <input id="confirmPassword" name="confirmPassword" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                        </div>
-                                        <p class="mt-2 text-sm text-red-600" id="confirmPassword">${requestScope.confirmPasswordError}</p>
-                                    </div>
-                                    <div class="space-y-1">
-                                        <label for="fullname" class="block text-sm font-medium text-gray-700"> Fullname </label>
-                                        <div class="mt-1">
-                                            <input id="fullname" name="fullname" type="text" autocomplete="fullname" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                        </div>
-                                        <p class="mt-2 text-sm text-red-600" id="fullname">${requestScope.fullnameError}</p>
-                                    </div>
-                                    <div class="space-y-1">
-                                        <label for="phone" class="block text-sm font-medium text-gray-700"> Phone </label>
-                                        <div class="mt-1">
-                                            <input id="phone" name="phone" type="text" autocomplete="phone" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                        </div>
-                                        <p class="mt-2 text-sm text-red-600" id="phone">${requestScope.phoneError}</p>
-                                    </div>
-                                    <div class="space-y-1">
-                                        <label for="email" class="block text-sm font-medium text-gray-700"> Email </label>
-                                        <div class="mt-1">
-                                            <input id="email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                        </div>
-                                        <p class="mt-2 text-sm text-red-600" id="email">${requestScope.emailError}</p>
-                                    </div>
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="username" />
+                                        <jsp:param name="type" value="text" />
+                                        <jsp:param name="label" value="Username" />
+                                        <jsp:param name="error" value="${requestScope.usernameError}"/>
+                                    </jsp:include>
 
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="password" />
+                                        <jsp:param name="type" value="password" />
+                                        <jsp:param name="label" value="Password" />
+                                        <jsp:param name="error" value="${requestScope.passwordError}"/>
+                                    </jsp:include>
+
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="confirmPassword" />
+                                        <jsp:param name="type" value="password" />
+                                        <jsp:param name="label" value="Confirm Password" />
+                                        <jsp:param name="error" value="${requestScope.confirmPasswordError}"/>
+                                    </jsp:include>
+
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="fullname" />
+                                        <jsp:param name="type" value="text" />
+                                        <jsp:param name="label" value="Fullname" />
+                                        <jsp:param name="error" value="${requestScope.fullnameError}"/>
+                                    </jsp:include>
+
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="phone" />
+                                        <jsp:param name="type" value="text" />
+                                        <jsp:param name="label" value="Phone" />
+                                        <jsp:param name="error" value="${requestScope.phoneError}"/>
+                                    </jsp:include>
+
+                                    <jsp:include page="./Components/InputField.jsp">
+                                        <jsp:param name="key" value="email" />
+                                        <jsp:param name="type" value="email" />
+                                        <jsp:param name="label" value="Email" />
+                                        <jsp:param name="error" value="${requestScope.emailError}"/>
+                                    </jsp:include>
 
                                     <div class="text-right">
                                         <a href="LoginServlet" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Already have account?</a>
