@@ -5,7 +5,7 @@
  */
 package repositories;
 
-import entities.User;
+ import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,6 +58,7 @@ public class UserRepository {
                 + "(username,password,fullname,address,phone,role,email) VALUES"
                 + "(?,?,?,?,?,?,?)";
         int result = 0;
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         try {
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(INSERT_USER_SQL);
@@ -73,7 +74,8 @@ public class UserRepository {
             preStm.setString(result, INSERT_USER_SQL);
             System.out.println(preStm);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }
