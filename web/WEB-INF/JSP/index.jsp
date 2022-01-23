@@ -16,14 +16,17 @@
                         </div>
                     </div>
 
-                    <div class="py-10 px-60">
+                    <div class="py-10 px-60 flex">
+                        <div class="mr-4 flex-1">
+                        <jsp:include page="./common/searchBar.jsp"></jsp:include>
+                        </div>
                         <div class="flex flex-col">
 
                         <jsp:include page="./Components/room.jsp">
                             <jsp:param name="roomName" value="Dual Room"/>
                             <jsp:param name="capacity" value="2"/>
                             <jsp:param name="price" value="25"/>
-                            <jsp:param name="description" value="Something is very very very very very very long"/>
+                            <jsp:param name="description" value="Something is very very very very very very long even nobody give a shit care"/>
                         </jsp:include>
 
                         <jsp:include page="./Components/room.jsp">
