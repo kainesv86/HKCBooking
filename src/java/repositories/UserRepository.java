@@ -52,13 +52,12 @@ public class UserRepository {
         }
     }
 
-    public int registerUser(User user) throws ClassNotFoundException, SQLException {
+    public boolean registerUser(User user) throws ClassNotFoundException, SQLException {
 
         String INSERT_USER_SQL = "INSERT INTO hkcbooking_user"
                 + "(username,password,fullname,address,phone,role,email) VALUES"
                 + "(?,?,?,?,?,?,?)";
-        int result = 0;
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        
         try {
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(INSERT_USER_SQL);
@@ -70,14 +69,12 @@ public class UserRepository {
             preStm.setString(6, user.getRole());
             preStm.setString(7, user.getEmail());
 
-            result = preStm.executeUpdate();
-            preStm.setString(result, INSERT_USER_SQL);
-            System.out.println(preStm);
-
+            preStm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            return  false;
         }
-        return result;
+        return true;
     }
 
     public User getUserByUsername(String username) throws Exception {
