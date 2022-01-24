@@ -1,5 +1,6 @@
 <div class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96">
 
+    <label class="text-center text-white mb-4 text-2xl font-medium">Search filter</label>
     <div class="flex-1 flex justify-center px-2 lg:justify-end flex-col">
         <div class="w-full mb-2">
             <label for="search" class="sr-only">Search</label>
@@ -30,7 +31,7 @@
             </jsp:include>
         </div>
 
-        <div class="flex mb-2 flex-col">
+        <div class="flex mb-2 flex-col  ">
             <label class="text-white font-semibold">Price</label>
             <div class="flex text-gray-700 justify-between">
                 <input type="number" step="any" min="100000" value="100000" class="px-2 py-1 rounded-md w-36"/>
