@@ -47,7 +47,6 @@ public class LoginServlet extends HttpServlet {
 
         // Get user from database
         UserRepository ad = new UserRepository();
-
         User user = ad.getUserByUsername(username);
 
         //Check user exist
