@@ -1,4 +1,4 @@
-<div class="flex flex-col p-4 bg-rose-600 rounded-md overflow-hidden w-96">
+<div class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96">
 
     <div class="flex-1 flex justify-center px-2 lg:justify-end flex-col">
         <div class="w-full mb-2">
@@ -30,8 +30,13 @@
             </jsp:include>
         </div>
 
-        <div>
-            <input type="number" step="any" min="100000" value="100000" class="px-2 py-1 rounded-md"/>
+        <div class="flex mb-2 flex-col">
+            <label class="text-white font-semibold">Price</label>
+            <div class="flex text-gray-700 justify-between">
+                <input type="number" step="any" min="100000" value="100000" class="px-2 py-1 rounded-md w-36"/>
+                <p class="font-semibold text-white">~</p>
+                <input type="number" step="any" min="100000" value="100000" class="px-2 py-1 rounded-md w-36"/>
+            </div>
         </div>
     </div>
 

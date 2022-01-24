@@ -16,8 +16,8 @@
                         </div>
                     </div>
 
-                    <div class="py-10 px-60 flex">
-                        <div class="mr-4 flex-1">
+                    <div class="py-10 px-60 flex justify-center">
+                        <div class="mr-4">
                         <jsp:include page="./common/searchBar.jsp"></jsp:include>
                         </div>
                         <div class="flex flex-col">
