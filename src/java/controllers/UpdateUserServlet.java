@@ -35,9 +35,38 @@ public class UpdateUserServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+        GetVariable gv = new GetVariable(request);
+        try {
+            String fullname = gv.getString("fullname", "Fullname", 1, 30, null);
+            String address = gv.getString("address", "Address", 1, 30, null);
+            String phone = gv.getString("phone", "Phone", 1, 30, null);
+            String email = gv.getString("email", "Email", 1, 30, "");
+            UserRepository ad = new UserRepository();
+            User u = ad.getUserByUserId(userId);
+            if (fullname != null && address != null && phone != null) {
+                u.setFullname(fullname);
+                u.setAddress(address);
+                u.setPhone(phone);
+                u.setEmail(email);
+                if (ad.updateInforUser(u)) {
+                    session.setAttribute("fullname", fullname);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -76,30 +105,11 @@ public class UpdateUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
-
-        try {
-            String fullname = request.getParameter("fullname");
-            String address = request.getParameter("address");
-            String phone = request.getParameter("phone");
-            String email = request.getParameter("email");
-            UserRepository ad = new UserRepository();
-            User u = ad.getUserByUserId(userId);
-            u.setFullname(fullname);
-            u.setAddress(address);
-            u.setPhone(phone);
-            u.setEmail(email);
-            if (ad.updateInforUser(u)) {
-                response.sendRedirect("IndexServlet");
-            } else {
-                response.sendRedirect("LoginServlet");
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        } catch (Exception e) {
-            System.out.println(e);
+        if (processRequest(request, response)) {
+            request.getRequestDispatcher("WEB-INF/JSP/index.jsp").forward(request, response);
+            return;
         }
+        response.sendRedirect("UpdateUserServlet");
     }
 
     @Override
