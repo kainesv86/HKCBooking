@@ -5,7 +5,7 @@
  */
 package repositories;
 
- import entities.User;
+import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,7 +58,7 @@ public class UserRepository {
         String INSERT_USER_SQL = "INSERT INTO hkcbooking_user"
                 + "(username,password,fullname,address,phone,role,email) VALUES"
                 + "(?,?,?,?,?,?,?)";
-        
+
         try {
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(INSERT_USER_SQL);
@@ -73,7 +73,7 @@ public class UserRepository {
             preStm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
         return true;
     }
@@ -119,12 +119,12 @@ public class UserRepository {
         }
         return null;
     }
-    
+
     public boolean updateInforUser(User u) throws NamingException, SQLException {
         Connection repo = null;
         try {
             String query = "UPDATE hkcbooking_user SET Fullname=?, "
-                + "Phone=?, Email=?, Address=? WHERE UserId=? ";
+                    + "Phone=?, Email=?, Address=? WHERE UserId=? ";
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(query);
             if (repo != null) {
@@ -134,10 +134,37 @@ public class UserRepository {
                 preStm.setString(3, u.getEmail());
                 preStm.setString(4, u.getAddress());
                 preStm.setInt(5, u.getUserId());
-                
+
                 preStm.executeUpdate();
                 return true;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean changePassword(User u) throws SQLException {
+        Connection repo = null;
+        try {
+            String query = "UPDATE  hkcbooking_user SET password=? Where  UserId=?";
+            repo = RepoConnector.connectDatabase();
+
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, u.getPassword());
+                preStm.executeUpdate();
+                return true;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
