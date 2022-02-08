@@ -15,27 +15,27 @@ import java.sql.SQLException;
  */
 public class RepoConnector {
 
-    public static Connection connectDatabase() {
-        Connection connection = null;
-        String id = "localhost";
-        String instanceName = "SQLEXPRESS";
-        String port = "1433";
-        String db = "HKCBooking";
-        String username = "sa";
-        String password = "1234567890";
+	public static Connection connectDatabase() {
+		Connection connection = null;
+		String id = "localhost";
+		String instanceName = "MSSQLSERVER01";
+		String port = "1433";
+		String db = "HKCBooking";
+		String username = "sa";
+		String password = "1234567890";
 
-        String urlDatabase = String.format("jdbc:sqlserver://%s\\%s:%s;databaseName=%s;user=%s;password=%s", id, instanceName, port, db, username, password);
+		String urlDatabase = String.format("jdbc:sqlserver://%s\\%s:%s;databaseName=%s;user=%s;password=%s", id, instanceName, port, db, username, password);
 
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(urlDatabase);
-            System.out.println("Connection to database successfull");
-        } catch (SQLException error) {
-            error.printStackTrace();
-        } catch (ClassNotFoundException error) {
-            error.printStackTrace();
-        }
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			connection = DriverManager.getConnection(urlDatabase);
+			System.out.println("Connection to database successfull");
+		} catch (SQLException error) {
+			error.printStackTrace();
+		} catch (ClassNotFoundException error) {
+			error.printStackTrace();
+		}
 
-        return connection;
-    }
+		return connection;
+	}
 }
