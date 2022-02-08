@@ -119,8 +119,6 @@ public class UpdateUserServlet extends HttpServlet {
 				useGuard.useAuth();
 			} else {
 				request.setAttribute("messageError", "Update failed, please check on fields above");
-				System.out.println("Before: " + request.getAttribute("fullnameError"));
-
 			}
 		} catch (Exception ex) {
 			Logger.getLogger(UpdateUserServlet.class.getName()).log(Level.SEVERE, null, ex);
