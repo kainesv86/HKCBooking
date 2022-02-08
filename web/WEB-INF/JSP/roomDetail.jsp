@@ -76,7 +76,7 @@
 
                                                                     <div class="border-t border-gray-200 mt-10 pt-10">
                                                                             <h3 class="text-xl font-medium text-gray-900 mb-4">Pick your time</h3>
-                                                                            <div class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md">
+                                                                            <form class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md">
 
 
                                                                                     <div class="mb-2">
@@ -91,7 +91,12 @@
                                                                                 <jsp:param name="label" value="Check out"/>
                                                                             </jsp:include>
 
-                                                                    </div>
+                                                                            <div class="mt-4">
+                                                                                    <button type="button" class="text-gray-800 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-100 hover:bg-gray-200" disabled>Check</button>
+                                                                                    <button type="submit" class="text-gray-800 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-100 hover:bg-gray-200">Check</button>
+                                                                            </div>
+
+                                                                    </form>
                                                             </div>
                                                     </div>
 
