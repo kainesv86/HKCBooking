@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
         // Get login form variable
         GetVariable gv = new GetVariable(request);
         String username = gv.getString("username", "Username", 8, 30, null);
-        String password = gv.getString("password", "Password", 8, 30, null);
+        String password = gv.getString("password", "Password", 6, 30, null);
 
         if (username == null || password == null) {
             return false;
@@ -47,7 +47,6 @@ public class LoginServlet extends HttpServlet {
 
         // Get user from database
         UserRepository ad = new UserRepository();
-
         User user = ad.getUserByUsername(username);
 
         //Check user exist
