@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,6 +22,15 @@
                         <jsp:include page="./common/searchBar.jsp"></jsp:include>
                         </div>
                         <div class="flex flex-col">
+
+                        <c:forEach var="room" items="${requestScope.rooms}">
+                            <jsp:include page="./Components/room.jsp">
+                                <jsp:param name="roomName" value="Dual Room"/>
+                                <jsp:param name="capacity" value="2"/>
+                                <jsp:param name="price" value="25"/>
+                                <jsp:param name="description" value="Something is very very very very very very long even nobody give a shit care"/>
+                            </jsp:include>
+                        </c:forEach>
 
                         <jsp:include page="./Components/room.jsp">
                             <jsp:param name="roomName" value="Dual Room"/>
