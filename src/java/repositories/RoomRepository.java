@@ -35,16 +35,16 @@ public class RoomRepository {
             String sql = "SELECT * FROM hkcbooking_room";
             preStm = repo.prepareStatement(sql);
             rs = preStm.executeQuery();
-            Room room = null;
+
             ArrayList<Room> list = new ArrayList<Room>();
             while (rs.next()) {
-                room.setRoomId(rs.getInt("roomId"));
-                room.setRoomTypeId(rs.getInt("roomTypeId"));
-                room.setDescription(rs.getString("description"));
-                room.setPrice(rs.getFloat("price"));
-                room.setUrlImage(rs.getString("urlImage"));
-                room.setRoomStatus(rs.getString("roomStatus"));
-                list.add(room);
+                Integer roomId = rs.getInt("roomId");
+                Integer roomTypeId = rs.getInt("roomTypeId");
+                String description = rs.getString("description");
+                Float price = rs.getFloat("price");
+                String urlImage = rs.getString("urlImage");
+                String roomStatus = rs.getString("roomStatus");
+                list.add(new Room(roomId, roomTypeId, description, price, urlImage, roomStatus));
             }
             return list;
         } finally {

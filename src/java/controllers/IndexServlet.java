@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.Room;
+import entities.RoomType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.RoomRepository;
+import repositories.RoomTypeRepository;
 
 /**
  *
@@ -38,7 +40,13 @@ public class IndexServlet extends HttpServlet {
             throws ServletException, IOException, Exception {
         RoomRepository roomRepo = new RoomRepository();
         ArrayList<Room> rooms = roomRepo.getAllRoom();
+
+        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
+        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
+
+        System.out.println("Size: " + rooms.size());
         request.setAttribute("rooms", rooms);
+        request.setAttribute("roomTypes", roomTypes);
         return true;
     }
 

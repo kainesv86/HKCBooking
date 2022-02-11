@@ -1,3 +1,8 @@
+<%@page import="helper.FunctionJSP"%>
+<%@page import="entities.RoomType"%>
+<%@page import="entities.Room"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="repositories.RoomTypeRepository"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -7,6 +12,13 @@
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
+        <%
+            ArrayList<Room> rooms = (ArrayList<Room>) request.getAttribute("rooms");
+//            RoomTypeRepository rtr = new RoomTypeRepository();
+            ArrayList<RoomType> roomTypes = (ArrayList<RoomType>) request.getAttribute("roomTypes");
+
+        %>
+
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
                 <div class="min-h-full flex flex-col bg-gray-200 flex-1">
@@ -23,36 +35,17 @@
                         </div>
                         <div class="flex flex-col">
 
-                        <c:forEach var="room" items="${requestScope.rooms}">
-                            <jsp:include page="./Components/room.jsp">
-                                <jsp:param name="roomName" value="Dual Room"/>
-                                <jsp:param name="capacity" value="2"/>
-                                <jsp:param name="price" value="25"/>
-                                <jsp:param name="description" value="Something is very very very very very very long even nobody give a shit care"/>
-                            </jsp:include>
-                        </c:forEach>
-
+                        <% for (int index = 0; index < rooms.size(); index++) {
+                                RoomType roomType = FunctionJSP.getRoomTypeById(roomTypes, rooms.get(index).getRoomTypeId());
+                        %>
                         <jsp:include page="./Components/room.jsp">
-                            <jsp:param name="roomName" value="Dual Room"/>
-                            <jsp:param name="capacity" value="2"/>
-                            <jsp:param name="price" value="25"/>
-                            <jsp:param name="description" value="Something is very very very very very very long even nobody give a shit care"/>
+                            <jsp:param name="roomName" value="<%=roomType.getRoomName()%>"/>
+                            <jsp:param name="capacity" value="<%=roomType.getCapacity()%>"/>
+                            <jsp:param name="price" value="<%=rooms.get(index).getPrice()%>"/>
+                            <jsp:param name="description" value="<%=rooms.get(index).getDescription()%>"/>
+                            <jsp:param name="roomId" value="<%=rooms.get(index).getRoomId()%>"/>
                         </jsp:include>
-
-                        <jsp:include page="./Components/room.jsp">
-                            <jsp:param name="roomName" value="Dual Room"/>
-                            <jsp:param name="capacity" value="2"/>
-                            <jsp:param name="price" value="25"/>
-                            <jsp:param name="description" value="Something is very very very very very very long"/>
-                        </jsp:include>
-
-                        <jsp:include page="./Components/room.jsp">
-                            <jsp:param name="roomName" value="Dual Room"/>
-                            <jsp:param name="capacity" value="2"/>
-                            <jsp:param name="price" value="25"/>
-                            <jsp:param name="description" value="Something is very very very very very very long"/>
-                        </jsp:include>
-
+                        <% }%>
 
                         <div/>
 

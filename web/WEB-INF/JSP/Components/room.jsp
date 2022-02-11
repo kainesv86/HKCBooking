@@ -11,6 +11,6 @@
             <p class="text-sm text-amber-700">Price: ${param.price}$ / Day</p>
             <p class="text-xs text-gray-700 truncate">${param.description}</p>
         </div>
-        <a class="text-rose-600 hover:text-red-700 text-xs cursor-pointer w-fit font-semibold">More detail</a>
+        <a href="RoomDetailServlet?roomId=${param.roomId}" class="text-rose-600 hover:text-red-700 text-xs cursor-pointer w-fit font-semibold">More detail</a>
     </div>
 </div>

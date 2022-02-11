@@ -18,6 +18,9 @@ public class Room {
     private String urlImage;
     private String roomStatus;
 
+    public Room() {
+    }
+
     public Room(Integer roomId, Integer roomTypeId, String description, float price, String urlImage, String roomStatus) {
         this.roomId = roomId;
         this.roomTypeId = roomTypeId;
