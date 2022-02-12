@@ -68,6 +68,12 @@ public class RoomDetailServlet extends HttpServlet {
         return true;
     }
 
+    protected boolean postHanlding(HttpServletRequest request, HttpServletResponse respone) {
+
+        return true;
+
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -78,6 +84,7 @@ public class RoomDetailServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
