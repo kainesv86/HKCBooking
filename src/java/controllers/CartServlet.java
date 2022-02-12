@@ -5,29 +5,20 @@
  */
 package controllers;
 
-import entities.Room;
-import entities.RoomType;
-import helper.GetVariable;
 import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import repositories.RoomRepository;
-import repositories.RoomTypeRepository;
 
 /**
  *
  * @author Kaine
  */
-@WebServlet(name = "RoomDetailServlet", urlPatterns = {"/RoomDetailServlet"})
-public class RoomDetailServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
+public class CartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,34 +29,21 @@ public class RoomDetailServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        GetVariable gv = new GetVariable(request);
-
-        Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
-
-        if (roomId == null) {
-            return false;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CartServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-
-        RoomRepository roomRepo = new RoomRepository();
-        Room room = roomRepo.getRoomById(roomId);
-
-        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-        RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
-
-        Date minCheckIn = new Date(System.currentTimeMillis());
-        LocalDate minCheckOut = minCheckIn.toLocalDate().plusDays(1);
-
-        request.setAttribute("room", room);
-        request.setAttribute("roomType", roomType);
-        request.setAttribute("minCheckIn", minCheckIn.toString());
-        request.setAttribute("minCheckOut", minCheckOut.toString());
-
-        System.out.println("Servlet: " + minCheckIn + ", " + minCheckOut
-        );
-
-        return true;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -80,13 +58,7 @@ public class RoomDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            if (getHandler(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/roomDetail.jsp").forward(request, response);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(RoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -100,7 +72,7 @@ public class RoomDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processRequest(request, response);
     }
 
     /**

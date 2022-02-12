@@ -51,4 +51,30 @@ public class RoomRepository {
             this.closeRepo();
         }
     }
+
+    public Room getRoomById(Integer id) throws Exception {
+        try {
+            String query = "SELECT * FROM hkcbooking_room where roomId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            preStm.setInt(1, id);
+            rs = preStm.executeQuery();
+            while (rs.next()) {
+                Integer roomId = rs.getInt("roomId");
+                Integer roomTypeId = rs.getInt("roomTypeId");
+                String description = rs.getString("description");
+                Float price = rs.getFloat("price");
+                String urlImage = rs.getString("urlImage");
+                String roomStatus = rs.getString("roomStatus");
+                Room room = new Room(roomId, roomTypeId, description, price, urlImage, roomStatus);
+                return room;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            this.closeRepo();
+        }
+        return null;
+    }
 }
