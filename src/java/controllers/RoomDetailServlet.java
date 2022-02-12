@@ -7,11 +7,13 @@ package controllers;
 
 import entities.Room;
 import entities.RoomType;
+import helper.GetVariable;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.time.LocalDate;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,10 +24,10 @@ import repositories.RoomTypeRepository;
 
 /**
  *
- * @author kaine
+ * @author Kaine
  */
-@WebServlet(name = "IndexServlet", urlPatterns = {"/IndexServlet"})
-public class IndexServlet extends HttpServlet {
+@WebServlet(name = "RoomDetailServlet", urlPatterns = {"/RoomDetailServlet"})
+public class RoomDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,17 +38,33 @@ public class IndexServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected boolean handleGet(HttpServletRequest request, HttpServletResponse response)
+    protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
+        GetVariable gv = new GetVariable(request);
+
+        Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
+
+        if (roomId == null) {
+            return false;
+        }
+
         RoomRepository roomRepo = new RoomRepository();
-        ArrayList<Room> rooms = roomRepo.getAllRoom();
+        Room room = roomRepo.getRoomById(roomId);
 
         RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
+        RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
 
-        System.out.println("Size: " + rooms.size());
-        request.setAttribute("rooms", rooms);
-        request.setAttribute("roomTypes", roomTypes);
+        Date minCheckIn = new Date(System.currentTimeMillis());
+        LocalDate minCheckOut = minCheckIn.toLocalDate().plusDays(1);
+
+        request.setAttribute("room", room);
+        request.setAttribute("roomType", roomType);
+        request.setAttribute("minCheckIn", minCheckIn.toString());
+        request.setAttribute("minCheckOut", minCheckOut.toString());
+
+        System.out.println("Servlet: " + minCheckIn + ", " + minCheckOut
+        );
+
         return true;
     }
 
@@ -63,12 +81,26 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (handleGet(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/index.jsp").forward(request, response);
+            if (getHandler(request, response)) {
+                request.getRequestDispatcher("/WEB-INF/JSP/roomDetail.jsp").forward(request, response);
             }
         } catch (Exception ex) {
-            Logger.getLogger(IndexServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
     }
 
     /**
