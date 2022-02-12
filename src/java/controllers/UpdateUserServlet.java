@@ -68,7 +68,6 @@ public class UpdateUserServlet extends HttpServlet {
         } catch (Exception e) {
             return false;
         }
-
         return true;
     }
 
