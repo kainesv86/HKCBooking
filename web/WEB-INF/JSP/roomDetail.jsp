@@ -88,8 +88,8 @@
 
                                 <div class="border-t border-gray-200 mt-10 pt-10">
                                     <h3 class="text-xl font-medium text-gray-900 mb-4">Pick your time</h3>
-                                    <form class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md">
-                                        <input type="text" value="<%= room.getRoomId()%>" class="hidden">
+                                    <form action="RoomDetailServlet" method="POST" class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md" >
+                                        <input type="text" value="<%= room.getRoomId()%>" name="roomId" class="hidden">
 
                                         <div class="mb-2">
                                             <jsp:include page="./Components/InputDate.jsp">
