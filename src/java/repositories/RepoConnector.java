@@ -20,9 +20,9 @@ public class RepoConnector {
         String id = "localhost";
         String instanceName = "SQLEXPRESS";
         String port = "1433";
-        String db = "HKCBooking";
+        String db = "HKC";
         String username = "sa";
-        String password = "1234567890";
+        String password = "1";
 
         String urlDatabase = String.format("jdbc:sqlserver://%s\\%s:%s;databaseName=%s;user=%s;password=%s", id, instanceName, port, db, username, password);
 
