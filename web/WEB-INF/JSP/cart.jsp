@@ -12,6 +12,7 @@
     <body>
         <%
             ArrayList<CartItem> cart = (ArrayList<CartItem>) request.getAttribute("cart");
+            Integer userId = (Integer) session.getAttribute("userId");
         %>
 
         <div class="flex flex-col min-h-screen">
@@ -76,7 +77,7 @@
 
                             <div class="mt-6 text-sm text-center">
                                 <p>
-                                    or <a href="IndexServlet" class="text-indigo-600 font-medium hover:text-indigo-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
+                                    or <a href="IndexServlet" class="text-rose-600 font-medium hover:text-rose-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
                                 </p>
                             </div>
                         </section>
