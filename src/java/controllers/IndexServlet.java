@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 
@@ -62,6 +63,12 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        HttpSession session = request.getSession();
+        long millis = System.currentTimeMillis();
+        java.sql.Date minDateCheckIn = new java.sql.Date(millis);
+        System.out.println(minDateCheckIn);
+//        session.setAttribute("minDate", minDateCheckIn);
         try {
             if (handleGet(request, response)) {
                 request.getRequestDispatcher("/WEB-INF/JSP/index.jsp").forward(request, response);
