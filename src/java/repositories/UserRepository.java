@@ -152,15 +152,16 @@ public class UserRepository {
         return false;
     }
 
-    public boolean changePassword(User u) throws SQLException {
+    public boolean changePassword(User u) throws SQLException, Exception {
         Connection repo = null;
         try {
-            String query = "UPDATE  hkcbooking_user SET password=? Where  UserId=?";
+            String query = "UPDATE hkcbooking_user SET password=? Where UserId=?";
             repo = RepoConnector.connectDatabase();
 
             if (repo != null) {
                 preStm = repo.prepareStatement(query);
                 preStm.setString(1, u.getPassword());
+                preStm.setInt(2, u.getUserId());
                 preStm.executeUpdate();
                 return true;
             }
@@ -169,12 +170,7 @@ public class UserRepository {
             e.printStackTrace();
             return false;
         } finally {
-            if (preStm != null) {
-                preStm.close();
-            }
-            if (repo != null) {
-                repo.close();
-            }
+            closeRepo();
         }
         return false;
     }

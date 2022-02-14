@@ -11,6 +11,8 @@ import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,95 +28,108 @@ import repositories.UserRepository;
 @WebServlet(name = "UpdateUserServlet", urlPatterns = {"/UpdateUserServlet"})
 public class UpdateUserServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
-        GetVariable gv = new GetVariable(request);
-        try {
-            String fullname = gv.getString("fullname", "Fullname", 1, 30, null);
-            String address = gv.getString("address", "Address", 1, 30, null);
-            String phone = gv.getString("phone", "Phone", 1, 30, null);
-            String email = gv.getString("email", "Email", 1, 30, "");
-            UserRepository ad = new UserRepository();
-            User u = ad.getUserByUserId(userId);
-            if (fullname != null && address != null && phone != null) {
-                u.setFullname(fullname);
-                u.setAddress(address);
-                u.setPhone(phone);
-                u.setEmail(email);
-                if (ad.updateInforUser(u)) {
-                    session.setAttribute("fullname", fullname);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return false;
-        } catch (SQLException e) {
-            System.out.println(e);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return false;
-    }
+	/**
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException, Exception {
+		response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession();
+		Integer userId = (Integer) session.getAttribute("userId");
+		GetVariable gv = new GetVariable(request);
+		try {
+			String fullname = gv.getString("fullname", "Fullname", 1, 30, null);
+			String address = gv.getString("address", "Address", 1, 50, "");
+			String phone = gv.getString("phone", "Phone", 10, 30, null);
+			String email = gv.getString("email", "Email", 1, 50, null);
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        UseGuard useGuard = new UseGuard(request, response);
+			if (fullname == null || phone == null || email == null) {
+				System.out.println("WTF: " + fullname);
+				return false;
+			}
 
-        if (!useGuard.useAuth()) {
-            response.sendRedirect("LoginServlet");
-            return;
-        }
-//        if (useGuard.useAuth()) {
-//            response.sendRedirect("IndexServlet");
-//            return;
-//        }
-        request.getRequestDispatcher("/WEB-INF/JSP/userdetails.jsp").forward(request, response);
-    }
+			UserRepository ad = new UserRepository();
+			User u = ad.getUserByUserId(userId);
+			u.setFullname(fullname);
+			u.setAddress(address);
+			u.setPhone(phone);
+			u.setEmail(email);
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        if (processRequest(request, response)) {
-            request.getRequestDispatcher("WEB-INF/JSP/index.jsp").forward(request, response);
-            return;
-        }
-        response.sendRedirect("UpdateUserServlet");
-    }
+			if (!ad.updateInforUser(u)) {
+				return false;
+			}
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+			session.setAttribute("fullname", fullname);
+		} catch (Exception e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+	/**
+	 * Handles the HTTP <code>GET</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		UseGuard useGuard = new UseGuard(request, response);
+
+		if (!useGuard.useAuth()) {
+			response.sendRedirect("LoginServlet");
+			return;
+		}
+
+		request.getRequestDispatcher("/WEB-INF/JSP/userdetails.jsp").forward(request, response);
+	}
+
+	/**
+	 * Handles the HTTP <code>POST</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+		UseGuard useGuard = new UseGuard(request, response);
+		if (!useGuard.useAuth()) {
+			response.sendRedirect("LoginServlet");
+		}
+
+		try {
+
+			if (processRequest(request, response)) {
+				request.setAttribute("message", "Update successful");
+				useGuard.useAuth();
+			} else {
+				request.setAttribute("messageError", "Update failed, please check on fields above");
+			}
+		} catch (Exception ex) {
+			Logger.getLogger(UpdateUserServlet.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		request.getRequestDispatcher("WEB-INF/JSP/userdetails.jsp").forward(request, response);
+
+	}
+
+	@Override
+	public String getServletInfo() {
+		return "Short description";
+	}// </editor-fold>
 
 }

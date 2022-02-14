@@ -51,13 +51,13 @@ public class LoginServlet extends HttpServlet {
 
         //Check user exist
         if (user == null) {
-            request.setAttribute("messageError", "Username or password is incorect");
+            request.setAttribute("usernameError", "Username or password is incorect");
             return false;
         }
 
         // Check password
         if (user.getPassword() != null && !password.equals(user.getPassword())) {
-            request.setAttribute("messageError", "Username or password is incorect");
+            request.setAttribute("usernameError", "Username or password is incorect");
             return false;
         }
 
