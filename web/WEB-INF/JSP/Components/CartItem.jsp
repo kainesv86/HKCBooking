@@ -23,9 +23,9 @@
                     <button type="submit" class="text-sm font-medium text-green-600 hover:text-green-500 cursor-pointer">Book now</button>
                 </p>
             </form>
-            <button type="button" class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer">
+            <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="RemoveCartItem?index=${param.index}">
                 <span>Remove</span>
-            </button>
+            </a>
         </div>
     </div>
 </li>
