@@ -16,15 +16,16 @@
         </div>
 
         <div class="mt-4 flex-1 flex items-end justify-between">
-            <p class="flex items-center text-sm text-gray-700 space-x-2">
-                <!-- Heroicon name: solid/check -->
-                <a class="text-green-500">Book now</a>
-            </p>
-            <div class="ml-4">
-                <button type="button" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                    <span>Remove</span>
-                </button>
-            </div>
+            <form action="CartServlet" method="POST" class="ml-4">
+                <input type="text" value="${param.index}" name="index" class="hidden">
+                <p class="flex items-center text-sm text-gray-700 space-x-2">
+                    <!-- Heroicon name: solid/check -->
+                    <button type="submit" class="text-sm font-medium text-green-600 hover:text-green-500 cursor-pointer">Book now</button>
+                </p>
+            </form>
+            <button type="button" class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer">
+                <span>Remove</span>
+            </button>
         </div>
     </div>
 </li>

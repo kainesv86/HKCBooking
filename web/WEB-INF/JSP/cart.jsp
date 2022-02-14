@@ -21,20 +21,20 @@
                     <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-0">
                         <h1 class="text-3xl font-extrabold text-center tracking-tight text-gray-900 sm:text-4xl">Room Cart</h1>
 
-                        <form class="mt-12">
+                        <div class="mt-12">
                             <section aria-labelledby="cart-heading">
                                 <h2 id="cart-heading" class="sr-only">Items in your Room cart</h2>
 
                                 <ul role="list" class="border-t border-b border-gray-200 divide-y divide-gray-200">
                                 <%
                                     for (int index = 0; index < cart.size(); index++) {
-                                        System.out.println(index);
                                 %>
                                 <jsp:include page="./Components/CartItem.jsp">
                                     <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
                                     <jsp:param name="startDate" value="<%= cart.get(index).getStartDate()%>" />
                                     <jsp:param name="endDate" value="<%= cart.get(index).getEndDate()%>" />
                                     <jsp:param name="total" value="<%= cart.get(index).getTotal()%>" />
+                                    <jsp:param name="index" value="<%= index%>"/>
                                 </jsp:include>
 
                                 <% }%>
@@ -67,7 +67,7 @@
                                 </p>
                             </div>
                         </section>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
