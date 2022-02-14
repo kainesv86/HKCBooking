@@ -93,11 +93,9 @@ public class RoomDetailServlet extends HttpServlet {
         System.out.println(checkIn.compareTo(checkOut));
 
         if (checkIn.compareTo(checkOut) >= 0) {
-            session.setAttribute("messageError", "End date must greater than start date");
+            session.setAttribute("message", "End date must greater than start date");
             return false;
         }
-
-        session.setAttribute("messageError", "");
 
         LocalDate lower = checkIn.toLocalDate();
         LocalDate upper = checkOut.toLocalDate();
@@ -119,6 +117,7 @@ public class RoomDetailServlet extends HttpServlet {
         cart.add(new CartItem(room, roomType.getRoomName(), checkIn, checkOut, total));
 
         session.setAttribute("cart", cart);
+        session.setAttribute("message", "Add cart successful");
         return true;
 
     }
@@ -157,7 +156,8 @@ public class RoomDetailServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (!postHanlding(request, response)) {
+            if (postHanlding(request, response)) {
+
             }
 
         } catch (Exception ex) {
