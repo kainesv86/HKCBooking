@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -74,10 +75,13 @@ public class RoomDetailServlet extends HttpServlet {
 
     protected boolean postHanlding(HttpServletRequest request, HttpServletResponse respone) throws Exception {
 
+        HttpSession session = request.getSession();
         GetVariable gv = new GetVariable(request);
         Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
         String startDate = gv.getString("startDate", "Start date", 0, 20, null);
         String endDate = gv.getString("endDate", "End date", 0, 20, null);
+
+        request.setAttribute("roomId", roomId);
 
         if (roomId == null || startDate == null || endDate == null) {
             return false;
@@ -86,9 +90,14 @@ public class RoomDetailServlet extends HttpServlet {
         Date checkIn = Date.valueOf(startDate);
         Date checkOut = Date.valueOf(endDate);
 
+        System.out.println(checkIn.compareTo(checkOut));
+
         if (checkIn.compareTo(checkOut) >= 0) {
-            request.setAttribute("endDateError", "End date must greater than start date");
+            session.setAttribute("messageError", "End date must greater than start date");
+            return false;
         }
+
+        session.setAttribute("messageError", "");
 
         LocalDate lower = checkIn.toLocalDate();
         LocalDate upper = checkOut.toLocalDate();
@@ -99,7 +108,6 @@ public class RoomDetailServlet extends HttpServlet {
         long days = ChronoUnit.DAYS.between(lower, upper);
         Float total = room.getPrice() * Math.abs(days);
 
-        HttpSession session = request.getSession();
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<CartItem>();
@@ -108,10 +116,9 @@ public class RoomDetailServlet extends HttpServlet {
         RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
         RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
 
-        cart.add(new CartItem(room, roomType.getRoomName(), checkOut, checkOut, total));
+        cart.add(new CartItem(room, roomType.getRoomName(), checkIn, checkOut, total));
 
         session.setAttribute("cart", cart);
-        request.setAttribute("roomId", roomId);
         return true;
 
     }
@@ -156,6 +163,7 @@ public class RoomDetailServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(RoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         response.sendRedirect("RoomDetailServlet" + "?roomId=" + request.getAttribute("roomId"));
     }
 

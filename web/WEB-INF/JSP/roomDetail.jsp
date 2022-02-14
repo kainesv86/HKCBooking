@@ -16,6 +16,7 @@
             RoomType roomType = (RoomType) request.getAttribute("roomType");
             String minCheckIn = (String) request.getAttribute("minCheckIn");
             String minCheckOut = (String) request.getAttribute("minCheckOut");
+            String messageError = (String) session.getAttribute("messageError");
         %>
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
@@ -95,7 +96,6 @@
                                             <jsp:include page="./Components/InputDate.jsp">
                                                 <jsp:param name="key" value="startDate"/>
                                                 <jsp:param name="label" value="Check In"/>
-                                                <jsp:param name="error" value="${requestScope.startDateError}"/>
                                                 <jsp:param name="min" value="<%=minCheckIn%>" />
                                             </jsp:include>
                                         </div>
@@ -103,10 +103,11 @@
                                         <jsp:include page="./Components/InputDate.jsp">
                                             <jsp:param name="key" value="endDate"/>
                                             <jsp:param name="label" value="Check out"/>
-                                            <jsp:param name="error" value="${requestScope.endDateError}"/>
                                             <jsp:param name="min" value="<%=minCheckOut%>" />
                                         </jsp:include>
-
+                                        <c:if test="<%= !messageError.isEmpty()%>">
+                                            <p class="text-red-100 font-semibold text-sm"><%=messageError%></p>
+                                        </c:if>
                                         <div class="mt-4">
                                             <button type="submit" class="text-gray-800 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-100 hover:bg-gray-200">Add to cart</button>
                                         </div>

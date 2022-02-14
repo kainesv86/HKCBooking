@@ -44,7 +44,6 @@ public class IndexServlet extends HttpServlet {
         RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
         ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
 
-        System.out.println("Size: " + rooms.size());
         request.setAttribute("rooms", rooms);
         request.setAttribute("roomTypes", roomTypes);
         return true;
