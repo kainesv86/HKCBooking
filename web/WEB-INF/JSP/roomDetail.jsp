@@ -95,6 +95,7 @@
                                             <jsp:include page="./Components/InputDate.jsp">
                                                 <jsp:param name="key" value="startDate"/>
                                                 <jsp:param name="label" value="Check In"/>
+                                                <jsp:param name="error" value="${requestScope.startDateError}"/>
                                                 <jsp:param name="min" value="<%=minCheckIn%>" />
                                             </jsp:include>
                                         </div>
@@ -102,6 +103,7 @@
                                         <jsp:include page="./Components/InputDate.jsp">
                                             <jsp:param name="key" value="endDate"/>
                                             <jsp:param name="label" value="Check out"/>
+                                            <jsp:param name="error" value="${requestScope.endDateError}"/>
                                             <jsp:param name="min" value="<%=minCheckOut%>" />
                                         </jsp:include>
 

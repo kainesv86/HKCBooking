@@ -83,30 +83,32 @@ public class RoomDetailServlet extends HttpServlet {
             return false;
         }
 
+        Date checkIn = Date.valueOf(startDate);
+        Date checkOut = Date.valueOf(endDate);
+
+        if (checkIn.compareTo(checkOut) >= 0) {
+            request.setAttribute("endDateError", "End date must greater than start date");
+        }
+
+        LocalDate lower = checkIn.toLocalDate();
+        LocalDate upper = checkOut.toLocalDate();
+
+        RoomRepository roomRepo = new RoomRepository();
+        Room room = roomRepo.getRoomById(roomId);
+
+        long days = ChronoUnit.DAYS.between(lower, upper);
+        Float total = room.getPrice() * Math.abs(days);
+
         HttpSession session = request.getSession();
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<CartItem>();
         }
 
-        RoomRepository roomRepo = new RoomRepository();
-        Room room = roomRepo.getRoomById(roomId);
-
         RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
         RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
 
-        Date checkIn = Date.valueOf(startDate);
-        Date checkOut = Date.valueOf(endDate);
-
-        LocalDate lower = checkIn.toLocalDate();
-        LocalDate upper = checkOut.toLocalDate();
-
-        long days = ChronoUnit.DAYS.between(lower, upper);
-        Float total = room.getPrice() * Math.abs(days);
-
         cart.add(new CartItem(room, roomType.getRoomName(), checkOut, checkOut, total));
-
-        System.out.println(cart.size());
 
         session.setAttribute("cart", cart);
         request.setAttribute("roomId", roomId);
