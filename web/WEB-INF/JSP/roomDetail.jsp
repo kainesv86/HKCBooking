@@ -17,6 +17,7 @@
             String minCheckIn = (String) request.getAttribute("minCheckIn");
             String minCheckOut = (String) request.getAttribute("minCheckOut");
             String messageError = (String) session.getAttribute("messageError");
+            request.setAttribute("messageError", messageError);
         %>
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
@@ -105,9 +106,9 @@
                                             <jsp:param name="label" value="Check out"/>
                                             <jsp:param name="min" value="<%=minCheckOut%>" />
                                         </jsp:include>
-                                        <c:if test="<%= !messageError.isEmpty()%>">
-                                            <p class="text-red-100 font-semibold text-sm"><%=messageError%></p>
-                                        </c:if>
+
+                                        <p class="text-red-100 font-semibold text-sm">${requestScope.messageError}</p>
+
                                         <div class="mt-4">
                                             <button type="submit" class="text-gray-800 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-100 hover:bg-gray-200">Add to cart</button>
                                         </div>
