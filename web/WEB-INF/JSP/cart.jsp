@@ -25,22 +25,35 @@
                             <section aria-labelledby="cart-heading">
                                 <h2 id="cart-heading" class="sr-only">Items in your Room cart</h2>
 
-                                <ul role="list" class="border-t border-b border-gray-200 divide-y divide-gray-200">
-                                <%
-                                    for (int index = 0; index < cart.size(); index++) {
-                                %>
-                                <jsp:include page="./Components/CartItem.jsp">
-                                    <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
-                                    <jsp:param name="startDate" value="<%= cart.get(index).getStartDate()%>" />
-                                    <jsp:param name="endDate" value="<%= cart.get(index).getEndDate()%>" />
-                                    <jsp:param name="total" value="<%= cart.get(index).getTotal()%>" />
-                                    <jsp:param name="index" value="<%= index%>"/>
-                                </jsp:include>
+                            <c:choose>
+                                <c:when test="<%= cart.size() > 0%>" >
+                                    <ul role="list" class="border-t border-b border-gray-200 divide-y divide-gray-200">
+                                        <%
+                                            for (int index = 0; index < cart.size(); index++) {
+                                        %>
+                                        <jsp:include page="./Components/CartItem.jsp">
+                                            <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
+                                            <jsp:param name="startDate" value="<%= cart.get(index).getStartDate()%>" />
+                                            <jsp:param name="endDate" value="<%= cart.get(index).getEndDate()%>" />
+                                            <jsp:param name="total" value="<%= cart.get(index).getTotal()%>" />
+                                            <jsp:param name="index" value="<%= index%>"/>
+                                        </jsp:include>
+                                        <% }%>
+                                    </ul>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="flex flex-col items-center">
+                                        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M59.1997 66.2666L66.2663 73.3333L73.333 66.2666L59.1997 52.1333L45.0663 66.2666L52.133 73.3333L59.1997 66.2666ZM79.9997 116.667C95.533 116.667 108.733 106.933 114.066 93.3333H45.933C51.2663 106.933 64.4663 116.667 79.9997 116.667ZM86.6663 66.2666L93.733 73.3333L100.8 66.2666L107.866 73.3333L114.933 66.2666L100.8 52.1333L86.6663 66.2666ZM79.933 13.3333C43.133 13.3333 13.333 43.1333 13.333 79.9999C13.333 116.867 43.133 146.667 79.933 146.667C116.733 146.667 146.666 116.867 146.666 79.9999C146.666 43.1333 116.8 13.3333 79.933 13.3333ZM79.9997 133.333C50.533 133.333 26.6663 109.467 26.6663 79.9999C26.6663 50.5333 50.533 26.6666 79.9997 26.6666C109.466 26.6666 133.333 50.5333 133.333 79.9999C133.333 109.467 109.466 133.333 79.9997 133.333Z" fill="#323232"/>
+                                        </svg>
 
-                                <% }%>
+                                        <p class="mt-4 text-2xl text-gray-800 font-semibold">There are nothing in your cart</p>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
 
-                                <!-- More products... -->
-                            </ul>
+
+                            <!-- More products... -->
                         </section>
 
                         <!-- Order summary -->
@@ -63,7 +76,7 @@
 
                             <div class="mt-6 text-sm text-center">
                                 <p>
-                                    or <a href="#" class="text-indigo-600 font-medium hover:text-indigo-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
+                                    or <a href="IndexServlet" class="text-indigo-600 font-medium hover:text-indigo-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
                                 </p>
                             </div>
                         </section>
