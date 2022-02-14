@@ -79,6 +79,10 @@ public class RoomDetailServlet extends HttpServlet {
         String startDate = gv.getString("startDate", "Start date", 0, 20, null);
         String endDate = gv.getString("endDate", "End date", 0, 20, null);
 
+        if (roomId == null || startDate == null || endDate == null) {
+            return false;
+        }
+
         HttpSession session = request.getSession();
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
         if (cart == null) {
@@ -86,8 +90,10 @@ public class RoomDetailServlet extends HttpServlet {
         }
 
         RoomRepository roomRepo = new RoomRepository();
-
         Room room = roomRepo.getRoomById(roomId);
+
+        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
+        RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
 
         Date checkIn = Date.valueOf(startDate);
         Date checkOut = Date.valueOf(endDate);
@@ -96,9 +102,11 @@ public class RoomDetailServlet extends HttpServlet {
         LocalDate upper = checkOut.toLocalDate();
 
         long days = ChronoUnit.DAYS.between(lower, upper);
-        Float total = room.getPrice() * days;
+        Float total = room.getPrice() * Math.abs(days);
 
-        cart.add(new CartItem(room, checkIn, checkOut, total));
+        cart.add(new CartItem(room, roomType.getRoomName(), checkOut, checkOut, total));
+
+        System.out.println(cart.size());
 
         session.setAttribute("cart", cart);
         request.setAttribute("roomId", roomId);
@@ -141,14 +149,12 @@ public class RoomDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             if (!postHanlding(request, response)) {
-
-                return;
             }
-            response.sendRedirect("RoomDetailServlet" + "?roomId=" + request.getAttribute("roomId"));
 
         } catch (Exception ex) {
             Logger.getLogger(RoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        response.sendRedirect("RoomDetailServlet" + "?roomId=" + request.getAttribute("roomId"));
     }
 
     /**

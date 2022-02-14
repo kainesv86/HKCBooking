@@ -14,12 +14,14 @@ import java.sql.Date;
 public class CartItem {
 
     private Room room;
+    private String roomName;
     private Date startDate;
     private Date endDate;
     private Float total;
 
-    public CartItem(Room room, Date startDate, Date endDate, Float total) {
+    public CartItem(Room room, String roomName, Date startDate, Date endDate, Float total) {
         this.room = room;
+        this.roomName = roomName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.total = total;
@@ -31,6 +33,14 @@ public class CartItem {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public Date getStartDate() {
