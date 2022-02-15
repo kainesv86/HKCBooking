@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -46,6 +47,15 @@ public class BookingOrdersServlet extends HttpServlet {
         }
     }
 
+    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        GetVariable gv = new GetVariable(request);
+        String historyStatus = gv.getString("historyStatus", "History Status", 1, 15, null);
+        System.out.println(historyStatus);
+        return true;
+
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -58,6 +68,7 @@ public class BookingOrdersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        handleOnGet(request, response);
         request.getRequestDispatcher("/WEB-INF/JSP/bookingOrders.jsp").forward(request, response);
     }
 
