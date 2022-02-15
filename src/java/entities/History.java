@@ -7,6 +7,7 @@ package entities;
 
 import java.sql.Date;
 
+
 public class History {
 
     private Integer historyId;
@@ -22,6 +23,7 @@ public class History {
     private String note;
     private Float total;
 
+
     public History() {
     }
 
@@ -33,6 +35,7 @@ public class History {
         this.fullname = fullname;
         this.phone = phone;
         this.address = address;
+
         this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -40,13 +43,17 @@ public class History {
         this.total = total;
     }
 
+  public History() {
+
+    }
+
     public Integer getHistoryId() {
         return historyId;
     }
 
     public void setHistoryId(Integer historyId) {
-        this.historyId = historyId;
-    }
+        this.historyId = historyId
+      }    
 
     public Integer getUserId() {
         return userId;
@@ -71,6 +78,7 @@ public class History {
     public void setHistoryStatus(String historyStatus) {
         this.historyStatus = historyStatus;
     }
+
 
     public String getFullname() {
         return fullname;

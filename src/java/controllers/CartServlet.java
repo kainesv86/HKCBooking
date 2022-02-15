@@ -5,13 +5,24 @@
  */
 package controllers;
 
+import entities.CartItem;
+import entities.History;
+import entities.User;
+import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+import repositories.UserRepository;
 
 /**
  *
@@ -29,21 +40,44 @@ public class CartServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CartServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        GetVariable gv = new GetVariable(request);
+
+        Integer index = gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
+        System.out.println("Index: " + index);
+
+        if (index == null) {
+            return false;
         }
+
+        HttpSession session = request.getSession();
+
+        ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = new ArrayList<CartItem>();
+            return false;
+        }
+
+        CartItem cartItem = cart.get(index);
+
+        Integer userId = (Integer) session.getAttribute("userId");
+        String message = "";
+        String historyStatus = "PENDING";
+        Integer roomId = cartItem.getRoom().getRoomId();
+        Date startDate = (Date) cartItem.getStartDate();
+        Date endDate = (Date) cartItem.getEndDate();
+        String note = "";
+        Float total = cartItem.getTotal();
+
+        cart.remove(cartItem);
+        System.out.println("Size after delete: " + cart.size());
+        session.setAttribute("cart", cart);
+
+        History history = new History(userId, message, historyStatus, roomId, startDate, endDate, note, total);
+
+        return true;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,6 +92,29 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId != null) {
+            UserRepository userRepo = new UserRepository();
+            try {
+                User user = userRepo.getUserByUserId(userId);
+                session.setAttribute("user", user);
+            } catch (Exception ex) {
+                Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = new ArrayList<CartItem>();
+        }
+
+        request.setAttribute("cart", cart);
+
         request.getRequestDispatcher("WEB-INF/JSP/cart.jsp").forward(request, response);
     }
 
@@ -73,6 +130,15 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        HttpSession session = request.getSession();
+
+        ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
+
+        System.out.println("Cart Size: " + cart.size());
+
+        request.setAttribute("cart", cart);
+
+        request.getRequestDispatcher("WEB-INF/JSP/cart.jsp").forward(request, response);
     }
 
     /**
