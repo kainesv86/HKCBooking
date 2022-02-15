@@ -1,3 +1,4 @@
+<%@page import="entities.User"%>
 <%@page import="entities.CartItem"%>
 <%@page import="java.util.ArrayList"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -32,6 +33,7 @@
                                         <%
                                             for (int index = 0; index < cart.size(); index++) {
                                         %>
+
                                         <jsp:include page="./Components/CartItem.jsp">
                                             <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
                                             <jsp:param name="startDate" value="<%= cart.get(index).getStartDate()%>" />
@@ -40,6 +42,8 @@
                                             <jsp:param name="index" value="<%= index%>"/>
                                         </jsp:include>
                                         <% }%>
+
+
                                     </ul>
                                 </c:when>
                                 <c:otherwise>
