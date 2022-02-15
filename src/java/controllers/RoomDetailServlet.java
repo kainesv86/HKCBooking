@@ -84,6 +84,7 @@ public class RoomDetailServlet extends HttpServlet {
         request.setAttribute("roomId", roomId);
 
         if (roomId == null || startDate == null || endDate == null) {
+            session.setAttribute("message", "End date and start date is required");
             return false;
         }
 
