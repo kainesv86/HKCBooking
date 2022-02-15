@@ -104,4 +104,36 @@ public class HistoryRepository {
         }
         return null;
     }
+
+    public History getHistoryByUser(int userId) throws SQLException, Exception {
+        try {
+            String sql = "SELECT * FROM hkcbooking_history where UseId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(sql);
+            preStm.setInt(1, userId);
+            while (rs.next()) {
+                Integer historyId = rs.getInt("historyId");
+                userId = rs.getInt("userId");
+                String message = rs.getString("message");
+                String historyStatus = rs.getString("historyStatus");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                Integer roomId = rs.getInt("roomId");
+                String address = rs.getString("address");
+                Date startDate = rs.getDate("startDate");
+                Date endDate = rs.getDate("endDate");
+                String note = rs.getString("note");
+                Float total = rs.getFloat("total");
+
+                History h = new History(historyId, userId, message, historyStatus, fullName, phone, address, roomId, startDate, endDate, note, total);
+                return h;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            this.closeRepo();
+        }
+        return null;
+
+    }
 }
