@@ -12,7 +12,7 @@
     <body>
         <%
             ArrayList<CartItem> cart = (ArrayList<CartItem>) request.getAttribute("cart");
-            Integer userId = (Integer) session.getAttribute("userId");
+
         %>
 
         <div class="flex flex-col min-h-screen">
