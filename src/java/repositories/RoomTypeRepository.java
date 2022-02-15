@@ -41,7 +41,7 @@ public class RoomTypeRepository {
             preStm.setInt(1, id);
             rs = preStm.executeQuery();
             while (rs.next()) {
-                RoomType room = new RoomType(rs.getInt("roomTypeId"), rs.getString("roomName"), rs.getInt("capicity"), rs.getInt("acreage"));
+                RoomType room = new RoomType(rs.getInt("roomTypeId"), rs.getString("roomName"), rs.getInt("capacity"), rs.getInt("acreage"));
                 return room;
             }
 
