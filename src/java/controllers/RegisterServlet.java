@@ -48,7 +48,7 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("confirmPasswordError", "Confirm password is not correct");
             return false;
         }
-        User user = new User(username, password, fullname, "", email, "USER", email);
+        User user = new User(username, password, fullname, "", phone, "USER", email);
 
         try {
             UserRepository ur = new UserRepository();

@@ -7,11 +7,15 @@ package controllers;
 
 import entities.CartItem;
 import entities.History;
+import entities.User;
 import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+import repositories.HistoryRepository;
+import repositories.UserRepository;
 
 /**
  *
@@ -37,10 +43,14 @@ public class CartServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         GetVariable gv = new GetVariable(request);
 
         Integer index = gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
+        String fullname = gv.getString("fullname", "FullName", 1, 50, null);
+        String phone = gv.getString("phone", "Phone", 9, 11, null);
+        String address = gv.getString("address", "Address", 5, 100, null);
+
         System.out.println("Index: " + index);
 
         if (index == null) {
@@ -68,10 +78,11 @@ public class CartServlet extends HttpServlet {
         Float total = cartItem.getTotal();
 
         cart.remove(cartItem);
-        System.out.println("Size after delete: " + cart.size());
         session.setAttribute("cart", cart);
 
-        History history = new History(userId, message, historyStatus, roomId, startDate, endDate, note, total);
+        History history = new History(userId, userId, message, historyStatus, fullname, phone, address, roomId, startDate, endDate, note, total);
+        HistoryRepository historyRepo = new HistoryRepository();
+        historyRepo.addHistory(history);
 
         return true;
     }
@@ -89,6 +100,19 @@ public class CartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId != null) {
+            UserRepository userRepo = new UserRepository();
+            try {
+                User user = userRepo.getUserByUserId(userId);
+                session.setAttribute("user", user);
+            } catch (Exception ex) {
+                Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
 
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
 
@@ -112,7 +136,13 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         HttpSession session = request.getSession();
 
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");

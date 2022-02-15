@@ -1,6 +1,10 @@
+<%@page import="repositories.UserRepository"%>
+<%@page import="entities.User"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     Integer userId = (Integer) session.getAttribute("userId");
+    UserRepository userRepo = new UserRepository();
+    User user = userRepo.getUserByUserId(userId);
 %>
 
 <li class="flex py-6">
@@ -20,8 +24,34 @@
             <p class="mt-1 text-sm text-gray-500">Check Out: ${param.endDate}</p>
         </div>
 
-        <div class="mt-4 flex-1 flex items-end justify-between">
-            <form action="CartServlet" method="POST" >
+        <form action="CartServlet" method="POST" class="flex flex-col">
+            <% if (user != null) {%>
+            <div class="mt-4">
+
+                <jsp:include page="./InputField.jsp">
+                    <jsp:param name="key" value="fullname" />
+                    <jsp:param name="type" value="text" />
+                    <jsp:param name="label" value="Fullname" />
+                    <jsp:param name="error" value="${requestScope.fullnameError}"/>
+                    <jsp:param name="inputValue" value="<%= user.getFullname()%>"/>
+                </jsp:include>
+                <jsp:include page="./InputField.jsp">
+                    <jsp:param name="key" value="phone" />
+                    <jsp:param name="type" value="text" />
+                    <jsp:param name="label" value="Phone" />
+                    <jsp:param name="error" value="${requestScope.phoneError}"/>
+                    <jsp:param name="inputValue" value="<%= user.getPhone()%>"/>
+                </jsp:include>
+                <jsp:include page="./InputField.jsp">
+                    <jsp:param name="key" value="address" />
+                    <jsp:param name="type" value="text" />
+                    <jsp:param name="label" value="Address" />
+                    <jsp:param name="error" value="${requestScope.addressError}"/>
+                    <jsp:param name="inputValue" value="<%= user.getAddress()%>"/>
+                </jsp:include>
+            </div>
+            <% }%>
+            <div class="mt-4 flex-1 flex items-end justify-between">
                 <input type="text" value="${param.index}" name="index" class="hidden">
                 <c:choose>
                     <c:when test="<%= userId == null%>">
@@ -34,10 +64,17 @@
                         </p>
                     </c:otherwise>
                 </c:choose>
-            </form>
-            <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="RemoveCartItem?index=${param.index}">
-                <span>Remove</span>
-            </a>
-        </div>
+                <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="RemoveCartItem?index=${param.index}">
+                    <span>Remove</span>
+                </a>
+
+            </div>
+
+
+
+
+
+
+        </form>
     </div>
 </li>
