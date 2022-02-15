@@ -38,19 +38,23 @@ public class HistoryRepository {
     public boolean addHistory(History history) throws ClassNotFoundException, SQLException {
 
         String INSERT_USER_SQL = "INSERT INTO hkcbooking_history"
-                + "(username,password,fullname,address,phone,role,email) VALUES"
-                + "(?,?,?,?,?,?,?)";
+                + "(userId,message,historyStatus,fullname,phone,address,roomId,startDate,endDate,note,total) VALUES"
+                + "(?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(INSERT_USER_SQL);
-            preStm.setString(1, user.getUsername());
-            preStm.setString(2, user.getPassword());
-            preStm.setString(3, user.getFullname());
-            preStm.setString(4, user.getAddress());
-            preStm.setString(5, user.getPhone());
-            preStm.setString(6, user.getRole());
-            preStm.setString(7, user.getEmail());
+            preStm.setInt(1, history.getUserId());
+            preStm.setString(2, history.getMessage());
+            preStm.setString(3, history.getHistoryStatus());
+            preStm.setString(4, history.getFullname());
+            preStm.setString(5, history.getPhone());
+            preStm.setString(6, history.getAddress());
+            preStm.setInt(7, history.getRoomId());
+            preStm.setDate(8, history.getStartDate());
+            preStm.setDate(9, history.getEndDate());
+            preStm.setString(10, history.getNote());
+            preStm.setFloat(11, history.getTotal());
 
             preStm.executeUpdate();
         } catch (SQLException e) {

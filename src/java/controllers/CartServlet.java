@@ -12,6 +12,7 @@ import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +43,7 @@ public class CartServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         GetVariable gv = new GetVariable(request);
 
         Integer index = gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
@@ -81,7 +82,7 @@ public class CartServlet extends HttpServlet {
 
         History history = new History(userId, userId, message, historyStatus, fullname, phone, address, roomId, startDate, endDate, note, total);
         HistoryRepository historyRepo = new HistoryRepository();
-        historyRepo.
+        historyRepo.addHistory(history);
 
         return true;
     }
@@ -135,7 +136,13 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         HttpSession session = request.getSession();
 
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");

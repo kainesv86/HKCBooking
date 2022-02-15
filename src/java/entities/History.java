@@ -33,7 +33,6 @@ public class History {
         this.fullname = fullname;
         this.phone = phone;
         this.address = address;
-
         this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
