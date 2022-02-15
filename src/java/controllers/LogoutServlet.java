@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import guard.UseGuard;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -26,8 +27,8 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Remove session
-            HttpSession session = request.getSession();
-            session.invalidate();
+            UseGuard useGuard = new UseGuard(request, response);
+            useGuard.clearSession();
         } finally {
             // forward on success
             response.sendRedirect("IndexServlet");

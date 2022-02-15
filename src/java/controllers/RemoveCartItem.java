@@ -5,28 +5,24 @@
  */
 package controllers;
 
-import entities.Room;
-import entities.RoomType;
+import entities.CartItem;
+import helper.GetVariable;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import repositories.RoomRepository;
-import repositories.RoomTypeRepository;
 
 /**
  *
- * @author kaine
+ * @author Kaine
  */
-@WebServlet(name = "IndexServlet", urlPatterns = {"/IndexServlet"})
-public class IndexServlet extends HttpServlet {
+@WebServlet(name = "RemoveCartItem", urlPatterns = {"/RemoveCartItem"})
+public class RemoveCartItem extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,17 +33,22 @@ public class IndexServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected boolean handleGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        RoomRepository roomRepo = new RoomRepository();
-        ArrayList<Room> rooms = roomRepo.getAllRoom();
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        GetVariable gv = new GetVariable(request);
+        Integer index = gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
 
-        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
+        if (index == null) {
+            return;
+        }
+        System.out.println(index);
 
-        request.setAttribute("rooms", rooms);
-        request.setAttribute("roomTypes", roomTypes);
-        return true;
+        HttpSession session = request.getSession();
+        ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
+        cart.remove(cart.get(index));
+
+        session.setAttribute("cart", cart);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,19 +63,23 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession session = request.getSession();
-        long millis = System.currentTimeMillis();
-        java.sql.Date minDateCheckIn = new java.sql.Date(millis);
-        System.out.println(minDateCheckIn);
-//        session.setAttribute("minDate", minDateCheckIn);
-        try {
-            if (handleGet(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/index.jsp").forward(request, response);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(IndexServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
+        response.sendRedirect("CartServlet");
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+        response.sendRedirect("CartServlet");
     }
 
     /**
