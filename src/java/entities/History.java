@@ -7,25 +7,35 @@ package entities;
 
 import java.sql.Date;
 
-/**
- *
- * @author Kaine
- */
+
 public class History {
 
+    private Integer historyId;
     private Integer userId;
     private String message;
     private String historyStatus;
+    private String fullname;
+    private String phone;
+    private String address;
     private Integer roomId;
     private Date startDate;
     private Date endDate;
     private String note;
     private Float total;
 
-    public History(Integer userId, String message, String historyStatus, Integer roomId, Date startDate, Date endDate, String note, Float total) {
+
+    public History() {
+    }
+
+    public History(Integer historyId, Integer userId, String message, String historyStatus, String fullname, String phone, String address, Integer roomId, Date startDate, Date endDate, String note, Float total) {
+        this.historyId = historyId;
         this.userId = userId;
         this.message = message;
         this.historyStatus = historyStatus;
+        this.fullname = fullname;
+        this.phone = phone;
+        this.address = address;
+
         this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -33,8 +43,17 @@ public class History {
         this.total = total;
     }
 
-    public History() {
+  public History() {
+
     }
+
+    public Integer getHistoryId() {
+        return historyId;
+    }
+
+    public void setHistoryId(Integer historyId) {
+        this.historyId = historyId
+      }    
 
     public Integer getUserId() {
         return userId;
@@ -58,6 +77,31 @@ public class History {
 
     public void setHistoryStatus(String historyStatus) {
         this.historyStatus = historyStatus;
+    }
+
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Integer getRoomId() {
