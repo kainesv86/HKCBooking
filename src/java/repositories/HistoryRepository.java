@@ -6,8 +6,6 @@
 package repositories;
 
 import entities.History;
-import entities.Room;
-import entities.User;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -35,6 +33,31 @@ public class HistoryRepository {
         if (repo != null) {
             repo.close();
         }
+    }
+
+    public boolean addHistory(History history) throws ClassNotFoundException, SQLException {
+
+        String INSERT_USER_SQL = "INSERT INTO hkcbooking_history"
+                + "(username,password,fullname,address,phone,role,email) VALUES"
+                + "(?,?,?,?,?,?,?)";
+
+        try {
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(INSERT_USER_SQL);
+            preStm.setString(1, user.getUsername());
+            preStm.setString(2, user.getPassword());
+            preStm.setString(3, user.getFullname());
+            preStm.setString(4, user.getAddress());
+            preStm.setString(5, user.getPhone());
+            preStm.setString(6, user.getRole());
+            preStm.setString(7, user.getEmail());
+
+            preStm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public ArrayList<History> getAllHistory() throws SQLException, Exception {
