@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import variables.UserRole;
 
 /**
  *
@@ -68,6 +70,19 @@ public class BookingOrdersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (!useGuard.useAuth()) {
+            response.sendRedirect("LoginServlet");
+            return;
+        }
+
+        if (!useGuard.useRole("ADMIN")) {
+            response.sendRedirect("IndexServlet");
+            return;
+        }
+
         handleOnGet(request, response);
         request.getRequestDispatcher("/WEB-INF/JSP/bookingOrders.jsp").forward(request, response);
     }

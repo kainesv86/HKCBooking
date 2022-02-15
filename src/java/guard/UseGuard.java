@@ -28,14 +28,15 @@ public class UseGuard {
         this.response = response;
     }
 
-    public boolean useRole(UserRole role) {
+    public boolean useRole(String role) {
 
         // Get role from session
+        System.out.println("Hello");
         HttpSession session = request.getSession();
-        String userRole = (String) session.getAttribute("role");
+        String userRole = (String) session.getAttribute("userRole");
 
         // Check user role
-        if (userRole == null || userRole.equals(role)) {
+        if (userRole == null || !userRole.equals(role)) {
             return false;
         }
 
