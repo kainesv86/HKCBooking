@@ -29,7 +29,7 @@
                     <div class="flex space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <% if (userRole != null && userRole.equals("ADMIN")) { %>
-                        <a href="#" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Switch to Admin page</a>
+                        <a href="BookingOrdersServlet" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Switch to Admin page</a>
                         <% }%>
                     </div>
                 </div>
