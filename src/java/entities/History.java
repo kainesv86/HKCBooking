@@ -33,6 +33,10 @@ public class History {
         this.fullname = fullname;
         this.phone = phone;
         this.address = address;
+<<<<<<< HEAD
+=======
+
+>>>>>>> main/test
         this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -40,10 +44,13 @@ public class History {
         this.total = total;
     }
 
+<<<<<<< HEAD
     public History(Integer userId, String message, String historyStatus, Integer roomId, Date startDate, Date endDate, String note, Float total) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+=======
+>>>>>>> main/test
     public Integer getHistoryId() {
         return historyId;
     }
