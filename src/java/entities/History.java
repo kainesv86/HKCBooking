@@ -9,14 +9,14 @@ import java.sql.Date;
 
 public class History {
 
-    private Integer historyID;
-    User userID;
+    private Integer historyId;
+    private Integer userId;
     private String message;
     private String historyStatus;
     private String fullname;
     private String phone;
     private String address;
-    Room roomID;
+    private Integer roomId;
     private Date startDate;
     private Date endDate;
     private String note;
@@ -25,35 +25,35 @@ public class History {
     public History() {
     }
 
-    public History(Integer historyID, User userID, String message, String historyStatus, String fullname, String phone, String address, Room roomID, Date startDate, Date endDate, String note, Float total) {
-        this.historyID = historyID;
-        this.userID = userID;
+    public History(Integer historyId, Integer userId, String message, String historyStatus, String fullname, String phone, String address, Integer roomId, Date startDate, Date endDate, String note, Float total) {
+        this.historyId = historyId;
+        this.userId = userId;
         this.message = message;
         this.historyStatus = historyStatus;
         this.fullname = fullname;
         this.phone = phone;
         this.address = address;
-        this.roomID = roomID;
+        this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
         this.total = total;
     }
 
-    public Integer getHistoryID() {
-        return historyID;
+    public Integer getHistoryId() {
+        return historyId;
     }
 
-    public void setHistoryID(Integer historyID) {
-        this.historyID = historyID;
+    public void setHistoryId(Integer historyId) {
+        this.historyId = historyId;
     }
 
-    public User getUserID() {
-        return userID;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserID(User userID) {
-        this.userID = userID;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getMessage() {
@@ -96,12 +96,12 @@ public class History {
         this.address = address;
     }
 
-    public Room getRoomID() {
-        return roomID;
+    public Integer getRoomId() {
+        return roomId;
     }
 
-    public void setRoomID(Room roomID) {
-        this.roomID = roomID;
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
     }
 
     public Date getStartDate() {

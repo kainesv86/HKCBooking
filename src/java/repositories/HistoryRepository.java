@@ -45,25 +45,63 @@ public class HistoryRepository {
             rs = preStm.executeQuery();
             ArrayList<History> list = new ArrayList<History>();
             while (rs.next()) {
-                Integer historyID = rs.getInt("historyId");
+                Integer historyId = rs.getInt("historyId");
                 String message = rs.getString("message");
                 String historyStatus = rs.getString("historyStatus");
                 Date startDate = rs.getDate("startDate");
                 Date endDate = rs.getDate("endDate");
                 String note = rs.getString("note");
+                String fullName = rs.getString("fullName");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
                 Float total = rs.getFloat("total");
-                Integer userID = rs.getInt("userId");
-                Integer roomID = rs.getInt("roomId");
-                UserRepository ur = new UserRepository();
-                User u = ur.getUserByUserId(userID);
-                RoomRepository rr = new RoomRepository();
-                Room r = rr.getRoomById(roomID);
-                list.add(new History(historyID, u, message, historyStatus, r, startDate, endDate, note, total));
+                Integer userId = rs.getInt("userId");
+                Integer roomId = rs.getInt("roomId");
+
+                list.add(new History(historyId, userId, message, historyStatus, fullName, phone, address, roomId, startDate, endDate, note, total));
 
             }
             return list;
         } finally {
             this.closeRepo();
         }
+    }
+
+    public History getRoomByDate(Date d1, Date d2) throws SQLException, Exception {
+        try {
+            String sql = "SELECT * FROM hkcbooking_history where startDate=? AND endDate=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(sql);
+            preStm.setDate(1, d1);
+            preStm.setDate(2, d2);
+            rs = preStm.executeQuery();
+            if (d1.compareTo(d2) < 0) {
+                return null;
+            }
+            while (rs.next()) {
+
+                Integer historyId = rs.getInt("historyId");
+                String message = rs.getString("message");
+                String historyStatus = rs.getString("historyStatus");
+                Date startDate = rs.getDate("startDate");
+                Date endDate = rs.getDate("endDate");
+                String note = rs.getString("note");
+                String fullName = rs.getString("fullName");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                Float total = rs.getFloat("total");
+                Integer userId = rs.getInt("userId");
+                Integer roomId = rs.getInt("roomId");
+
+                History h = new History(historyId, userId, message, historyStatus, fullName, phone, address, roomId, startDate, endDate, note, total);
+                return h;
+
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            this.closeRepo();
+        }
+        return null;
     }
 }
