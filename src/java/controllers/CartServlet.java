@@ -7,11 +7,14 @@ package controllers;
 
 import entities.CartItem;
 import entities.History;
+import entities.User;
 import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+import repositories.UserRepository;
 
 /**
  *
@@ -89,6 +93,19 @@ public class CartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId != null) {
+            UserRepository userRepo = new UserRepository();
+            try {
+                User user = userRepo.getUserByUserId(userId);
+                session.setAttribute("user", user);
+            } catch (Exception ex) {
+                Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
 
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
 
