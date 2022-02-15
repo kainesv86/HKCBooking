@@ -18,9 +18,9 @@ public class RepoConnector {
     public static Connection connectDatabase() {
         Connection connection = null;
         String id = "localhost";
-        String instanceName = "MSSQLSERVER";
+        String instanceName = "SQLEXPRESS";
         String port = "1433";
-        String db = "HKC";
+        String db = "HKCBooking";
         String username = "sa";
         String password = "1";
 
