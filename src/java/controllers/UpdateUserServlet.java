@@ -38,8 +38,7 @@ public class UpdateUserServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        response.setContentType("text/html;charset=UTF-8");
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
         GetVariable gv = new GetVariable(request);
@@ -50,6 +49,7 @@ public class UpdateUserServlet extends HttpServlet {
             String email = gv.getString("email", "Email", 1, 50, null);
 
             if (fullname == null || phone == null || email == null) {
+                System.out.println(fullname + ", " + phone + ", " + email);
                 return false;
             }
 
@@ -85,6 +85,7 @@ public class UpdateUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UseGuard useGuard = new UseGuard(request, response);
+        System.out.println((String) request.getAttribute("fullnameError"));
 
         if (!useGuard.useAuth()) {
             response.sendRedirect("LoginServlet");
@@ -105,16 +106,15 @@ public class UpdateUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            if (processRequest(request, response)) {
-                request.setAttribute("message", "Update successful");
-            } else {
-                request.setAttribute("messageError", "Update failed, please check on fields above");
-            }
-        } catch (Exception ex) {
-            System.out.println("Something error");
+
+        if (processRequest(request, response)) {
+            request.setAttribute("message", "Update successful");
+        } else {
+            request.setAttribute("messageError", "Update failed, please check on fields above");
         }
+
         response.sendRedirect("UpdateUserServlet");
+//        request.getRequestDispatcher("/WEB-INF/JSP/nothing.jsp").forward(request, response);
     }
 
     @Override

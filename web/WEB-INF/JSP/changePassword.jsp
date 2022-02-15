@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>What the heck</title>
+        <title>check</title>
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
@@ -16,7 +16,7 @@
         <div class="flex flex-col min-h-screen bg-gray-200">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
                 <div class="min-h-full flex flex-1 px-96 pt-16">
-                    <form action="UpdateUserServlet" method="POST" class="space-y-8 divide-y divide-gray-200 w-full border-rose-600 border-2 p-4 rounded-md h-fit bg-white">
+                    <form action="UpdateUserServlet" method="POST" class="space-y-8 divide-y divide-gray-200 w-full border-rose-600 border-2 p-4 rounded-md h-fit">
                         <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
                             <div class="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
                                 <div>
@@ -70,7 +70,7 @@
                                 <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
                                 <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600">Save</button>
                             </div>
-                            <p class="text-red-500">${requestScope.messageError}</p>
+                            <p class="text-red-500">Hello</p>
                         </div>
                 </form>
 
