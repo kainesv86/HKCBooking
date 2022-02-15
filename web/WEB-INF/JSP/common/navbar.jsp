@@ -2,7 +2,6 @@
 <%
     String fullname = (String) session.getAttribute("fullname");
     String userRole = (String) session.getAttribute("userRole");
-    System.out.println(userRole);
 %>
 <nav class="bg-rose-600 z-index-10">
     <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
