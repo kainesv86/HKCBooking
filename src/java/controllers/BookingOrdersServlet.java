@@ -60,7 +60,7 @@ public class BookingOrdersServlet extends HttpServlet {
         String historyStatus = gv.getString("historyStatus", "History Status", 1, 15, null);
         HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
         ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(historyStatus);
-        System.out.println(list.size());
+        request.setAttribute("list", list);
         return true;
 
     }
