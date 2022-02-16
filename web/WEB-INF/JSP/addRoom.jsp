@@ -66,7 +66,7 @@
                             </div>
                         </div>
 
-                        <p><%=message%><p/>
+                        <p class="text-gray-800 text-sm font-semibold"><%=message%><p/>
                 </form>
             </div>
         </div>
