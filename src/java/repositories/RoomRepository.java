@@ -9,6 +9,7 @@ import entities.Room;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class RoomRepository {
@@ -76,5 +77,26 @@ public class RoomRepository {
             this.closeRepo();
         }
         return null;
+    }
+
+    public boolean addRoom(Room room) {
+        String INSERT_USER_SQL = "INSERT INTO hkcbooking_room"
+                + "(roomTypeId,price,urlImage,description,roomStatus) VALUES"
+                + "(?,?,?,?,?)";
+        try {
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(INSERT_USER_SQL);
+            preStm.setInt(1, room.getRoomTypeId());
+            preStm.setFloat(2, room.getPrice());
+            preStm.setString(3, room.getUrlImage());
+            preStm.setString(4, room.getDescription());
+            preStm.setString(5, room.getRoomStatus());
+            preStm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
     }
 }
