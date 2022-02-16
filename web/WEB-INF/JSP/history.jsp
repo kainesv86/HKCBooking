@@ -21,7 +21,7 @@
             <jsp:include page="./common/navbar.jsp"></jsp:include>
                 <div class="bg-gray-100 flex-1 py-20 px-60">
                     <div class="text-center flex flex-col mb-4">
-                        <h2 class="text-rose-600 text-2xl font-semibold">Order Status</h2>
+                        <h2 class="text-rose-600 text-2xl font-semibold">Booking History</h2>
                         <div class="relative self-center bg-gray-100 rounded-lg p-0.5 flex w-fit text-center">
                             <a href="HistoryServlet" class="cursor-pointer mr-1 bg-white border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-gray-800 whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">All</a>
                             <a href="HistoryServlet?status=PENDING" class="cursor-pointer mr-1 bg-amber-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Pending</a>
@@ -76,7 +76,7 @@
                                             <div class="text-sm text-gray-900"><%= list.get(index).getHistory().getPhone()%></div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <textarea rows="4" name="note" id="message" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getNote()%></textarea>
+                                            <textarea rows="4" name="note" id="note" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getNote()%></textarea>
                                         </td>
                                         <td class="px-6 py-4">
                                             <p class="text-sm text-gray-900 w-48 text-justify"><%= list.get(index).getHistory().getMessage()%></p>
