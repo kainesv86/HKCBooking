@@ -5,15 +5,20 @@
  */
 package controllers;
 
+import entities.HistoryDetail;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import repositories.HistoryDetailRepo;
 import variables.UserRole;
 
 /**
@@ -50,10 +55,12 @@ public class BookingOrdersServlet extends HttpServlet {
     }
 
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
         String historyStatus = gv.getString("historyStatus", "History Status", 1, 15, null);
-        System.out.println(historyStatus);
+        HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
+        ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(historyStatus);
+        System.out.println(list.size());
         return true;
 
     }
@@ -83,7 +90,11 @@ public class BookingOrdersServlet extends HttpServlet {
             return;
         }
 
-        handleOnGet(request, response);
+        try {
+            handleOnGet(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         request.getRequestDispatcher("/WEB-INF/JSP/bookingOrders.jsp").forward(request, response);
     }
 
