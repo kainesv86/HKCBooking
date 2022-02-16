@@ -1,3 +1,5 @@
+<%@page import="entities.RoomType"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -7,23 +9,29 @@
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
+        <%
+            ArrayList<RoomType> roomTypes = (ArrayList<RoomType>) request.getAttribute("roomTypes");
+        %>
+
         <div class="flex min-h-screen">
             <jsp:include page="./common/Sidebar.jsp"></jsp:include>
                 <div class="bg-gray-100 flex-1 py-20 justify-center flex items-center">
-                    <form class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]">
+                    <form class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]" method="POST" action="AddRoomServlet">
                         <div class="space-y-8 divide-y divide-gray-200">
                             <div>
                                 <div>
                                     <h3 class="text-3xl text-center leading-6 font-semibold text-rose-500 mb-4">Add room</h3>
                                 </div>
                                 <div>
-                                    <label for="roomType" class="block text-sm font-medium text-gray-700">Room Type</label>
-                                    <select id="roomType" name="roomType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
-                                        <option>United States</option>
-                                        <option selected>Canada</option>
-                                        <option>Mexico</option>
-                                    </select>
-                                </div>
+                                    <label for="roomTypeId" class="block text-sm font-medium text-gray-700">Room Type</label>
+                                    <select id="roomTypeId" name="roomTypeId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
+                                    <%
+                                        for (RoomType roomType : roomTypes) {
+                                    %>
+                                    <option value="<%= roomType.getRoomTypeId()%>"><%= roomType.getRoomName()%></option>
+                                    <% }%>
+                                </select>
+                            </div>
                             <jsp:include page="./Components/InputField.jsp">
                                 <jsp:param name="key" value="price" />
                                 <jsp:param name="type" value="number" />
@@ -34,7 +42,7 @@
                                 <jsp:param name="key" value="roomImage" />
                                 <jsp:param name="type" value="file" />
                                 <jsp:param name="label" value="Room Image" />
-                                <jsp:param name="error" value="${requestScope.priceError}"/>
+                                <jsp:param name="error" value="${requestScope.roomImageError}"/>
                             </jsp:include>
                             <div class="sm:col-span-6">
                                 <label for="desciption" class="block text-sm font-medium text-gray-700"> Desciption </label>

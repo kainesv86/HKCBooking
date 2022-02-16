@@ -5,13 +5,18 @@
  */
 package controllers;
 
+import entities.RoomType;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import repositories.RoomTypeRepository;
 
 /**
  *
@@ -46,6 +51,15 @@ public class AddRoomServlet extends HttpServlet {
         }
     }
 
+    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
+        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
+        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
+        request.setAttribute("roomTypes", roomTypes);
+
+        return true;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -58,6 +72,12 @@ public class AddRoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            handleOnGet(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         request.getRequestDispatcher("/WEB-INF/JSP/addRoom.jsp").forward(request, response);
     }
 
