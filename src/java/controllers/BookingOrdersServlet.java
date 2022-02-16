@@ -37,21 +37,21 @@ public class BookingOrdersServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BookingOrdersServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BookingOrdersServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        GetVariable gv = new GetVariable(request);
+        Integer historyId = gv.getInt("historyId", "History Id", 0, Integer.MAX_VALUE, null);
+        String historyStatus = gv.getString("historyStatus", "HistoryStatus", 1, 20, null);
+        String message = gv.getString("message", "Message", 0, 500, "");
+
+        if (historyId == null || historyStatus == null || message == null) {
+            return false;
         }
+
+        System.out.println(historyStatus + " : " + message);
+
+        return true;
     }
 
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
@@ -109,7 +109,11 @@ public class BookingOrdersServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        System.out.println("Hello");
+        if (handleOnPost(request, response)) {
+            response.sendRedirect("BookingOrdersServlet");
+        }
+
     }
 
     /**
