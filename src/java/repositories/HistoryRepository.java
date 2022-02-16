@@ -131,4 +131,63 @@ public class HistoryRepository {
         }
         return null;
     }
+
+    public boolean updateHistoryByAdmin(History history) throws Exception {
+
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_history SET message=?,"
+                    + "historyStatus=? WHERE historyId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, history.getMessage());
+                preStm.setString(2, history.getHistoryStatus());
+                preStm.setInt(3, history.getHistoryId());
+                preStm.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateHistoryByUser(History history) throws Exception {
+
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_history SET note=?"
+                    + " WHERE historyId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, history.getNote());
+                preStm.setInt(2, history.getHistoryId());
+                preStm.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
+    }
 }

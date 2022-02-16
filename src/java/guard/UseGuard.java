@@ -31,7 +31,6 @@ public class UseGuard {
     public boolean useRole(String role) {
 
         // Get role from session
-        System.out.println("Hello");
         HttpSession session = request.getSession();
         String userRole = (String) session.getAttribute("userRole");
 

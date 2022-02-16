@@ -1,3 +1,7 @@
+<%
+    String fullname = (String) session.getAttribute("fullname");
+%>
+
 <div class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96">
 
     <label class="text-center text-white mb-4 text-2xl font-medium">Search filter</label>

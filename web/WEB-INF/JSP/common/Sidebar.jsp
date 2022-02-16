@@ -1,6 +1,9 @@
+<%
+    String fullname = (String) session.getAttribute("fullname");
+%>
 <div class="flex w-64 flex-col min-h-screen inset-y-0">
     <!-- Sidebar component, swap this element with another sidebar if you like -->
-    <div class="flex-1 flex flex-col min-h-0 bg-rose-600">
+    <div class="flex-1 flex flex-col min-h-0 bg-rose-600 px-2">
         <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <a class="flex items-center ml-2" href="IndexServlet">
                 <div class="w-10 h-10">
@@ -62,7 +65,7 @@
                 <div class="flex items-center">
 
                     <div class="ml-3">
-                        <p class="text-sm text-white font-semibold">Tom Cook</p>
+                        <p class="text-sm text-white font-semibold"><%=fullname%></p>
                     </div>
                 </div>
             </a>

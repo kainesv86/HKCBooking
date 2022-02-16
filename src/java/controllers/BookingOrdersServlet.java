@@ -5,15 +5,22 @@
  */
 package controllers;
 
+import entities.History;
+import entities.HistoryDetail;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import repositories.HistoryDetailRepo;
+import repositories.HistoryRepository;
 import variables.UserRole;
 
 /**
@@ -32,28 +39,40 @@ public class BookingOrdersServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BookingOrdersServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BookingOrdersServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        GetVariable gv = new GetVariable(request);
+        Integer historyId = gv.getInt("historyId", "History Id", 0, Integer.MAX_VALUE, null);
+        String historyStatus = gv.getString("historyStatus", "HistoryStatus", 1, 20, null);
+        String message = gv.getString("message", "Message", 0, 500, "");
+
+        if (historyId == null || historyStatus == null || message == null) {
+            return false;
         }
+
+        History history = new History();
+        history.setHistoryId(historyId);
+        history.setMessage(message);
+        history.setHistoryStatus(historyStatus);
+
+        HistoryRepository historyRepo = new HistoryRepository();
+        historyRepo.updateHistoryByAdmin(history);
+
+        return true;
     }
 
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
-        String historyStatus = gv.getString("historyStatus", "History Status", 1, 15, null);
-        System.out.println(historyStatus);
+        String status = gv.getString("status", "status", 0, 15, null);
+        HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
+        ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(status);
+
+        if (status != null) {
+            request.setAttribute("location", status);
+        }
+        request.setAttribute("list", list);
         return true;
 
     }
@@ -83,7 +102,11 @@ public class BookingOrdersServlet extends HttpServlet {
             return;
         }
 
-        handleOnGet(request, response);
+        try {
+            handleOnGet(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         request.getRequestDispatcher("/WEB-INF/JSP/bookingOrders.jsp").forward(request, response);
     }
 
@@ -98,7 +121,23 @@ public class BookingOrdersServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        GetVariable gv = new GetVariable(request);
+        String location = gv.getString("location", "Location", 1, 15, null);
+
+        if (location == null || "null".equals(location)) {
+            location = "";
+        } else {
+            location = "?status=" + location;
+        }
+
+        try {
+            if (handleOnPost(request, response)) {
+                response.sendRedirect("BookingOrdersServlet" + location);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
