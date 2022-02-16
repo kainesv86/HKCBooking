@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import entities.History;
 import entities.HistoryDetail;
 import guard.UseGuard;
 import helper.GetVariable;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.HistoryDetailRepo;
+import repositories.HistoryRepository;
 import variables.UserRole;
 
 /**
@@ -38,17 +40,24 @@ public class BookingOrdersServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         GetVariable gv = new GetVariable(request);
         Integer historyId = gv.getInt("historyId", "History Id", 0, Integer.MAX_VALUE, null);
         String historyStatus = gv.getString("historyStatus", "HistoryStatus", 1, 20, null);
         String message = gv.getString("message", "Message", 0, 500, "");
-        String location = gv.getString("location", "Location", 1, 20, null);
 
         if (historyId == null || historyStatus == null || message == null) {
             return false;
         }
+
+        History history = new History();
+        history.setHistoryId(historyId);
+        history.setMessage(message);
+        history.setHistoryStatus(historyStatus);
+
+        HistoryRepository historyRepo = new HistoryRepository();
+        historyRepo.updateHistory(history);
 
         return true;
     }
@@ -121,8 +130,12 @@ public class BookingOrdersServlet extends HttpServlet {
             location = "?status=" + location;
         }
 
-        if (handleOnPost(request, response)) {
-            response.sendRedirect("BookingOrdersServlet" + location);
+        try {
+            if (handleOnPost(request, response)) {
+                response.sendRedirect("BookingOrdersServlet" + location);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

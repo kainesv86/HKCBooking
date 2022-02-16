@@ -81,19 +81,19 @@
                                             <p class="text-sm text-gray-900 w-48 text-justify"><%= list.get(index).getHistory().getNote()%></p>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <textarea rows="4" name="message" id="comment" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getMessage()%></textarea>
+                                            <textarea rows="4" name="message" id="message" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getMessage()%></textarea>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <select id="historyStatus" name="historyStatus" class="mt-1 block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                            <select id="historyStatus" name="historyStatus" class="cursor-pointer mt-1 block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                                 <%
                                                     for (historyStatus.status status : historyStatus.status.values()) {
-                                                        if (status.toString() == list.get(index).getHistory().getHistoryStatus()) {
+                                                        if (status.toString().equals(list.get(index).getHistory().getHistoryStatus())) {
                                                 %>
-                                                <option value="<%= status.toString()%>" selected><%= status.toString()%></option>
+                                                <option value="<%= status.toString()%>" selected class="cursor-pointer"><%= status.toString()%></option>
                                                 <%
                                                 } else {
                                                 %>
-                                                <option value="<%= status.toString()%>"><%= status.toString()%></option>
+                                                <option value="<%= status.toString()%>" class="cursor-pointer"><%= status.toString()%></option>
                                                 <%
                                                     }
                                                 %>
