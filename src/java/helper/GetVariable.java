@@ -109,7 +109,7 @@ public class GetVariable {
         return null;
     }
 
-    public String getFileParam(String key, String label, long maxSize) throws IOException, ServletException {
+    public String getFile(String key, String label, long maxSize) throws IOException, ServletException {
         //get upload file;
         Part filePart = request.getPart(key);
         if (filePart == null) {

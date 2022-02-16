@@ -39,6 +39,7 @@
                                 RoomType roomType = FunctionJSP.getRoomTypeById(roomTypes, rooms.get(index).getRoomTypeId());
                         %>
                         <jsp:include page="./Components/room.jsp">
+                            <jsp:param name="urlImage" value="<%=rooms.get(index).getUrlImage()%>"/>
                             <jsp:param name="roomName" value="<%=roomType.getRoomName()%>"/>
                             <jsp:param name="capacity" value="<%=roomType.getCapacity()%>"/>
                             <jsp:param name="price" value="<%=rooms.get(index).getPrice()%>"/>
