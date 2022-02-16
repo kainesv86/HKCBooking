@@ -44,12 +44,11 @@ public class BookingOrdersServlet extends HttpServlet {
         Integer historyId = gv.getInt("historyId", "History Id", 0, Integer.MAX_VALUE, null);
         String historyStatus = gv.getString("historyStatus", "HistoryStatus", 1, 20, null);
         String message = gv.getString("message", "Message", 0, 500, "");
+        String location = gv.getString("location", "Location", 1, 20, null);
 
         if (historyId == null || historyStatus == null || message == null) {
             return false;
         }
-
-        System.out.println(historyStatus + " : " + message);
 
         return true;
     }
@@ -57,9 +56,13 @@ public class BookingOrdersServlet extends HttpServlet {
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
-        String historyStatus = gv.getString("historyStatus", "History Status", 1, 15, null);
+        String status = gv.getString("status", "status", 0, 15, null);
         HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
-        ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(historyStatus);
+        ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(status);
+
+        if (status != null) {
+            request.setAttribute("location", status);
+        }
         request.setAttribute("list", list);
         return true;
 
@@ -109,9 +112,17 @@ public class BookingOrdersServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Hello");
+        GetVariable gv = new GetVariable(request);
+        String location = gv.getString("location", "Location", 1, 15, null);
+
+        if (location == null || "null".equals(location)) {
+            location = "";
+        } else {
+            location = "?status=" + location;
+        }
+
         if (handleOnPost(request, response)) {
-            response.sendRedirect("BookingOrdersServlet");
+            response.sendRedirect("BookingOrdersServlet" + location);
         }
 
     }

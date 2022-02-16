@@ -17,6 +17,7 @@
 
         <%
             ArrayList<HistoryDetail> list = (ArrayList<HistoryDetail>) request.getAttribute("list");
+            String location = (String) request.getAttribute("location");
         %>
         <div class="flex min-h-screen">
             <jsp:include page="./common/Sidebar.jsp"></jsp:include>
@@ -25,10 +26,10 @@
                         <h2 class="text-rose-600 text-2xl font-semibold">Order Status</h2>
                         <div class="relative self-center bg-gray-100 rounded-lg p-0.5 flex w-fit text-center">
                             <a href="BookingOrdersServlet" class="cursor-pointer mr-1 bg-white border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-gray-800 whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">All</a>
-                            <a href="BookingOrdersServlet?historyStatus=PENDING" class="cursor-pointer mr-1 bg-amber-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Pending</a>
-                            <a href="BookingOrdersServlet?historyStatus=READY" class="cursor-pointer mr-1 bg-blue-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Ready</a>
-                            <a href="BookingOrdersServlet?historyStatus=COMPLETED" class="cursor-pointer mr-1 bg-green-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Completed</a>
-                            <a href="BookingOrdersServlet?historyStatus=CANCEL" class="cursor-pointer mr-1 bg-rose-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Cancel</a>
+                            <a href="BookingOrdersServlet?status=PENDING" class="cursor-pointer mr-1 bg-amber-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Pending</a>
+                            <a href="BookingOrdersServlet?status=READY" class="cursor-pointer mr-1 bg-blue-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Ready</a>
+                            <a href="BookingOrdersServlet?status=COMPLETED" class="cursor-pointer mr-1 bg-green-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Completed</a>
+                            <a href="BookingOrdersServlet?status=CANCEL" class="cursor-pointer mr-1 bg-rose-400 border-gray-200 rounded-md shadow-sm py-2 text-sm font-semibold text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:z-10 w-24">Cancel</a>
                         </div>
                     </div>
 
@@ -51,12 +52,12 @@
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
-                                        <%
-                                            for (int index = 0; index < list.size(); index++) {
+                                        <%                                            for (int index = 0; index < list.size(); index++) {
                                         %>
                                         <tr>
                                     <form action="BookingOrdersServlet" method="POST">
                                         <input name="historyId" value="<%= list.get(index).getHistory().getHistoryId()%>" class="hidden">
+                                        <input name="location" value="<%= location%>" class="hidden">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-20 w-20">
