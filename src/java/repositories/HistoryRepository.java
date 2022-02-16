@@ -132,7 +132,7 @@ public class HistoryRepository {
         return null;
     }
 
-    public boolean updateHistory(History history) throws Exception {
+    public boolean updateHistoryByAdmin(History history) throws Exception {
 
         Connection repo = null;
         try {

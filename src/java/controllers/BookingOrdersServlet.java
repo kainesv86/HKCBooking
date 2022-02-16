@@ -57,7 +57,7 @@ public class BookingOrdersServlet extends HttpServlet {
         history.setHistoryStatus(historyStatus);
 
         HistoryRepository historyRepo = new HistoryRepository();
-        historyRepo.updateHistory(history);
+        historyRepo.updateHistoryByAdmin(history);
 
         return true;
     }

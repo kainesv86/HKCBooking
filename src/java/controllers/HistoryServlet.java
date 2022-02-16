@@ -5,13 +5,21 @@
  */
 package controllers;
 
+import entities.HistoryDetail;
+import guard.UseGuard;
+import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import repositories.HistoryDetailRepo;
 
 /**
  *
@@ -46,6 +54,25 @@ public class HistoryServlet extends HttpServlet {
         }
     }
 
+    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
+
+        GetVariable gv = new GetVariable(request);
+        String status = gv.getString("status", "status", 0, 15, null);
+
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
+        ArrayList<HistoryDetail> list = historyDetailRepo.getHistoryDetailByUserId(userId, status);
+
+        if (status != null) {
+            request.setAttribute("location", status);
+        }
+        request.setAttribute("list", list);
+        return true;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -58,7 +85,20 @@ public class HistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (!useGuard.useAuth()) {
+            response.sendRedirect("LoginServlet");
+            return;
+        }
+
+        try {
+            handleOnGet(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        request.getRequestDispatcher("/WEB-INF/JSP/history.jsp").forward(request, response);
     }
 
     /**
