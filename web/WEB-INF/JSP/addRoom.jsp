@@ -11,7 +11,7 @@
     <body>
         <%
             ArrayList<RoomType> roomTypes = (ArrayList<RoomType>) request.getAttribute("roomTypes");
-            String message = (String) session.getAttribute("message");
+            String message = (String) request.getAttribute("message");
         %>
 
         <div class="flex min-h-screen">
@@ -66,7 +66,7 @@
                             </div>
                         </div>
 
-                        <p class="text-gray-800 text-sm font-semibold"><%=message%><p/>
+                        <p class="text-gray-800 text-sm font-semibold"><%=message == null ? "" : message%><p/>
                 </form>
             </div>
         </div>

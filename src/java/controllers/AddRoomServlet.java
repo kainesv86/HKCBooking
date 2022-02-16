@@ -7,6 +7,7 @@ package controllers;
 
 import entities.Room;
 import entities.RoomType;
+import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,20 +88,27 @@ public class AddRoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.setAttribute("message", "");
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (!useGuard.useAuth()) {
+            response.sendRedirect("LoginServlet");
+            return;
+        }
+
+        if (!useGuard.useRole("ADMIN")) {
+            response.sendRedirect("IndexServlet");
+            return;
+        }
 
         try {
+
             handleOnGet(request, response);
         } catch (Exception ex) {
             Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
-            RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-            ArrayList<RoomType> roomTypes;
-            roomTypes = roomTypeRepo.getAllRoomType();
-            request.setAttribute("roomTypes", roomTypes);
+
         } catch (Exception ex) {
             Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -118,12 +126,20 @@ public class AddRoomServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
 
         if (!handleOnPost(request, response)) {
-            session.setAttribute("message", "Add room failed");
+            request.setAttribute("message", "Add room failed");
         } else {
-            session.setAttribute("message", "Add room successful");
+            request.setAttribute("message", "Add room successful");
+        }
+
+        try {
+            RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
+            ArrayList<RoomType> roomTypes;
+            roomTypes = roomTypeRepo.getAllRoomType();
+            request.setAttribute("roomTypes", roomTypes);
+        } catch (Exception ex) {
+            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         response.sendRedirect("AddRoomServlet");
