@@ -31,8 +31,8 @@
                         </div>
                     </div>
                     <div class="flex flex-col">
-                        <div class="-my-2 overflow-x-auto">
-                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        <div class="-my-2 overflow-x-auto flex justify-center">
+                            <div class="py-2 align-middle inline-block min-w-auto sm:px-6 lg:px-8">
                                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
@@ -51,12 +51,12 @@
                                         <%
                                             for (int index = 0; index < list.size(); index++) {
                                         %>
-                                        <tr>
-                                    <form action="HistoryServlet" method="POST">
+                                        <tr class="w-fit">
+                                    <form action="HistoryServlet" method="POST" >
                                         <input name="historyId" value="<%= list.get(index).getHistory().getHistoryId()%>" class="hidden">
                                         <input name="location" value="<%= location%>" class="hidden">
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
+                                            <div class="flex items-center w-fit">
                                                 <div class="flex-shrink-0 h-20 w-20">
                                                     <img class="h-20 w-20" src="https://cdn.vietnambiz.vn/2019/11/4/dd32d9b188d86d6d8dc40d1ff9a0ebf6-15728512315071030248829.jpg" alt="" />
                                                 </div>
@@ -72,7 +72,7 @@
                                             <div class="text-sm text-gray-500"><%= list.get(index).getHistory().getAddress()%></div>
                                             <div class="text-sm text-gray-900"><%= list.get(index).getHistory().getPhone()%></div>
                                         </td>
-                      
+
                                         <td class="px-6 py-4">
                                             <textarea rows="4" name="note" id="note" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getNote()%></textarea>
                                         </td>
@@ -87,8 +87,8 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <button type="submit" class="text-indigo-600 hover:text-indigo-900">Save</button>
                                         </td>
-                                        </tr>
                                     </form>
+                                    </tr>
                                     <% }%>
 
                                     <!-- More people... -->
