@@ -12,8 +12,6 @@
     <body>
         <%
             ArrayList<RoomDetail> roomDetails = (ArrayList<RoomDetail>) request.getAttribute("roomDetails");
-            ArrayList<RoomType> roomTypes = (ArrayList<RoomType>) request.getAttribute("roomTypes");
-
         %>
         <div class="flex min-h-screen">
             <jsp:include page="./common/Sidebar.jsp"></jsp:include>
@@ -74,8 +72,8 @@
 
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
                                         <div class="flex flex-col items-start justify-center">
-                                            <a class="text-indigo-600 hover:text-indigo-900 font-semibold cursor-pointer">Edit</a>
-                                            <a  class="text-rose-500 hover:text-rose-600 font-semibold cursor-pointer">Delete</a>
+                                            <a href="EditRoomDetailServlet?roomId=<%= roomDetails.get(index).getRoom().getRoomId()%>" class="text-indigo-600 hover:text-indigo-900 font-semibold cursor-pointer">Edit</a>
+                                            <a class="text-rose-500 hover:text-rose-600 font-semibold cursor-pointer">Delete</a>
                                         </div>
                                     </td>
                                     </tr>
