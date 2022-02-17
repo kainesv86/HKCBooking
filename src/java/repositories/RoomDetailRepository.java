@@ -36,7 +36,7 @@ public class RoomDetailRepository {
         }
     }
 
-    public ArrayList<RoomDetail> getAllHistoryDetail() throws SQLException, Exception {
+    public ArrayList<RoomDetail> getAllRoomDetail() throws SQLException, Exception {
         try {
             repo = RepoConnector.connectDatabase();
             String sql = "SELECT \n"
@@ -56,6 +56,7 @@ public class RoomDetailRepository {
             preStm = repo.prepareStatement(sql);
 
             rs = preStm.executeQuery();
+
             ArrayList<RoomDetail> list = new ArrayList<RoomDetail>();
             while (rs.next()) {
 
