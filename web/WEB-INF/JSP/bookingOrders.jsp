@@ -21,7 +21,7 @@
         %>
         <div class="flex min-h-screen">
             <jsp:include page="./common/Sidebar.jsp"></jsp:include>
-                <div class="bg-gray-100 flex-1 p-20">
+                <div class="bg-gray-100 flex-1 p-20 min-w-auto">
                     <div class="text-center flex flex-col mb-4">
                         <h2 class="text-rose-600 text-2xl font-semibold">Order Status</h2>
                         <div class="relative self-center bg-gray-100 rounded-lg p-0.5 flex w-fit text-center">
@@ -42,7 +42,6 @@
                                             <tr>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room</th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer Information</th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Note</th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Message</th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -73,8 +72,6 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-900"><%= list.get(index).getHistory().getFullname()%></div>
                                             <div class="text-sm text-gray-500"><%= list.get(index).getHistory().getAddress()%></div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-900"><%= list.get(index).getHistory().getPhone()%></div>
                                         </td>
                                         <td class="px-6 py-4">
