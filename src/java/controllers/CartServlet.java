@@ -51,8 +51,6 @@ public class CartServlet extends HttpServlet {
         String phone = gv.getString("phone", "Phone", 9, 11, null);
         String address = gv.getString("address", "Address", 5, 100, null);
 
-        System.out.println("Index: " + index);
-
         if (index == null) {
             return false;
         }
