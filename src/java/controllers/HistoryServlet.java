@@ -5,13 +5,19 @@
  */
 package controllers;
 
+import entities.History;
+import guard.UseGuard;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import repositories.HistoryRepository;
 
 /**
  *
@@ -31,18 +37,16 @@ public class HistoryServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HistoryServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet HistoryServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            HttpSession session = request.getSession();
+            Integer userId = (Integer) session.getAttribute("userId");
+            HistoryRepository hr = new HistoryRepository();
+            History history = hr.getHistoryByUser(userId);
+            session.setAttribute("history", history);
+            
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -58,7 +62,13 @@ public class HistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (useGuard.useAuth()) {
+            response.sendRedirect("IndexServlet");
+            return;
+        }
+        request.getRequestDispatcher("WEB-INF/JSP/login.jsp").forward(request, response);
     }
 
     /**
