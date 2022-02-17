@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import variables.roomStatus;
 
 public class RoomRepository {
 
@@ -91,6 +92,61 @@ public class RoomRepository {
             preStm.setString(3, room.getUrlImage());
             preStm.setString(4, room.getDescription());
             preStm.setString(5, room.getRoomStatus());
+            preStm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
+    public boolean updateRoom(Room room) {
+        String sql = "UPDATE hkcbooking_room \n"
+                + "SET\n"
+                + "    roomTypeId = ?,\n"
+                + "    price = ?,\n"
+                + "    [description] = ?,\n"
+                + "    roomStatus = ?\n";
+
+        if (room.getUrlImage() != null) {
+            sql += "    ,urlImage = ?\n";
+        }
+
+        sql += " WHERE roomId = ?";
+
+        try {
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(sql);
+            preStm.setInt(1, room.getRoomTypeId());
+            preStm.setFloat(2, room.getPrice());
+            preStm.setString(3, room.getDescription());
+            preStm.setString(4, room.getRoomStatus());
+            if (room.getUrlImage() != null) {
+                preStm.setString(5, room.getUrlImage());
+                preStm.setInt(6, room.getRoomId());
+            } else {
+                preStm.setInt(5, room.getRoomId());
+            }
+
+            preStm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
+    public boolean deleteRoom(Integer roomId) {
+
+        String sql = "UPDATE hkcbooking_room SET roomStatus=? WHERE roomId=?";
+
+        try {
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(sql);
+            preStm.setString(1, roomStatus.status.DELETED.toString());
+            preStm.setInt(2, roomId);
             preStm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

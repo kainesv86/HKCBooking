@@ -12,8 +12,6 @@
     <body>
         <%
             ArrayList<RoomDetail> roomDetails = (ArrayList<RoomDetail>) request.getAttribute("roomDetails");
-            ArrayList<RoomType> roomTypes = (ArrayList<RoomType>) request.getAttribute("roomTypes");
-
         %>
         <div class="flex min-h-screen">
             <jsp:include page="./common/Sidebar.jsp"></jsp:include>
@@ -52,7 +50,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex-shrink-0 h-60 w-80">
-                                            <img class="h-full w-full object-cover object-fit" src="https://cdn.vietnambiz.vn/2019/11/4/dd32d9b188d86d6d8dc40d1ff9a0ebf6-15728512315071030248829.jpg" alt="" />
+                                            <img class="h-full w-full object-cover object-fit" src="<%= roomDetails.get(index).getRoom().getUrlImage()%>" alt="" />
                                         </div>
 
                                     </td>
@@ -74,8 +72,8 @@
 
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
                                         <div class="flex flex-col items-start justify-center">
-                                            <a class="text-indigo-600 hover:text-indigo-900 font-semibold cursor-pointer">Edit</a>
-                                            <a  class="text-rose-500 hover:text-rose-600 font-semibold cursor-pointer">Delete</a>
+                                            <a href="EditRoomDetailServlet?roomId=<%= roomDetails.get(index).getRoom().getRoomId()%>" class="text-indigo-600 hover:text-indigo-900 font-semibold cursor-pointer">Edit</a>
+                                            <a href="DeleteRoomServlet?roomId=<%= roomDetails.get(index).getRoom().getRoomId()%>" onclick="return confirm('Are you sure to delete roomId = <%= roomDetails.get(index).getRoom().getRoomId()%>')" class="text-rose-500 hover:text-rose-600 font-semibold cursor-pointer">Delete</a>
                                         </div>
                                     </td>
                                     </tr>

@@ -5,29 +5,22 @@
  */
 package controllers;
 
-import entities.RoomDetail;
-import entities.RoomType;
+import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import repositories.RoomDetailRepository;
-import repositories.RoomTypeRepository;
-import variables.roomStatus;
+import repositories.RoomRepository;
 
 /**
  *
  * @author Kaine
  */
-@WebServlet(name = "EditRoomServlet", urlPatterns = {"/EditRoomServlet"})
-public class EditRoomServlet extends HttpServlet {
+@WebServlet(name = "DeleteRoomServlet", urlPatterns = {"/DeleteRoomServlet"})
+public class DeleteRoomServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,20 +31,15 @@ public class EditRoomServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        GetVariable gv = new GetVariable(request);
+        Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
+        RoomRepository roomRepo = new RoomRepository();
+        roomRepo.deleteRoom(roomId);
 
-        RoomDetailRepository roomDetailRepository = new RoomDetailRepository();
-        ArrayList<RoomDetail> roomDetails = roomDetailRepository.getAllRoomDetail();
-
-        for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
-            if (roomDetail.getRoom().getRoomStatus().equals(roomStatus.status.DELETED.toString())) {
-                roomDetails.remove(roomDetail);
-            }
-        }
-
-        request.setAttribute("roomDetails", roomDetails);
-        return true;
+        response.sendRedirect("EditRoomServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,15 +54,7 @@ public class EditRoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        try {
-            if (handleOnGet(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/editRoom.jsp").forward(request, response);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
+        processRequest(request, response);
     }
 
     /**
@@ -85,6 +65,12 @@ public class EditRoomServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
     /**
      * Returns a short description of the servlet.
      *

@@ -60,7 +60,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-20 w-20">
-                                                    <img class="h-20 w-20" src="https://cdn.vietnambiz.vn/2019/11/4/dd32d9b188d86d6d8dc40d1ff9a0ebf6-15728512315071030248829.jpg" alt="" />
+                                                    <img class="h-20 w-20" src="<%= list.get(index).getRoom().getUrlImage()%>" alt="" />
                                                 </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900"><%= list.get(index).getRoomType().getRoomName()%></div>
