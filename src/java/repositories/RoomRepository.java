@@ -136,4 +136,21 @@ public class RoomRepository {
         return true;
 
     }
+
+    public boolean deleteRoom(Integer roomId) {
+
+        String sql = "DELETE FROM hkcbooking_room WHERE roomId=?";
+
+        try {
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(sql);
+            preStm.setInt(1, roomId);
+            preStm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
 }
