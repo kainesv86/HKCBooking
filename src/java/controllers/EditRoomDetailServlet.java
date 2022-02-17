@@ -67,7 +67,6 @@ public class EditRoomDetailServlet extends HttpServlet {
         if (roomId == null || roomTypeId == null || price == null || description == null || roomStatus == null) {
             return false;
         }
-        System.out.println(imageUrl);
 
         RoomRepository roomRepo = new RoomRepository();
 

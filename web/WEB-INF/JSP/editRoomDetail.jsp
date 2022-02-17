@@ -72,7 +72,7 @@
                                 <%
                                     for (roomStatus.status status : roomStatus.status.values()) {
                                 %>
-                                <option value="<%= status.toString()%>" <% if (status.toString() == room.getRoomStatus()) { %> selected <% }%> ><%= status.toString()%></option>
+                                <option value="<%= status.toString()%>" <% if (status.toString().equals(room.getRoomStatus())) { %> selected <% }%> ><%= status.toString()%></option>
                                 <% }%>
                             </select>
                         </div>

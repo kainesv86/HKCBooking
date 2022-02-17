@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import variables.roomStatus;
 
 public class RoomRepository {
 
@@ -139,12 +140,13 @@ public class RoomRepository {
 
     public boolean deleteRoom(Integer roomId) {
 
-        String sql = "DELETE FROM hkcbooking_room WHERE roomId=?";
+        String sql = "UPDATE hkcbooking_room SET roomStatus=? WHERE roomId=?";
 
         try {
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(sql);
-            preStm.setInt(1, roomId);
+            preStm.setString(1, roomStatus.status.DELETED.toString());
+            preStm.setInt(2, roomId);
             preStm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
