@@ -190,4 +190,35 @@ public class HistoryRepository {
         }
         return false;
     }
+
+    public boolean updateHistoryByDeleteRoom(History history) throws Exception {
+
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_history \n"
+                    + "SET historyStatus = 'CANCEL'\n"
+                    + "WHERE startDate <= ? AND roomId=?";
+
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setDate(1, history.getStartDate());
+                preStm.setInt(2, history.getRoomId());
+                preStm.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
+    }
 }
