@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import repositories.HistoryDetailRepo;
+import repositories.HistoryDetailRepository;
 import repositories.HistoryRepository;
 
 /**
@@ -69,7 +69,7 @@ public class HistoryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
 
-        HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
+        HistoryDetailRepository historyDetailRepo = new HistoryDetailRepository();
         ArrayList<HistoryDetail> list = historyDetailRepo.getHistoryDetailByUserId(userId, status);
 
         if (status != null) {
