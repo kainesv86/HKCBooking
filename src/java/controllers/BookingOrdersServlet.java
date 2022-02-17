@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import repositories.HistoryDetailRepo;
+import repositories.HistoryDetailRepository;
 import repositories.HistoryRepository;
 import variables.UserRole;
 
@@ -66,7 +66,7 @@ public class BookingOrdersServlet extends HttpServlet {
             throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
         String status = gv.getString("status", "status", 0, 15, null);
-        HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
+        HistoryDetailRepository historyDetailRepo = new HistoryDetailRepository();
         ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(status);
 
         if (status != null) {
