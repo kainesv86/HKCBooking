@@ -24,14 +24,16 @@
                         enctype="multipart/form-data"
                         class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
                         >
-                        <div class="space-y-8 divide-y divide-gray-200">
+
+                        <input value="<%= room.getRoomId()%>" readonly name="roomId" class="hidden"/>
+                    <div class="space-y-8 divide-y divide-gray-200">
+                        <div>
                             <div>
-                                <div>
-                                    <h3 class="text-3xl text-center leading-6 font-semibold text-rose-500 mb-4">Edit room</h3>
-                                </div>
-                                <div>
-                                    <label for="roomTypeId" class="block text-sm font-medium text-gray-700">Room Type</label>
-                                    <select id="roomTypeId" name="roomTypeId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
+                                <h3 class="text-3xl text-center leading-6 font-semibold text-rose-500 mb-4">Edit room</h3>
+                            </div>
+                            <div>
+                                <label for="roomTypeId" class="block text-sm font-medium text-gray-700">Room Type</label>
+                                <select id="roomTypeId" name="roomTypeId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                     <%
                                         for (RoomType roomType : roomTypes) {
                                     %>
@@ -49,7 +51,7 @@
                             <div>
                                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Room Image</label>
                                 <div class="h-auto w-auto">
-                                    <img class="h-full w-full object-cover object-fit" src="https://cdn.vietnambiz.vn/2019/11/4/dd32d9b188d86d6d8dc40d1ff9a0ebf6-15728512315071030248829.jpg" alt="" />
+                                    <img class="h-full w-full object-cover object-fit" src="<%= room.getUrlImage()%>" alt="" />
                                 </div>
                                 <div class="mt-2">
                                     <input id="imageUrl" name="imageUrl" type="file" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
@@ -66,7 +68,7 @@
 
                         <div>
                             <label for="roomStatus" class="block text-sm font-medium text-gray-700">Room Status</label>
-                            <select id="roomStatus" name="roomTypeId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
+                            <select id="roomStatus" name="roomStatus" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                 <%
                                     for (roomStatus.status status : roomStatus.status.values()) {
                                 %>

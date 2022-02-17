@@ -50,7 +50,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex-shrink-0 h-60 w-80">
-                                            <img class="h-full w-full object-cover object-fit" src="https://cdn.vietnambiz.vn/2019/11/4/dd32d9b188d86d6d8dc40d1ff9a0ebf6-15728512315071030248829.jpg" alt="" />
+                                            <img class="h-full w-full object-cover object-fit" src="<%= roomDetails.get(index).getRoom().getUrlImage()%>" alt="" />
                                         </div>
 
                                     </td>

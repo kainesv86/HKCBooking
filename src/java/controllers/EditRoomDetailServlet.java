@@ -9,7 +9,7 @@ import entities.Room;
 import entities.RoomType;
 import helper.GetVariable;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,28 +50,40 @@ public class EditRoomDetailServlet extends HttpServlet {
         return true;
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+    protected boolean handlOnPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
+        GetVariable gv = new GetVariable(request);
 
+        Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
+
+        request.setAttribute("roomId", roomId);
+
+        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
+        Float price = gv.getFloat("price", "price", 0, Float.MAX_VALUE, null);
+        String imageUrl = gv.getFile("imageUrl", "Room Image", 1080 * 1080);
+        String description = gv.getString("description", "desciption", 0, 500, "");
+        String roomStatus = gv.getString("roomStatus", "Room Status", 1, 30, null);
+
+        if (roomId == null || roomTypeId == null || price == null || description == null || roomStatus == null) {
+            return false;
+        }
+        System.out.println(imageUrl);
+
+        RoomRepository roomRepo = new RoomRepository();
+
+        if (!roomRepo.updateRoom(new Room(roomId, roomTypeId, description, price, imageUrl, roomStatus))) {
+            return false;
+        };
+
+        return true;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             if (handlOnGet(request, response)) {
                 request.getRequestDispatcher("WEB-INF/JSP/editRoomDetail.jsp").forward(request, response);
-                System.out.println("Hello");
             }
         } catch (Exception ex) {
             Logger.getLogger(EditRoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +101,18 @@ public class EditRoomDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            if (handlOnPost(request, response)) {
+                response.sendRedirect("EditRoomServlet");
+                return;
+            }
+            Integer roomId = (Integer) request.getAttribute("roomId");
+
+            response.sendRedirect("EditRoomDetailServlet?roomId" + roomId);
+
+        } catch (Exception ex) {
+            Logger.getLogger(EditRoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

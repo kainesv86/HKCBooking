@@ -99,4 +99,41 @@ public class RoomRepository {
         return true;
 
     }
+
+    public boolean updateRoom(Room room) {
+        String sql = "UPDATE hkcbooking_room \n"
+                + "SET\n"
+                + "    roomTypeId = ?,\n"
+                + "    price = ?,\n"
+                + "    [description] = ?,\n"
+                + "    roomStatus = ?\n";
+
+        if (room.getUrlImage() != null) {
+            sql += "    ,urlImage = ?\n";
+        }
+
+        sql += " WHERE roomId = ?";
+
+        try {
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(sql);
+            preStm.setInt(1, room.getRoomTypeId());
+            preStm.setFloat(2, room.getPrice());
+            preStm.setString(3, room.getDescription());
+            preStm.setString(4, room.getRoomStatus());
+            if (room.getUrlImage() != null) {
+                preStm.setString(5, room.getUrlImage());
+                preStm.setInt(6, room.getRoomId());
+            } else {
+                preStm.setInt(5, room.getRoomId());
+            }
+
+            preStm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
 }
