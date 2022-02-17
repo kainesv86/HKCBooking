@@ -30,17 +30,17 @@
                             <div class="lg:grid lg:grid-rows-1 lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
                                 <!-- Product image -->
                                 <div class="lg:row-end-1 lg:col-span-4">
-                                    <div class="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden">
-                                        <img src="https://cdn.vietnambiz.vn/2019/11/4/dd32d9b188d86d6d8dc40d1ff9a0ebf6-15728512315071030248829.jpg" class="object-center object-cover">
-                                    </div>
+                                    <div class="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden min-h-[360px]">
+                                        <img src="<%= room.getUrlImage()%>" class="object-center object-cover">
                                 </div>
+                            </div>
 
-                                <!-- Product details -->
+                            <!-- Product details -->
 
-                                <div class="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
-                                    <div class="flex flex-col-reverse">
-                                        <div class="mt-4">
-                                            <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"><%=roomType.getRoomName()%></h1>
+                            <div class="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
+                                <div class="flex flex-col-reverse">
+                                    <div class="mt-4">
+                                        <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"><%=roomType.getRoomName()%></h1>
 
                                         <h2 id="information-heading" class="sr-only">Product information</h2>
                                         <p class="text-xl text-yellow-600 mt-2">Day / <%= room.getPrice()%>$</p>

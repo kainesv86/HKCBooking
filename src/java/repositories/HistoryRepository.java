@@ -132,35 +132,62 @@ public class HistoryRepository {
         return null;
     }
 
-    public History getHistoryByUser(int userId) throws SQLException, Exception {
-        try {
-            String sql = "SELECT * FROM hkcbooking_history where UseId=?";
-            repo = RepoConnector.connectDatabase();
-            preStm = repo.prepareStatement(sql);
-            preStm.setInt(1, userId);
-            while (rs.next()) {
-                Integer historyId = rs.getInt("historyId");
-                userId = rs.getInt("userId");
-                String message = rs.getString("message");
-                String historyStatus = rs.getString("historyStatus");
-                String fullName = rs.getString("fullName");
-                String phone = rs.getString("phone");
-                Integer roomId = rs.getInt("roomId");
-                String address = rs.getString("address");
-                Date startDate = rs.getDate("startDate");
-                Date endDate = rs.getDate("endDate");
-                String note = rs.getString("note");
-                Float total = rs.getFloat("total");
+    public boolean updateHistoryByAdmin(History history) throws Exception {
 
-                History h = new History(historyId, userId, message, historyStatus, fullName, phone, address, roomId, startDate, endDate, note, total);
-                return h;
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_history SET message=?,"
+                    + "historyStatus=? WHERE historyId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, history.getMessage());
+                preStm.setString(2, history.getHistoryStatus());
+                preStm.setInt(3, history.getHistoryId());
+                preStm.executeUpdate();
+                return true;
             }
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
+            return false;
         } finally {
-            this.closeRepo();
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
         }
-        return null;
+        return false;
+    }
 
+    public boolean updateHistoryByUser(History history) throws Exception {
+
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_history SET note=?"
+                    + " WHERE historyId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, history.getNote());
+                preStm.setInt(2, history.getHistoryId());
+                preStm.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
     }
 }
