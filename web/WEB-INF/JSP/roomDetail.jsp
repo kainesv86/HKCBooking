@@ -1,4 +1,6 @@
 
+<%@page import="variables.Routers"%>
+<%@page import="entities.RoomDetail"%>
 <%@page import="entities.RoomType"%>
 <%@page import="entities.Room"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,8 +14,7 @@
     <body>
 
         <%
-            Room room = (Room) request.getAttribute("room");
-            RoomType roomType = (RoomType) request.getAttribute("roomType");
+            RoomDetail roomDetail = (RoomDetail) request.getAttribute("roomDetail");
             String minCheckIn = (String) request.getAttribute("minCheckIn");
             String minCheckOut = (String) request.getAttribute("minCheckOut");
             String message = (String) session.getAttribute("message");
@@ -31,7 +32,7 @@
                                 <!-- Product image -->
                                 <div class="lg:row-end-1 lg:col-span-4">
                                     <div class="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden min-h-[360px]">
-                                        <img src="<%= room.getUrlImage()%>" class="object-center object-cover">
+                                        <img src="<%= roomDetail.getRoom().getUrlImage()%>" class="object-center object-cover">
                                 </div>
                             </div>
 
@@ -40,10 +41,10 @@
                             <div class="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
                                 <div class="flex flex-col-reverse">
                                     <div class="mt-4">
-                                        <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"><%=roomType.getRoomName()%></h1>
+                                        <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"><%=roomDetail.getRoomType().getRoomName()%></h1>
 
                                         <h2 id="information-heading" class="sr-only">Product information</h2>
-                                        <p class="text-xl text-yellow-600 mt-2">Day / <%= room.getPrice()%>$</p>
+                                        <p class="text-xl text-yellow-600 mt-2">Day / <%= roomDetail.getRoom().getPrice()%>$</p>
                                     </div>
 
                                     <div>
@@ -83,15 +84,15 @@
                                 </div>
                                 <div class="text-gray-900">
 
-                                    <p class="mt-6"><%= room.getDescription()%></p>
-                                    <p class="mt-6">Capacity: <%= roomType.getCapacity()%> People</p>
-                                    <p class="mt-6">Acreage: <%= roomType.getAcreage()%> square meters</p>
+                                    <p class="mt-6"><%= roomDetail.getRoom().getDescription()%></p>
+                                    <p class="mt-6">Capacity: <%= roomDetail.getRoomType().getCapacity()%> People</p>
+                                    <p class="mt-6">Acreage: <%= roomDetail.getRoomType().getAcreage()%> square meters</p>
                                 </div>
 
                                 <div class="border-t border-gray-200 mt-10 pt-10">
                                     <h3 class="text-xl font-medium text-gray-900 mb-4">Pick your time</h3>
-                                    <form action="RoomDetailServlet" method="POST" class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md" >
-                                        <input type="text" value="<%= room.getRoomId()%>" name="roomId" class="hidden">
+                                    <form action="<%= Routers.ROOM_DETAIL_SERVLET%>" method="POST" class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md" >
+                                        <input type="text" value="<%= roomDetail.getRoom().getRoomId()%>" name="roomId" class="hidden">
 
                                         <div class="mb-2">
                                             <jsp:include page="./Components/InputDate.jsp">

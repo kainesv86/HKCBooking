@@ -20,12 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.UserRepository;
+import variables.Routers;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
+@WebServlet(name = "RegisterServlet", urlPatterns = {"/" + Routers.REGISTER_SERVLET})
 public class RegisterServlet extends HttpServlet {
 
     private UserRepository ur = new UserRepository();
@@ -74,11 +75,11 @@ public class RegisterServlet extends HttpServlet {
         UseGuard useGuard = new UseGuard(request, response);
 
         if (useGuard.useAuth()) {
-            response.sendRedirect("IndexServlet");
+            response.sendRedirect(Routers.INDEX_SERVLET);
             return;
         }
 
-        request.getRequestDispatcher("WEB-INF/JSP/register.jsp").forward(request, response);
+        request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             if (processRequest(request, response)) {
-                response.sendRedirect("LoginServlet");
+                response.sendRedirect(Routers.LOGIN_SERVLET);
                 return;
             }
         } catch (SQLException ex) {
@@ -94,7 +95,7 @@ public class RegisterServlet extends HttpServlet {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        request.getRequestDispatcher("WEB-INF/JSP/register.jsp").forward(request, response);
+        request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
     }
 
     @Override

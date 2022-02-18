@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@page import="entities.RoomType"%>
 <%@page import="entities.RoomDetail"%>
 <%@page import="java.util.ArrayList"%>
@@ -39,41 +40,42 @@
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
-                                        <%                                            for (int index = 0; index < roomDetails.size(); index++) {
+                                        <%
+                                            for (RoomDetail roomDetail : roomDetails) {
                                         %>
                                         <tr>
 
-                                    <input name="roomId" value="<%= roomDetails.get(index).getRoom().getRoomId()%>" class="hidden">
+                                    <input name="roomId" value="<%= roomDetail.getRoom().getRoomId()%>" class="hidden">
 
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900"><%= roomDetails.get(index).getRoom().getRoomId()%></div>
+                                        <div class="text-sm text-gray-900"><%= roomDetail.getRoom().getRoomId()%></div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex-shrink-0 h-60 w-80">
-                                            <img class="h-full w-full object-cover object-fit" src="<%= roomDetails.get(index).getRoom().getUrlImage()%>" alt="" />
+                                            <img class="h-full w-full object-cover object-fit" src="<%= roomDetail.getRoom().getUrlImage()%>" alt="" />
                                         </div>
 
                                     </td>
                                     <td class="px-6 py-4 text-sm">
-                                        <p class="font-medium text-gray-900 w-48"><%= roomDetails.get(index).getRoomType().getRoomName()%></p>
-                                        <p class="text-gray-500"><%= roomDetails.get(index).getRoomType().getCapacity()%> people</p>
-                                        <p class="text-gray-500"><%= roomDetails.get(index).getRoomType().getAcreage()%> square meters</p>
+                                        <p class="font-medium text-gray-900 w-48"><%= roomDetail.getRoomType().getRoomName()%></p>
+                                        <p class="text-gray-500"><%= roomDetail.getRoomType().getCapacity()%> people</p>
+                                        <p class="text-gray-500"><%= roomDetail.getRoomType().getAcreage()%> square meters</p>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <p class="text-sm text-gray-900 text-justify"><%= roomDetails.get(index).getRoom().getPrice()%>$ / day</p>
+                                        <p class="text-sm text-gray-900 text-justify"><%= roomDetail.getRoom().getPrice()%>$ / day</p>
                                     </td>
                                     <td class="px-6 py-4 w-48">
-                                        <p class="text-sm text-gray-900 text-justify"><%= roomDetails.get(index).getRoom().getDescription()%></p>
+                                        <p class="text-sm text-gray-900 text-justify"><%= roomDetail.getRoom().getDescription()%></p>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <p class="text-sm text-gray-900 text-justify"><%= roomDetails.get(index).getRoom().getRoomStatus()%></p>
+                                        <p class="text-sm text-gray-900 text-justify"><%= roomDetail.getRoom().getRoomStatus()%></p>
                                     </td>
 
 
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium ">
                                         <div class="flex flex-col items-start justify-center">
-                                            <a href="EditRoomDetailServlet?roomId=<%= roomDetails.get(index).getRoom().getRoomId()%>" class="text-indigo-600 hover:text-indigo-900 font-semibold cursor-pointer">Edit</a>
-                                            <a href="DeleteRoomServlet?roomId=<%= roomDetails.get(index).getRoom().getRoomId()%>" onclick="return confirm('Are you sure to delete roomId = <%= roomDetails.get(index).getRoom().getRoomId()%> and all customers book this room will be cancel')" class="text-rose-500 hover:text-rose-600 font-semibold cursor-pointer">Delete</a>
+                                            <a href="<%= Routers.EDIT_ROOM_DETAIL_SERVLET%>?roomId=<%= roomDetail.getRoom().getRoomId()%>" class="text-indigo-600 hover:text-indigo-900 font-semibold cursor-pointer">Edit</a>
+                                            <a href="<%= Routers.DELETE_ROOM_SERVLET%>?roomId=<%= roomDetail.getRoom().getRoomId()%>" onclick="return confirm('Are you sure to delete roomId = <%= roomDetail.getRoom().getRoomId()%> and all customers book this room will be cancel')" class="text-rose-500 hover:text-rose-600 font-semibold cursor-pointer">Delete</a>
                                         </div>
                                     </td>
                                     </tr>

@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@page import="entities.RoomType"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -18,18 +19,18 @@
             <jsp:include page="./common/Sidebar.jsp"></jsp:include>
                 <div class="bg-gray-100 flex-1 py-20 justify-center flex items-center">
                     <form
-                        action="AddRoomServlet" method="POST"
-                        enctype="multipart/form-data"
-                        class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
-                        >
-                        <div class="space-y-8 divide-y divide-gray-200">
+                        action="<%= Routers.ADD_ROOM_SERVLET%>" method="POST"
+                    enctype="multipart/form-data"
+                    class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
+                    >
+                    <div class="space-y-8 divide-y divide-gray-200">
+                        <div>
                             <div>
-                                <div>
-                                    <h3 class="text-3xl text-center leading-6 font-semibold text-rose-500 mb-4">Add room</h3>
-                                </div>
-                                <div>
-                                    <label for="roomTypeId" class="block text-sm font-medium text-gray-700">Room Type</label>
-                                    <select id="roomTypeId" name="roomTypeId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
+                                <h3 class="text-3xl text-center leading-6 font-semibold text-rose-500 mb-4">Add room</h3>
+                            </div>
+                            <div>
+                                <label for="roomTypeId" class="block text-sm font-medium text-gray-700">Room Type</label>
+                                <select id="roomTypeId" name="roomTypeId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                     <%
                                         for (RoomType roomType : roomTypes) {
                                     %>
@@ -61,7 +62,7 @@
 
                         <div class="pt-5">
                             <div class="flex justify-end">
-                                <a href="AddRoomServlet" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">Cancel</a>
+                                <a href="<%= Routers.ADD_ROOM_SERVLET%>" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">Cancel</a>
                                 <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">Add</button>
                             </div>
                         </div>
