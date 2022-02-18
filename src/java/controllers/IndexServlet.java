@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.Room;
+import entities.RoomDetail;
 import entities.RoomType;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +18,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import repositories.RoomDetailRepository;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
+import services.RoomService;
+import variables.roomStatus;
 
 /**
  *
@@ -38,14 +42,12 @@ public class IndexServlet extends HttpServlet {
      */
     protected boolean handleGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
-        RoomRepository roomRepo = new RoomRepository();
-        ArrayList<Room> rooms = roomRepo.getAllRoom();
 
-        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
+        RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
+        ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
+        roomDetails = RoomService.filterRoomByStatus(roomDetails, roomStatus.status.READY);
 
-        request.setAttribute("rooms", rooms);
-        request.setAttribute("roomTypes", roomTypes);
+        request.setAttribute("roomDetails", roomDetails);
         return true;
     }
 

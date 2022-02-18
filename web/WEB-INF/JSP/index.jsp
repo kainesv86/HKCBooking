@@ -1,3 +1,4 @@
+<%@page import="entities.RoomDetail"%>
 <%@page import="helper.FunctionJSP"%>
 <%@page import="entities.RoomType"%>
 <%@page import="entities.Room"%>
@@ -13,10 +14,7 @@
     </head>
     <body>
         <%
-            ArrayList<Room> rooms = (ArrayList<Room>) request.getAttribute("rooms");
-//            RoomTypeRepository rtr = new RoomTypeRepository();
-            ArrayList<RoomType> roomTypes = (ArrayList<RoomType>) request.getAttribute("roomTypes");
-
+            ArrayList<RoomDetail> roomDetails = (ArrayList<RoomDetail>) request.getAttribute("roomDetails");
         %>
 
         <div class="flex flex-col min-h-screen">
@@ -35,16 +33,16 @@
                         </div>
                         <div class="flex flex-col">
 
-                        <% for (int index = 0; index < rooms.size(); index++) {
-                                RoomType roomType = FunctionJSP.getRoomTypeById(roomTypes, rooms.get(index).getRoomTypeId());
+                        <% for (RoomDetail roomDetail : roomDetails) {
+
                         %>
                         <jsp:include page="./Components/room.jsp">
-                            <jsp:param name="urlImage" value="<%=rooms.get(index).getUrlImage()%>"/>
-                            <jsp:param name="roomName" value="<%=roomType.getRoomName()%>"/>
-                            <jsp:param name="capacity" value="<%=roomType.getCapacity()%>"/>
-                            <jsp:param name="price" value="<%=rooms.get(index).getPrice()%>"/>
-                            <jsp:param name="description" value="<%=rooms.get(index).getDescription()%>"/>
-                            <jsp:param name="roomId" value="<%=rooms.get(index).getRoomId()%>"/>
+                            <jsp:param name="urlImage" value="<%=roomDetail.getRoom().getUrlImage()%>"/>
+                            <jsp:param name="roomName" value="<%=roomDetail.getRoomType().getRoomName()%>"/>
+                            <jsp:param name="capacity" value="<%=roomDetail.getRoomType().getCapacity()%>"/>
+                            <jsp:param name="price" value="<%=roomDetail.getRoom().getPrice()%>"/>
+                            <jsp:param name="description" value="<%=roomDetail.getRoom().getDescription()%>"/>
+                            <jsp:param name="roomId" value="<%=roomDetail.getRoom().getRoomId()%>"/>
                         </jsp:include>
                         <% }%>
 
