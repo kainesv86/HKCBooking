@@ -121,7 +121,7 @@ public class RoomDetailServlet extends HttpServlet {
             }
             request.getRequestDispatcher(Routers.ROOM_DETAIL_PAGE).forward(request, response);
         } catch (Exception ex) {
-
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 
@@ -129,15 +129,12 @@ public class RoomDetailServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (handleOnPost(request, response)) {
-
-            }
-
+            handleOnPost(request, response);
+            response.sendRedirect(Routers.ROOM_DETAIL_SERVLET + "?roomId=" + request.getAttribute("roomId"));
         } catch (Exception ex) {
-            Logger.getLogger(RoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
 
-        response.sendRedirect(Routers.ROOM_DETAIL_SERVLET + "?roomId=" + request.getAttribute("roomId"));
     }
 
     @Override

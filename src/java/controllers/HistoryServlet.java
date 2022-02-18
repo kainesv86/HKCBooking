@@ -77,12 +77,15 @@ public class HistoryServlet extends HttpServlet {
         }
 
         try {
-            handleOnGet(request, response);
+            if (!handleOnGet(request, response)) {
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
+                return;
+            };
+            request.getRequestDispatcher(Routers.HISTORY_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
 
-        request.getRequestDispatcher(Routers.HISTORY_PAGE).forward(request, response);
     }
 
     @Override
@@ -102,7 +105,7 @@ public class HistoryServlet extends HttpServlet {
                 response.sendRedirect(Routers.HISTORY_SERVLET + location);
             }
         } catch (Exception ex) {
-            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 

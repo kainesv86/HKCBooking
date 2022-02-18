@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import variables.roomStatus;
+import variables.RoomStatus;
 
 public class RoomRepository {
 
@@ -145,7 +145,7 @@ public class RoomRepository {
         try {
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(sql);
-            preStm.setString(1, roomStatus.status.DELETED.toString());
+            preStm.setString(1, RoomStatus.status.DELETED.toString());
             preStm.setInt(2, roomId);
             preStm.executeUpdate();
         } catch (SQLException e) {

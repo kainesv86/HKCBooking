@@ -9,13 +9,11 @@ package variables;
  *
  * @author Kaine
  */
-public class historyStatus {
+public class RoomStatus {
 
     public static enum status {
-        PENDING,
         READY,
-        COMPLETED,
-        CANCEL
+        MAINTENANCE,
+        DELETED,
     }
-
 }

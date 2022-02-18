@@ -11,7 +11,7 @@ import entities.RoomDetail;
 import java.sql.Date;
 import java.util.ArrayList;
 import repositories.HistoryRepository;
-import variables.roomStatus;
+import variables.RoomStatus;
 
 /**
  *
@@ -33,7 +33,7 @@ public class RoomService {
         return roomDetails;
     }
 
-    public static ArrayList<RoomDetail> filterRoomByStatus(ArrayList<RoomDetail> roomDetails, roomStatus.status status) {
+    public static ArrayList<RoomDetail> filterRoomByStatus(ArrayList<RoomDetail> roomDetails, RoomStatus.status status) {
         for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
             if (!roomDetail.getRoom().getRoomStatus().equals(status.toString())) {
                 roomDetails.remove(roomDetail);

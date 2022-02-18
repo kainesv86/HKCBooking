@@ -5,44 +5,56 @@
  */
 package controllers;
 
-import entities.RoomDetail;
+import entities.User;
+import guard.UseGuard;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import repositories.RoomDetailRepository;
-import services.RoomService;
+import repositories.UserRepository;
 import variables.Routers;
-import variables.RoomStatus;
+import variables.UserRole;
 
-@WebServlet(name = "IndexServlet", urlPatterns = {"/" + Routers.INDEX_SERVLET})
-public class IndexServlet extends HttpServlet {
+/**
+ *
+ * @author Kaine
+ */
+@WebServlet(name = "UsersServlet", urlPatterns = {"/" + Routers.USERS_SERVLET})
+public class UsersServlet extends HttpServlet {
 
-    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
+    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
 
-        RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
-        ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
-        roomDetails = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
-
-        request.setAttribute("roomDetails", roomDetails);
+        UserRepository ur = new UserRepository();
+        ArrayList<User> users = ur.getAllUserList();
+        request.setAttribute("users", users);
         return true;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (!useGuard.useAuth()) {
+            response.sendRedirect(Routers.LOGIN_SERVLET);
+            return;
+        }
+
+        if (!useGuard.useRole(UserRole.role.ADMIN)) {
+            response.sendRedirect(Routers.INDEX_SERVLET);
+            return;
+        }
+
         try {
-            if (!handleOnGet(request, response)) {
+            if (!processRequest(request, response)) {
                 request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
                 return;
             }
-            request.getRequestDispatcher(Routers.INDEX_PAGE).forward(request, response);
+            request.getRequestDispatcher(Routers.ROOM_DETAIL_PAGE).forward(request, response);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }

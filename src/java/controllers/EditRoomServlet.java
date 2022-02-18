@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.RoomDetail;
+import guard.UseGuard;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -15,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.RoomDetailRepository;
 import variables.Routers;
-import variables.roomStatus;
+import variables.RoomStatus;
+import variables.UserRole;
 
 @WebServlet(name = "EditRoomServlet", urlPatterns = {"/" + Routers.EDIT_ROOM_SERVLET})
 public class EditRoomServlet extends HttpServlet {
@@ -27,7 +29,7 @@ public class EditRoomServlet extends HttpServlet {
         ArrayList<RoomDetail> roomDetails = roomDetailRepository.getAllRoomDetail();
 
         for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
-            if (roomDetail.getRoom().getRoomStatus().equals(roomStatus.status.DELETED.toString())) {
+            if (roomDetail.getRoom().getRoomStatus().equals(RoomStatus.status.DELETED.toString())) {
                 roomDetails.remove(roomDetail);
             }
         }
@@ -39,13 +41,26 @@ public class EditRoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         try {
-            if (handleOnGet(request, response)) {
-                request.getRequestDispatcher(Routers.EDIT_ROOM_PAGE).forward(request, response);
+            UseGuard useGuard = new UseGuard(request, response);
+
+            if (!useGuard.useAuth()) {
+                response.sendRedirect(Routers.LOGIN_SERVLET);
+                return;
             }
+
+            if (!useGuard.useRole(UserRole.role.ADMIN)) {
+                response.sendRedirect(Routers.INDEX_SERVLET);
+                return;
+            }
+
+            if (!handleOnGet(request, response)) {
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
+                return;
+            }
+            request.getRequestDispatcher(Routers.EDIT_ROOM_PAGE).forward(request, response);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
 
     }

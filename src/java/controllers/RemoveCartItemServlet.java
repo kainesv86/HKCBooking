@@ -30,7 +30,6 @@ public class RemoveCartItemServlet extends HttpServlet {
         if (index == null) {
             return;
         }
-        System.out.println(index);
 
         HttpSession session = request.getSession();
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
