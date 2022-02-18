@@ -196,16 +196,19 @@ public class HistoryRepository {
         Connection repo = null;
         try {
             String query = "UPDATE hkcbooking_history \n"
-                    + "SET historyStatus = 'CANCEL'\n"
-                    + "WHERE startDate <= ? AND roomId=?";
+                    + "SET historyStatus = 'CANCEL',\n"
+                    + "[message] = ? \n"
+                    + "WHERE startDate <= ? AND roomId=? AND historyStatus != 'CANCEL' ";
 
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(query);
             if (repo != null) {
                 preStm = repo.prepareStatement(query);
-                preStm.setDate(1, history.getStartDate());
-                preStm.setInt(2, history.getRoomId());
-                preStm.executeUpdate();
+                preStm.setString(1, history.getMessage());
+                preStm.setDate(2, history.getStartDate());
+                preStm.setInt(3, history.getRoomId());
+
+                System.out.println(preStm.executeUpdate());
                 return true;
             }
         } catch (Exception e) {

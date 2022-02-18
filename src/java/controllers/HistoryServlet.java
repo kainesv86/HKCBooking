@@ -10,7 +10,6 @@ import entities.HistoryDetail;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
