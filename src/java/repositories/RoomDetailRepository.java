@@ -82,4 +82,36 @@ public class RoomDetailRepository {
             this.closeRepo();
         }
     }
+
+    public RoomDetail getRoomDetailByRoomId(Integer roomId) throws Exception {
+        try {
+            String query = "SELECT * FROM hkcbooking_room LEFT JOIN hkcbooking_room_type ON hkcbooking_room.roomTypeId = hkcbooking_room_type.roomTypeId where roomId=? AND roomStatus != 'DELETED'";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            preStm.setInt(1, roomId);
+            rs = preStm.executeQuery();
+            while (rs.next()) {
+                roomId = rs.getInt("roomId");
+                String description = rs.getString("description");
+                Float price = rs.getFloat("price");
+                String urlImage = rs.getString("urlImage");
+                String roomStatus = rs.getString("roomStatus");
+
+                Integer roomTypeId = rs.getInt("roomTypeId");
+                String roomName = rs.getString("roomName");
+                Integer capacity = rs.getInt("capacity");
+                Integer acreage = rs.getInt("acreage");
+
+                Room room = new Room(roomId, roomTypeId, description, price, urlImage, roomStatus);
+                RoomType roomType = new RoomType(roomTypeId, roomName, capacity, acreage);
+                return new RoomDetail(room, roomType);
+            }
+
+        } catch (Exception e) {
+            return null;
+        } finally {
+            this.closeRepo();
+        }
+        return null;
+    }
 }
