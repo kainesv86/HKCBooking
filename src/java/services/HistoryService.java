@@ -34,11 +34,11 @@ public class HistoryService {
                 return false;
             }
 
-            if (inputCheckIn.after(history.getStartDate()) && (inputCheckIn.before(history.getEndDate()))) {
+            if (history.getStartDate().after(inputCheckIn) && (history.getEndDate().before(inputCheckOut))) {
                 return false;
             }
 
-            if (inputCheckOut.after(history.getStartDate()) && (inputCheckOut.before(history.getEndDate()))) {
+            if ((history.getStartDate().after(inputCheckOut)) && (history.getEndDate().before(inputCheckOut))) {
                 return false;
             }
         }

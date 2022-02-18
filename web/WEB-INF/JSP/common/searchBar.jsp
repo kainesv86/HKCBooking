@@ -1,8 +1,4 @@
-<%
-    String fullname = (String) session.getAttribute("fullname");
-%>
-
-<div class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96">
+<form class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96" action="FilterServlet" method="POST">
 
     <label class="text-center text-white mb-4 text-2xl font-medium">Search filter</label>
     <div class="flex-1 flex justify-center px-2 lg:justify-end flex-col">
@@ -17,21 +13,21 @@
                 </div>
                 <div class="flex items-center">
                     <input id="search" name="search" class="flex-1 block pl-10 pr-6 py-2 rounded-tl-md rounded-bl-md leading-5 bg-gray-700 text-gray-300 placeholder-gray-400 outline-none focus:bg-gray-100 focus:text-gray-900 sm:text-sm hover:bg-gray-100" placeholder="Search" type="search"/>
-                    <a class="bg-rose-700 rounded-tr-md rounded-br-md text-white text-sm hover:bg-rose-800 py-2 px-2">Search</a>
+                    <button type="submit" class="bg-rose-700 rounded-tr-md rounded-br-md text-white text-sm hover:bg-rose-800 py-2 px-2">Search</button>
                 </div>
             </div>
         </div>
         <div class="mb-2">
             <jsp:include page="../Components/InputDate.jsp">
-                <jsp:param name="key" value="startDate"/>
-                <jsp:param name="label" value="Start Date"/>
+                <jsp:param name="key" value="checkIn"/>
+                <jsp:param name="label" value="Check In"/>
             </jsp:include>
         </div>
 
         <div class="mb-2">
             <jsp:include page="../Components/InputDate.jsp">
-                <jsp:param name="key" value="endDate"/>
-                <jsp:param name="label" value="End Date"/>
+                <jsp:param name="key" value="checkOut"/>
+                <jsp:param name="label" value="Check Out"/>
             </jsp:include>
         </div>
 
@@ -45,4 +41,4 @@
         </div>
     </div>
 
-</div>
+</form>
