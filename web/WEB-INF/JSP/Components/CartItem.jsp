@@ -64,17 +64,11 @@
                         </p>
                     </c:otherwise>
                 </c:choose>
-                <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="RemoveCartItem?index=${param.index}">
+                <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="RemoveCartItemServlet?index=${param.index}">
                     <span>Remove</span>
                 </a>
 
             </div>
-
-
-
-
-
-
         </form>
     </div>
 </li>
