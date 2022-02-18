@@ -20,10 +20,16 @@
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
                 <div class="min-h-full flex flex-col bg-gray-200 flex-1">
-                    <div class="h-72 w-full object-cover bg-rose-600 flex items-center justify-center">
-                        <div class="text-white max-w-5xl px-4 sm:px-6 lg:px-8 w-fit -ml-[30rem]">
+                    <div class="h-[40rem] w-full object-cover flex items-center justify-center relative">
+                        <div class="text-gray-100 max-w-5xl px-4 sm:px-6 lg:px-8 w-fit -ml-[30rem] z-10">
                             <h1 class="text-5xl mb-2">Find your next stay</h1>
-                            <h2 class="text-2xl indent-7">Search deals on hotels, , and much more...</h2>
+                            <h2 class="text-2xl indent-7">Search deals on hotels and much more...</h2>
+                        </div>
+                        <div class="absolute h-full w-full">
+                            <div class="h-full w-full absolute">
+                                <img class="w-full h-full object-fit object-cover object-bottom" src="https://wallpaperaccess.com/full/2690557.jpg" alt="" />
+                            </div>
+                            <div class="block w-full h-full bg-gray-900 absolute opacity-50"></div>
                         </div>
                     </div>
 

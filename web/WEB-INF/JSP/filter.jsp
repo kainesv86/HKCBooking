@@ -22,8 +22,8 @@
                 <div class="min-h-full flex flex-col bg-gray-200 flex-1">
                     <div class="h-[28rem] w-full object-cover flex items-center justify-center relative">
                         <div class="text-gray-100 max-w-5xl px-4 sm:px-6 lg:px-8 w-fit -ml-[30rem] z-10">
-                            <h1 class="text-5xl mb-2">Find your next stay</h1>
-                            <h2 class="text-2xl indent-7">Search deals on hotels, , and much more...</h2>
+                            <h1 class="text-5xl mb-2">Find your rest room</h1>
+                            <h2 class="text-2xl indent-7">Find your room with fit price, type and date.</h2>
                         </div>
                         <div class="absolute h-full w-full">
                             <div class="h-full w-full absolute">
