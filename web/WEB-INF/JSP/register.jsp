@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@
 
                             <div class="mt-8">
                                 <div class="mt-6">
-                                    <form action="RegisterServlet" method="POST" class="space-y-6">
+                                    <form action="<%= Routers.REGISTER_SERVLET%>" method="POST" class="space-y-6">
 
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="username" />
@@ -75,7 +76,7 @@
                                     </jsp:include>
 
                                     <div class="text-right">
-                                        <a href="LoginServlet" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Already have account?</a>
+                                        <a href="<%= Routers.LOGIN_SERVLET%>" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Already have account?</a>
                                     </div>
 
                                     <div>

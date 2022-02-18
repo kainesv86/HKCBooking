@@ -31,24 +31,11 @@ import repositories.RoomDetailRepository;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 import services.HistoryService;
+import variables.Routers;
 
-/**
- *
- * @author Kaine
- */
-@WebServlet(name = "RoomDetailServlet", urlPatterns = {"/RoomDetailServlet"})
+@WebServlet(name = "RoomDetailServlet", urlPatterns = {"/" + Routers.ROOM_DETAIL_SERVLET})
 public class RoomDetailServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @return
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
@@ -123,38 +110,21 @@ public class RoomDetailServlet extends HttpServlet {
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             if (!handleOnGet(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/404Page.jsp").forward(request, response);
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
                 return;
             }
-            request.getRequestDispatcher("/WEB-INF/JSP/roomDetail.jsp").forward(request, response);
+            request.getRequestDispatcher(Routers.ROOM_DETAIL_PAGE).forward(request, response);
         } catch (Exception ex) {
 
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -167,14 +137,9 @@ public class RoomDetailServlet extends HttpServlet {
             Logger.getLogger(RoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        response.sendRedirect("RoomDetailServlet" + "?roomId=" + request.getAttribute("roomId"));
+        response.sendRedirect(Routers.ROOM_DETAIL_SERVLET + "?roomId=" + request.getAttribute("roomId"));
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

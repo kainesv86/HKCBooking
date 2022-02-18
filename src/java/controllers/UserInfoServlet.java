@@ -9,7 +9,6 @@ import entities.User;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -21,54 +20,56 @@ import javax.servlet.http.HttpSession;
 import repositories.UserRepository;
 import variables.Routers;
 
-@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/" + Routers.CHANGE_PASSWORD_SERVLET})
-public class ChangePasswordServlet extends HttpServlet {
+@WebServlet(name = "UserInfoServlet", urlPatterns = {"/" + Routers.USER_INFO_SERVLET})
+public class UserInfoServlet extends HttpServlet {
 
-    protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
+    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
         GetVariable gv = new GetVariable(request);
         try {
-            String password = gv.getString("password", "Password", 8, 30, null);
-            String newPassword = gv.getString("newPassword", "New password", 8, 30, null);
-            String newPasswordConfirm = gv.getString("newPasswordConfirm", "New password confirm", 8, 30, null);
+            String fullname = gv.getString("fullname", "Fullname", 1, 30, null);
+            String address = gv.getString("address", "Address", 1, 50, "");
+            String phone = gv.getString("phone", "Phone", 10, 30, null);
+            String email = gv.getString("email", "Email", 1, 50, null);
+
+            if (fullname == null || phone == null || email == null) {
+                System.out.println("WTF: " + fullname);
+                return false;
+            }
 
             UserRepository ad = new UserRepository();
             User u = ad.getUserByUserId(userId);
+            u.setFullname(fullname);
+            u.setAddress(address);
+            u.setPhone(phone);
+            u.setEmail(email);
 
-            if (!u.getPassword().equals(password)) {
-                request.setAttribute("passwordError", "Password is not correct");
+            if (!ad.updateInforUser(u)) {
                 return false;
             }
 
-            if (!newPassword.equals(newPasswordConfirm)) {
-                request.setAttribute("newPasswordConfirmError", "Confirm Password is not match");
-                return false;
-            }
-
-            u.setPassword(newPassword);
-            if (ad.changePassword(u)) {
-                return true;
-            }
-
+            session.setAttribute("fullname", fullname);
         } catch (Exception e) {
             return false;
         }
-        return false;
+
+        return true;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UseGuard useGuard = new UseGuard(request, response);
+
         if (!useGuard.useAuth()) {
-            response.sendRedirect(Routers.LOGIN_PAGE);
+            response.sendRedirect(Routers.LOGIN_SERVLET);
             return;
         }
 
-        request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
+        request.getRequestDispatcher(Routers.USER_INFO_PAGE).forward(request, response);
     }
 
     @Override
@@ -76,18 +77,23 @@ public class ChangePasswordServlet extends HttpServlet {
             throws ServletException, IOException {
 
         UseGuard useGuard = new UseGuard(request, response);
+        if (!useGuard.useAuth()) {
+            response.sendRedirect(Routers.LOGIN_PAGE);
+        }
 
         try {
-            if (handleOnPost(request, response)) {
+
+            if (processRequest(request, response)) {
                 request.setAttribute("message", "Update successful");
                 useGuard.useAuth();
             } else {
                 request.setAttribute("messageError", "Update failed, please check on fields above");
             }
         } catch (Exception ex) {
-            Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserInfoServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
+        request.getRequestDispatcher(Routers.USER_INFO_PAGE).forward(request, response);
+
     }
 
     @Override

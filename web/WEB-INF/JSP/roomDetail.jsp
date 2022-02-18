@@ -1,4 +1,5 @@
 
+<%@page import="variables.Routers"%>
 <%@page import="entities.RoomDetail"%>
 <%@page import="entities.RoomType"%>
 <%@page import="entities.Room"%>
@@ -90,7 +91,7 @@
 
                                 <div class="border-t border-gray-200 mt-10 pt-10">
                                     <h3 class="text-xl font-medium text-gray-900 mb-4">Pick your time</h3>
-                                    <form action="RoomDetailServlet" method="POST" class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md" >
+                                    <form action="<%= Routers.ROOM_DETAIL_SERVLET%>" method="POST" class="flex flex-col mb-2 bg-rose-600 p-4 rounded-md" >
                                         <input type="text" value="<%= roomDetail.getRoom().getRoomId()%>" name="roomId" class="hidden">
 
                                         <div class="mb-2">

@@ -23,10 +23,6 @@ import repositories.HistoryDetailRepository;
 import repositories.HistoryRepository;
 import variables.UserRole;
 
-/**
- *
- * @author Kaine
- */
 @WebServlet(name = "BookingOrdersServlet", urlPatterns = {"/BookingOrdersServlet"})
 public class BookingOrdersServlet extends HttpServlet {
 

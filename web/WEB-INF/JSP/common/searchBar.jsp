@@ -1,4 +1,5 @@
-<form class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96" action="FilterServlet" method="POST">
+<%@page import="variables.Routers"%>
+<form class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96" action="<%= Routers.FILTER_SERVLET%>" method="POST">
 
     <label class="text-center text-white mb-4 text-2xl font-medium">Search filter</label>
     <div class="flex-1 flex justify-center px-2 lg:justify-end flex-col">
