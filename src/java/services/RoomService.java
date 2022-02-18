@@ -6,8 +6,12 @@
 package services;
 
 import entities.History;
+import entities.Room;
+import entities.RoomDetail;
 import java.sql.Date;
 import java.util.ArrayList;
+import repositories.HistoryRepository;
+import variables.roomStatus;
 
 /**
  *
@@ -15,37 +19,27 @@ import java.util.ArrayList;
  */
 public class RoomService {
 
-    public static boolean isValidDateBooking(Date inputCheckIn, Date inputCheckOut, ArrayList<History> histories) {
-        for (History history : histories) {
+    public static ArrayList<RoomDetail> filterRoomByDateBooking(ArrayList<RoomDetail> roomDetails, Date checkInDate, Date checkOutDate) throws Exception {
 
-            if (history.getStartDate().equals(inputCheckIn) || history.getEndDate().equals(inputCheckIn)) {
-                return false;
-            }
+        HistoryRepository historyRepository = new HistoryRepository();
 
-            if (history.getStartDate().equals(inputCheckOut) || history.getEndDate().equals(inputCheckOut)) {
-                return false;
-            }
-
-            if (inputCheckIn.after(history.getStartDate()) && (inputCheckIn.before(history.getEndDate()))) {
-                return false;
-            }
-
-            if (inputCheckOut.after(history.getStartDate()) && (inputCheckOut.before(history.getEndDate()))) {
-                return false;
-            }
-
-            if (inputCheckIn.after(history.getStartDate()) && (inputCheckIn.before(history.getEndDate()))) {
-                return false;
-            }
-
-            if (inputCheckOut.after(history.getStartDate()) && (inputCheckOut.before(history.getEndDate()))) {
-                return false;
+        for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
+            ArrayList<History> histories = historyRepository.getAllHistoryByRoomId(roomDetail.getRoom().getRoomId());
+            if (!histories.isEmpty() && !HistoryService.isValidDateBooking(histories, checkInDate, checkOutDate)) {
+                roomDetails.remove(roomDetail);
             }
         }
-        return true;
+
+        return roomDetails;
     }
 
-    public static boolean isValidDateInput(Date inputCheckIn, Date inputCheckOut) {
-        return inputCheckIn.before(inputCheckOut);
+    public static ArrayList<RoomDetail> filterRoomByStatus(ArrayList<RoomDetail> roomDetails, roomStatus.status status) {
+        for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
+            if (!roomDetail.getRoom().getRoomStatus().equals(status.toString())) {
+                roomDetails.remove(roomDetail);
+            }
+        }
+        return roomDetails;
     }
+
 }

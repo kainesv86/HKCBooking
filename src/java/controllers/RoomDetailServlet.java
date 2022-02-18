@@ -11,15 +11,15 @@ import entities.RoomType;
 import helper.GetVariable;
 import java.io.IOException;
 import java.sql.Date;
-import java.time.Duration;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
-import services.RoomService;
+import services.HistoryService;
 
 /**
  *
@@ -92,7 +92,7 @@ public class RoomDetailServlet extends HttpServlet {
         Date checkIn = Date.valueOf(startDate);
         Date checkOut = Date.valueOf(endDate);
 
-        if (!RoomService.isValidDateInput(checkIn, checkOut)) {
+        if (!HistoryService.isValidDateInput(checkIn, checkOut)) {
             session.setAttribute("message", "End date must greater than start date");
             return false;
         }
