@@ -5,31 +5,20 @@
  */
 package controllers;
 
-import entities.Room;
-import entities.RoomDetail;
-import entities.RoomType;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import repositories.RoomDetailRepository;
-import repositories.RoomRepository;
-import repositories.RoomTypeRepository;
-import services.RoomService;
-import variables.roomStatus;
 
 /**
  *
- * @author kaine
+ * @author Kaine
  */
-@WebServlet(name = "IndexServlet", urlPatterns = {"/IndexServlet"})
-public class IndexServlet extends HttpServlet {
+@WebServlet(name = "GetAllUserServlet", urlPatterns = {"/GetAllUserServlet"})
+public class GetAllUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,15 +29,21 @@ public class IndexServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected boolean handleGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-
-        RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
-        ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
-        roomDetails = RoomService.filterRoomByStatus(roomDetails, roomStatus.status.READY);
-
-        request.setAttribute("roomDetails", roomDetails);
-        return true;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet GetAllUserServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet GetAllUserServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,13 +58,21 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            if (handleGet(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/index.jsp").forward(request, response);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(IndexServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

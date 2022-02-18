@@ -5,8 +5,8 @@
  */
 package controllers;
 
-import entities.History;
-import entities.HistoryDetail;
+import entities.Room;
+import entities.RoomType;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
@@ -14,20 +14,22 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import repositories.HistoryDetailRepository;
-import repositories.HistoryRepository;
+import repositories.RoomRepository;
+import repositories.RoomTypeRepository;
 
 /**
  *
  * @author Kaine
  */
-@WebServlet(name = "HistoryServlet", urlPatterns = {"/HistoryServlet"})
-public class HistoryServlet extends HttpServlet {
+@WebServlet(name = "AddRoomServlet", urlPatterns = {"/AddRoomServlet"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1024, maxFileSize = 1024 * 1024 * 1024, maxRequestSize = 1024 * 1024 * 1024)
+public class AddRoomServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,42 +41,38 @@ public class HistoryServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        GetVariable gv = new GetVariable(request);
-        Integer historyId = gv.getInt("historyId", "History Id", 0, Integer.MAX_VALUE, null);
-        String note = gv.getString("note", "Note", 0, 500, "");
 
-        if (historyId == null || note == null) {
+        GetVariable gv = new GetVariable(request);
+        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
+        Float price = gv.getFloat("price", "price", 0, Float.MAX_VALUE, null);
+        String imageUrl = gv.getFile("imageUrl", "Room Image", 1080 * 1080);
+        String description = gv.getString("description", "desciption", 0, 500, "");
+
+        if (price == null || price == null || imageUrl == null || description == null) {
             return false;
         }
 
-        History history = new History();
-        history.setHistoryId(historyId);
-        history.setNote(note);
+        Room room = new Room();
+        room.setRoomTypeId(roomTypeId);
+        room.setPrice(price);
+        room.setUrlImage(imageUrl);
+        room.setDescription(description);
+        room.setRoomStatus("READY");
 
-        HistoryRepository historyRepo = new HistoryRepository();
-        historyRepo.updateHistoryByUser(history);
+        RoomRepository roomRepo = new RoomRepository();
+        roomRepo.addRoom(room);
 
         return true;
     }
 
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
+        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
+        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
+        request.setAttribute("roomTypes", roomTypes);
 
-        GetVariable gv = new GetVariable(request);
-        String status = gv.getString("status", "status", 0, 15, null);
-
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
-
-        HistoryDetailRepository historyDetailRepo = new HistoryDetailRepository();
-        ArrayList<HistoryDetail> list = historyDetailRepo.getHistoryDetailByUserId(userId, status);
-
-        if (status != null) {
-            request.setAttribute("location", status);
-        }
-        request.setAttribute("list", list);
         return true;
     }
 
@@ -97,13 +95,24 @@ public class HistoryServlet extends HttpServlet {
             return;
         }
 
-        try {
-            handleOnGet(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+        if (!useGuard.useRole("ADMIN")) {
+            response.sendRedirect("IndexServlet");
+            return;
         }
 
-        request.getRequestDispatcher("/WEB-INF/JSP/history.jsp").forward(request, response);
+        try {
+
+            handleOnGet(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+
+        } catch (Exception ex) {
+            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        request.getRequestDispatcher("/WEB-INF/JSP/addRoom.jsp").forward(request, response);
     }
 
     /**
@@ -117,22 +126,23 @@ public class HistoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        GetVariable gv = new GetVariable(request);
-        String location = gv.getString("location", "Location", 1, 15, null);
 
-        if (location == null || "null".equals(location)) {
-            location = "";
+        if (!handleOnPost(request, response)) {
+            request.setAttribute("message", "Add room failed");
         } else {
-            location = "?status=" + location;
+            request.setAttribute("message", "Add room successful");
         }
 
         try {
-            if (handleOnPost(request, response)) {
-                response.sendRedirect("HistoryServlet" + location);
-            }
+            RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
+            ArrayList<RoomType> roomTypes;
+            roomTypes = roomTypeRepo.getAllRoomType();
+            request.setAttribute("roomTypes", roomTypes);
         } catch (Exception ex) {
-            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        response.sendRedirect("AddRoomServlet");
     }
 
     /**

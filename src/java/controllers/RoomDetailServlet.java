@@ -7,27 +7,30 @@ package controllers;
 
 import entities.CartItem;
 import entities.Room;
+import entities.RoomDetail;
 import entities.RoomType;
 import helper.GetVariable;
 import java.io.IOException;
 import java.sql.Date;
-import java.time.Duration;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import repositories.RoomDetailRepository;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
+import services.HistoryService;
 
 /**
  *
@@ -46,7 +49,7 @@ public class RoomDetailServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
+    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
 
@@ -56,24 +59,23 @@ public class RoomDetailServlet extends HttpServlet {
             return false;
         }
 
-        RoomRepository roomRepo = new RoomRepository();
-        Room room = roomRepo.getRoomById(roomId);
-
-        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-        RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
+        RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
+        RoomDetail roomDetail = roomDetailRepo.getRoomDetailByRoomId(roomId);
+        if (roomDetail == null) {
+            return false;
+        }
 
         Date minCheckIn = new Date(System.currentTimeMillis());
         LocalDate minCheckOut = minCheckIn.toLocalDate().plusDays(1);
 
-        request.setAttribute("room", room);
-        request.setAttribute("roomType", roomType);
+        request.setAttribute("roomDetail", roomDetail);
         request.setAttribute("minCheckIn", minCheckIn.toString());
         request.setAttribute("minCheckOut", minCheckOut.toString());
 
         return true;
     }
 
-    protected boolean postHanlding(HttpServletRequest request, HttpServletResponse respone) throws Exception {
+    protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse respone) throws Exception {
 
         HttpSession session = request.getSession();
         GetVariable gv = new GetVariable(request);
@@ -91,9 +93,7 @@ public class RoomDetailServlet extends HttpServlet {
         Date checkIn = Date.valueOf(startDate);
         Date checkOut = Date.valueOf(endDate);
 
-        System.out.println(checkIn.compareTo(checkOut));
-
-        if (checkIn.compareTo(checkOut) >= 0) {
+        if (!HistoryService.isValidDateInput(checkIn, checkOut)) {
             session.setAttribute("message", "End date must greater than start date");
             return false;
         }
@@ -137,11 +137,13 @@ public class RoomDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (getHandler(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/roomDetail.jsp").forward(request, response);
+            if (!handleOnGet(request, response)) {
+                request.getRequestDispatcher("/WEB-INF/JSP/404Page.jsp").forward(request, response);
+                return;
             }
+            request.getRequestDispatcher("/WEB-INF/JSP/roomDetail.jsp").forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(RoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
+
         }
     }
 
@@ -157,7 +159,7 @@ public class RoomDetailServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (postHanlding(request, response)) {
+            if (handleOnPost(request, response)) {
 
             }
 

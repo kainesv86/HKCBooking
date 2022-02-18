@@ -10,6 +10,7 @@ import entities.HistoryDetail;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,16 +19,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import repositories.HistoryDetailRepository;
 import repositories.HistoryRepository;
+import variables.UserRole;
 
 /**
  *
  * @author Kaine
  */
-@WebServlet(name = "HistoryServlet", urlPatterns = {"/HistoryServlet"})
-public class HistoryServlet extends HttpServlet {
+@WebServlet(name = "BookingOrdersServlet", urlPatterns = {"/BookingOrdersServlet"})
+public class BookingOrdersServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,39 +44,37 @@ public class HistoryServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         GetVariable gv = new GetVariable(request);
         Integer historyId = gv.getInt("historyId", "History Id", 0, Integer.MAX_VALUE, null);
-        String note = gv.getString("note", "Note", 0, 500, "");
+        String historyStatus = gv.getString("historyStatus", "HistoryStatus", 1, 20, null);
+        String message = gv.getString("message", "Message", 0, 500, "");
 
-        if (historyId == null || note == null) {
+        if (historyId == null || historyStatus == null || message == null) {
             return false;
         }
 
         History history = new History();
         history.setHistoryId(historyId);
-        history.setNote(note);
+        history.setMessage(message);
+        history.setHistoryStatus(historyStatus);
 
         HistoryRepository historyRepo = new HistoryRepository();
-        historyRepo.updateHistoryByUser(history);
+        historyRepo.updateHistoryByAdmin(history);
 
         return true;
     }
 
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
-
         GetVariable gv = new GetVariable(request);
         String status = gv.getString("status", "status", 0, 15, null);
-
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
-
         HistoryDetailRepository historyDetailRepo = new HistoryDetailRepository();
-        ArrayList<HistoryDetail> list = historyDetailRepo.getHistoryDetailByUserId(userId, status);
+        ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(status);
 
         if (status != null) {
             request.setAttribute("location", status);
         }
         request.setAttribute("list", list);
         return true;
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -90,10 +89,16 @@ public class HistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         UseGuard useGuard = new UseGuard(request, response);
 
         if (!useGuard.useAuth()) {
             response.sendRedirect("LoginServlet");
+            return;
+        }
+
+        if (!useGuard.useRole("ADMIN")) {
+            response.sendRedirect("IndexServlet");
             return;
         }
 
@@ -102,8 +107,7 @@ public class HistoryServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        request.getRequestDispatcher("/WEB-INF/JSP/history.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/JSP/bookingOrders.jsp").forward(request, response);
     }
 
     /**
@@ -128,11 +132,12 @@ public class HistoryServlet extends HttpServlet {
 
         try {
             if (handleOnPost(request, response)) {
-                response.sendRedirect("HistoryServlet" + location);
+                response.sendRedirect("BookingOrdersServlet" + location);
             }
         } catch (Exception ex) {
             Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     /**

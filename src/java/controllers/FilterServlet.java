@@ -5,31 +5,29 @@
  */
 package controllers;
 
-import entities.Room;
 import entities.RoomDetail;
-import entities.RoomType;
+import helper.GetVariable;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.RoomDetailRepository;
-import repositories.RoomRepository;
-import repositories.RoomTypeRepository;
 import services.RoomService;
-import variables.roomStatus;
 
 /**
  *
- * @author kaine
+ * @author Kaine
  */
-@WebServlet(name = "IndexServlet", urlPatterns = {"/IndexServlet"})
-public class IndexServlet extends HttpServlet {
+@WebServlet(name = "FilterServlet", urlPatterns = {"/FilterServlet"})
+public class FilterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,15 +38,27 @@ public class IndexServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected boolean handleGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
+        response.setContentType("text/html;charset=UTF-8");
+        GetVariable gv = new GetVariable(request);
+        String roomName = gv.getString("roomName", "Room name", 0, 256, "");
+        String checkIn = gv.getString("checkIn", "Check In", 0, 30, null);
+        String checkOut = gv.getString("checkOut", "Check In", 0, 30, null);
+        Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, null);
+        Float maxPrice = gv.getFloat("maxPrice", "Max Price", 0, Float.MAX_VALUE, null);
 
         RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
+
         ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
-        roomDetails = RoomService.filterRoomByStatus(roomDetails, roomStatus.status.READY);
+
+        if (checkIn != null && checkOut != null) {
+            Date checkInDate = Date.valueOf(checkIn);
+            Date checkOutDate = Date.valueOf(checkOut);
+            roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkInDate, checkOutDate);
+        }
 
         request.setAttribute("roomDetails", roomDetails);
-        return true;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -64,11 +74,29 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (handleGet(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/index.jsp").forward(request, response);
-            }
+            processRequest(request, response);
+            request.getRequestDispatcher("/WEB-INF/JSP/filter.jsp").forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(IndexServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FilterServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            processRequest(request, response);
+            request.getRequestDispatcher("/WEB-INF/JSP/filter.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(FilterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
