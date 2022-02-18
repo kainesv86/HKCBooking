@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.User;
+import guard.UseGuard;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.UserRepository;
+import variables.Routers;
 
 /**
  *
@@ -37,7 +39,7 @@ public class GetAllUserServlet extends HttpServlet {
 
         UserRepository ur = new UserRepository();
         ArrayList<User> listUser = ur.getAllUserList();
-        request.setAttribute("listUser", ur);
+        request.setAttribute("User", listUser);
         return true;
     }
 
@@ -53,6 +55,17 @@ public class GetAllUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (!useGuard.useAuth()) {
+            response.sendRedirect(Routers.LOGIN_SERVLET);
+            return;
+        }
+
+        if (!useGuard.useRole("ADMIN")) {
+            response.sendRedirect(Routers.INDEX_SERVLET);
+            return;
+        }
         try {
             if (processRequest(request, response)) {
                 request.getRequestDispatcher("/WEB-INF/JSP/allUserList.jsp").forward(request, response);
