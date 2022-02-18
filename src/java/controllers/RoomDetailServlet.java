@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
+import services.RoomService;
 
 /**
  *
@@ -91,9 +92,7 @@ public class RoomDetailServlet extends HttpServlet {
         Date checkIn = Date.valueOf(startDate);
         Date checkOut = Date.valueOf(endDate);
 
-        System.out.println(checkIn.compareTo(checkOut));
-
-        if (checkIn.compareTo(checkOut) >= 0) {
+        if (!RoomService.isValidDateInput(checkIn, checkOut)) {
             session.setAttribute("message", "End date must greater than start date");
             return false;
         }
