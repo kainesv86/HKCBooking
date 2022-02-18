@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String fullname = (String) session.getAttribute("fullname");
@@ -7,7 +8,7 @@
     <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
             <div class="flex items-center px-2 lg:px-0">
-                <a class="flex items-center" href="IndexServlet">
+                <a class="flex items-center" href="<%= Routers.INDEX_SERVLET%>">
                     <div class="w-10 h-10">
                         <svg  viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_512_6848)">
@@ -27,8 +28,8 @@
                 <div class="hidden lg:block lg:ml-6">
                     <div class="flex space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <% if (userRole != null && userRole.equals("ADMIN")) { %>
-                        <a href="BookingOrdersServlet" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Switch to Admin page</a>
+                        <% if (userRole != null && userRole.equals("ADMIN")) {%>
+                        <a href="<%= Routers.BOOKING_ORDERS_SERVLET%>" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Switch to Admin page</a>
                         <% }%>
                     </div>
                 </div>
@@ -84,9 +85,9 @@
                                             </button>
                                             <div class="z-index-10 group-focus:block hover:block hidden absolute right-0 top-3/4 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none group-hover:block bg-gray-100 z-10" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                                 <!-- Active: "bg-gray-100", Not Active: "" -->
-                                                <a href="UserInfoServlet" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-tl-md rounded-tr-md" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                                <a href="HistoryServlet" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-1">Booking History</a>
-                                                <a href="LogoutServlet" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-bl-md rounded-br-md" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                                <a href="<%= Routers.USER_INFO_SERVLET%>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-tl-md rounded-tr-md" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                                <a href="<%= Routers.HISTORY_SERVLET%>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-1">Booking History</a>
+                                                <a href="<%= Routers.LOGOUT_SERVLET%>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-bl-md rounded-br-md" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                                             </div>
                                         </div>
 

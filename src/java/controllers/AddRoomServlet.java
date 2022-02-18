@@ -19,27 +19,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
+import variables.Routers;
 
-/**
- *
- * @author Kaine
- */
-@WebServlet(name = "AddRoomServlet", urlPatterns = {"/AddRoomServlet"})
+@WebServlet(name = "AddRoomServlet", urlPatterns = {"/" + Routers.ADD_ROOM_SERVLET})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1024, maxFileSize = 1024 * 1024 * 1024, maxRequestSize = 1024 * 1024 * 1024)
 public class AddRoomServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -76,43 +63,28 @@ public class AddRoomServlet extends HttpServlet {
         return true;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UseGuard useGuard = new UseGuard(request, response);
 
         if (!useGuard.useAuth()) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect(Routers.LOGIN_SERVLET);
             return;
         }
 
         if (!useGuard.useRole("ADMIN")) {
-            response.sendRedirect("IndexServlet");
+            response.sendRedirect(Routers.INDEX_SERVLET);
             return;
         }
 
         try {
-
             handleOnGet(request, response);
         } catch (Exception ex) {
             Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        try {
-
-        } catch (Exception ex) {
-            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        request.getRequestDispatcher("/WEB-INF/JSP/addRoom.jsp").forward(request, response);
+        request.getRequestDispatcher(Routers.ADD_ROOM_PAGE).forward(request, response);
     }
 
     /**

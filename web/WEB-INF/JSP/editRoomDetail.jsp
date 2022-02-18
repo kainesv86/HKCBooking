@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@page import="variables.roomStatus"%>
 <%@page import="entities.Room"%>
 <%@page import="entities.RoomType"%>
@@ -20,12 +21,12 @@
             <jsp:include page="./common/Sidebar.jsp"></jsp:include>
                 <div class="bg-gray-100 flex-1 py-20 justify-center flex items-center">
                     <form
-                        action="EditRoomDetailServlet" method="POST"
-                        enctype="multipart/form-data"
-                        class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
-                        >
+                        action="<%= Routers.EDIT_ROOM_DETAIL_SERVLET%>" method="POST"
+                    enctype="multipart/form-data"
+                    class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
+                    >
 
-                        <input value="<%= room.getRoomId()%>" readonly name="roomId" class="hidden"/>
+                    <input value="<%= room.getRoomId()%>" readonly name="roomId" class="hidden"/>
                     <div class="space-y-8 divide-y divide-gray-200">
                         <div>
                             <div>
@@ -80,7 +81,7 @@
 
                         <div class="pt-5">
                             <div class="flex justify-end">
-                                <a href="EditRoomServlet" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">Cancel</a>
+                                <a href="<%= Routers.EDIT_ROOM_SERVLET%>" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">Cancel</a>
                                 <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">Update</button>
                             </div>
                         </div>

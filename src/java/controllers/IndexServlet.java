@@ -17,13 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.RoomDetailRepository;
 import services.RoomService;
+import variables.Routers;
 import variables.roomStatus;
 
-/**
- *
- * @author kaine
- */
-@WebServlet(name = "IndexServlet", urlPatterns = {"/IndexServlet"})
+@WebServlet(name = "IndexServlet", urlPatterns = {"/" + Routers.INDEX_SERVLET})
 public class IndexServlet extends HttpServlet {
 
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +39,7 @@ public class IndexServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             if (handleOnGet(request, response)) {
-                request.getRequestDispatcher("/WEB-INF/JSP/index.jsp").forward(request, response);
+                request.getRequestDispatcher(Routers.INDEX_PAGE).forward(request, response);
             }
         } catch (Exception ex) {
             Logger.getLogger(IndexServlet.class.getName()).log(Level.SEVERE, null, ex);

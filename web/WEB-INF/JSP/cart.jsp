@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@page import="entities.User"%>
 <%@page import="entities.CartItem"%>
 <%@page import="java.util.ArrayList"%>
@@ -33,7 +34,6 @@
                                         <%
                                             for (int index = 0; index < cart.size(); index++) {
                                         %>
-
                                         <jsp:include page="./Components/CartItem.jsp">
                                             <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
                                             <jsp:param name="startDate" value="<%= cart.get(index).getStartDate()%>" />
@@ -42,8 +42,6 @@
                                             <jsp:param name="index" value="<%= index%>"/>
                                         </jsp:include>
                                         <% }%>
-
-
                                     </ul>
                                 </c:when>
                                 <c:otherwise>
@@ -63,25 +61,12 @@
 
                         <!-- Order summary -->
                         <section aria-labelledby="summary-heading" class="mt-10">
-                            <!-- <h2 id="summary-heading" class="sr-only">Order summary</h2> -->
 
-                            <!-- <div>
-                              <dl class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                  <dt class="text-base font-medium text-gray-900">Subtotal</dt>
-                                  <dd class="ml-4 text-base font-medium text-gray-900">$96.00</dd>
-                                </div>
-                              </dl>
-                              <p class="mt-1 text-sm text-gray-500">Shipping and taxes will be calculated at checkout.</p>
-                            </div> -->
 
-                            <!-- <div class="mt-10">
-                              <button type="submit" class="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500">Checkout</button>
-                            </div> -->
 
                             <div class="mt-6 text-sm text-center">
                                 <p>
-                                    or <a href="IndexServlet" class="text-rose-600 font-medium hover:text-rose-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
+                                    or <a href="<%=Routers.INDEX_SERVLET%>" class="text-rose-600 font-medium hover:text-rose-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
                                 </p>
                             </div>
                         </section>

@@ -8,9 +8,7 @@ package controllers;
 import entities.RoomDetail;
 import helper.GetVariable;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,23 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.RoomDetailRepository;
 import services.RoomService;
+import variables.Routers;
 
-/**
- *
- * @author Kaine
- */
-@WebServlet(name = "FilterServlet", urlPatterns = {"/FilterServlet"})
+@WebServlet(name = "FilterServlet", urlPatterns = {"/" + Routers.FILTER_SERVLET})
 public class FilterServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
@@ -61,50 +47,28 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("roomDetails", roomDetails);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-            request.getRequestDispatcher("/WEB-INF/JSP/filter.jsp").forward(request, response);
+            request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(FilterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-            request.getRequestDispatcher("/WEB-INF/JSP/filter.jsp").forward(request, response);
+            request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(FilterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

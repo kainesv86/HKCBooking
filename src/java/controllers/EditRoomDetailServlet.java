@@ -21,12 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
+import variables.Routers;
 
-/**
- *
- * @author Kaine
- */
-@WebServlet(name = "EditRoomDetailServlet", urlPatterns = {"/EditRoomDetailServlet"})
+@WebServlet(name = "EditRoomDetailServlet", urlPatterns = {"/" + Routers.EDIT_ROOM_DETAIL_SERVLET})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1024, maxFileSize = 1024 * 1024 * 1024, maxRequestSize = 1024 * 1024 * 1024)
 public class EditRoomDetailServlet extends HttpServlet {
 
@@ -82,43 +79,30 @@ public class EditRoomDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             if (handlOnGet(request, response)) {
-                request.getRequestDispatcher("WEB-INF/JSP/editRoomDetail.jsp").forward(request, response);
+                request.getRequestDispatcher(Routers.EDIT_ROOM_DETAIL_PAGE).forward(request, response);
             }
         } catch (Exception ex) {
             Logger.getLogger(EditRoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             if (handlOnPost(request, response)) {
-                response.sendRedirect("EditRoomServlet");
+                response.sendRedirect(Routers.EDIT_ROOM_SERVLET);
                 return;
             }
             Integer roomId = (Integer) request.getAttribute("roomId");
 
-            response.sendRedirect("EditRoomDetailServlet?roomId" + roomId);
+            response.sendRedirect(Routers.EDIT_ROOM_DETAIL_SERVLET + "?roomId" + roomId);
 
         } catch (Exception ex) {
             Logger.getLogger(EditRoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

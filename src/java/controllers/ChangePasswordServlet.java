@@ -9,7 +9,6 @@ import entities.User;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,20 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.UserRepository;
+import variables.Routers;
 
-@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/ChangePasswordServlet"})
+@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/" + Routers.CHANGE_PASSWORD_SERVLET})
 public class ChangePasswordServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
@@ -62,43 +53,24 @@ public class ChangePasswordServlet extends HttpServlet {
                 return true;
             }
 
-        } catch (SQLException e) {
-            System.out.println(e);
         } catch (Exception e) {
-            System.out.println(e);
+            return false;
         }
         return false;
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UseGuard useGuard = new UseGuard(request, response);
         if (!useGuard.useAuth()) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect(Routers.LOGIN_PAGE);
             return;
         }
 
-        request.getRequestDispatcher("WEB-INF/JSP/changePassword.jsp").forward(request, response);
+        request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -106,7 +78,7 @@ public class ChangePasswordServlet extends HttpServlet {
         UseGuard useGuard = new UseGuard(request, response);
 
         try {
-            if (processRequest(request, response)) {
+            if (handleOnPost(request, response)) {
                 request.setAttribute("message", "Update successful");
                 useGuard.useAuth();
             } else {
@@ -115,14 +87,9 @@ public class ChangePasswordServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        request.getRequestDispatcher("WEB-INF/JSP/changePassword.jsp").forward(request, response);
+        request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
