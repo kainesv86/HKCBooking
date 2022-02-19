@@ -24,7 +24,7 @@ import variables.Routers;
 @WebServlet(name = "FilterServlet", urlPatterns = {"/" + Routers.FILTER_SERVLET})
 public class FilterServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void handleOnPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         GetVariable gv = new GetVariable(request);
@@ -61,13 +61,37 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("minCheckIn", minCheckIn.toString());
         request.setAttribute("minCheckOut", minCheckOut.toString());
         request.setAttribute("roomDetails", roomDetails);
+        request.setAttribute("currentPage", 1);
+    }
+
+    protected void handleOnGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
+        GetVariable gv = new GetVariable(request);
+
+        Integer currentPage = gv.getInt("page", "Page", 1, Integer.MAX_VALUE, 1);
+        currentPage = currentPage != null ? currentPage : 1;
+        System.out.println(currentPage);
+        request.setAttribute("currentPage", currentPage);
+
+        HttpSession session = request.getSession();
+        ArrayList<RoomDetail> roomDetailsClone = (ArrayList<RoomDetail>) session.getAttribute("roomDetailsClone");
+
+        if (roomDetailsClone == null) {
+            RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
+            ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
+            roomDetailsClone = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
+        }
+
+        System.out.println(roomDetailsClone.size());
+
+        request.setAttribute("roomDetails", roomDetailsClone);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+            handleOnGet(request, response);
             request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
@@ -78,9 +102,10 @@ public class FilterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+            handleOnPost(request, response);
             request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
+            ex.printStackTrace();
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }

@@ -26,7 +26,9 @@ public class RoomService {
 
         for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
             ArrayList<History> histories = historyRepository.getAllHistoryByRoomId(roomDetail.getRoom().getRoomId());
+
             histories = HistoryService.filterHistoryByStatus(histories, HistoryStatus.status.CANCEL, false);
+
             if (!histories.isEmpty() && !HistoryService.isValidDateBooking(histories, checkInDate, checkOutDate)) {
                 roomDetails.remove(roomDetail);
             }
@@ -48,7 +50,7 @@ public class RoomService {
 
         if (minValue != null) {
             for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
-                if (roomDetail.getRoom().getPrice() <= minValue) {
+                if (roomDetail.getRoom().getPrice() < minValue) {
                     roomDetails.remove(roomDetail);
                 }
 
@@ -56,7 +58,7 @@ public class RoomService {
         }
         if (maxValue != null) {
             for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
-                if (roomDetail.getRoom().getPrice() >= maxValue) {
+                if (roomDetail.getRoom().getPrice() > maxValue) {
                     roomDetails.remove(roomDetail);
                 }
 
