@@ -101,7 +101,6 @@ public class AddRoomServlet extends HttpServlet {
         }
 
         try {
-
             handleOnGet(request, response);
         } catch (Exception ex) {
             Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
