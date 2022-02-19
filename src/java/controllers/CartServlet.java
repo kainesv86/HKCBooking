@@ -39,7 +39,7 @@ public class CartServlet extends HttpServlet {
                 User user = userRepo.getUserByUserId(userId);
                 session.setAttribute("user", user);
             } catch (Exception ex) {
-                Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             }
 
         }
@@ -92,35 +92,36 @@ public class CartServlet extends HttpServlet {
 
         History history = new History(userId, userId, message, historyStatus, fullname, phone, address, roomId, startDate, endDate, note, total);
         HistoryRepository historyRepo = new HistoryRepository();
-        historyRepo.addHistory(history);
+        return historyRepo.addHistory(history);
 
-        return true;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        handleOnGet(request, response);
-        request.getRequestDispatcher(Routers.CART_PAGE).forward(request, response);
+        if (handleOnGet(request, response)) {
+            request.getRequestDispatcher(Routers.CART_PAGE).forward(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            handleOnPost(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(CartServlet.class.getName()).log(Level.SEVERE, null, ex);
+            if (!handleOnPost(request, response)) {
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
+                return;
+            };
+            HttpSession session = request.getSession();
+
+            ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
+
+            request.setAttribute("cart", cart);
+
+            request.getRequestDispatcher(Routers.CART_PAGE).forward(request, response);
+        } catch (Exception e) {
+            request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
         }
-        HttpSession session = request.getSession();
-
-        ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
-
-        request.setAttribute("cart", cart);
-
-        request.getRequestDispatcher(Routers.CART_PAGE).forward(request, response);
     }
 
     /**

@@ -90,12 +90,10 @@ public class RegisterServlet extends HttpServlet {
                 response.sendRedirect(Routers.LOGIN_SERVLET);
                 return;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
+        } catch (Exception e) {
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
-        request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
     }
 
     @Override

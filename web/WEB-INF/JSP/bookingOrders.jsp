@@ -2,7 +2,7 @@
 
 <%@page import="variables.Routers"%>
 <%@page import="org.apache.tomcat.util.codec.binary.StringUtils"%>
-<%@page import="variables.historyStatus"%>
+<%@page import="variables.HistoryStatus"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entities.HistoryDetail"%>
@@ -17,7 +17,7 @@
     <body>
 
         <%
-            ArrayList<HistoryDetail> list = (ArrayList<HistoryDetail>) request.getAttribute("list");
+            ArrayList<HistoryDetail> historyDetails = (ArrayList<HistoryDetail>) request.getAttribute("historyDetails");
             String location = (String) request.getAttribute("location");
         %>
         <div class="flex min-h-screen">
@@ -52,40 +52,41 @@
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
-                                        <%                                            for (int index = 0; index < list.size(); index++) {
+                                        <%
+                                            for (HistoryDetail historyDetail : historyDetails) {
                                         %>
                                         <tr>
                                     <form action="<%= Routers.BOOKING_ORDERS_SERVLET%>" method="POST">
-                                        <input name="historyId" value="<%= list.get(index).getHistory().getHistoryId()%>" class="hidden">
+                                        <input name="historyId" value="<%= historyDetail.getHistory().getHistoryId()%>" class="hidden">
                                         <input name="location" value="<%= location%>" class="hidden">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-20 w-20">
-                                                    <img class="h-20 w-20" src="<%= list.get(index).getRoom().getUrlImage()%>" alt="" />
+                                                    <img class="h-20 w-20" src="<%= historyDetail.getRoom().getUrlImage()%>" alt="" />
                                                 </div>
                                                 <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900"><%= list.get(index).getRoomType().getRoomName()%></div>
-                                                    <div class="text-sm text-gray-500"><%= list.get(index).getHistory().getTotal()%>$</div>
-                                                    <div class="text-sm text-gray-500"><%= list.get(index).getHistory().getStartDate()%> ~ <%= list.get(index).getHistory().getEndDate()%></div>
+                                                    <div class="text-sm font-medium text-gray-900"><%= historyDetail.getRoomType().getRoomName()%></div>
+                                                    <div class="text-sm text-gray-500"><%= historyDetail.getHistory().getTotal()%>$</div>
+                                                    <div class="text-sm text-gray-500"><%= historyDetail.getHistory().getStartDate()%> ~ <%= historyDetail.getHistory().getEndDate()%></div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900"><%= list.get(index).getHistory().getFullname()%></div>
-                                            <div class="text-sm text-gray-500"><%= list.get(index).getHistory().getAddress()%></div>
-                                            <div class="text-sm text-gray-900"><%= list.get(index).getHistory().getPhone()%></div>
+                                            <div class="text-sm text-gray-900"><%= historyDetail.getHistory().getFullname()%></div>
+                                            <div class="text-sm text-gray-500"><%= historyDetail.getHistory().getAddress()%></div>
+                                            <div class="text-sm text-gray-900"><%= historyDetail.getHistory().getPhone()%></div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <p class="text-sm text-gray-900 w-48 text-justify"><%= list.get(index).getHistory().getNote()%></p>
+                                            <p class="text-sm text-gray-900 w-48 text-justify"><%= historyDetail.getHistory().getNote()%></p>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <textarea rows="4" name="message" id="message" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getMessage()%></textarea>
+                                            <textarea rows="4" name="message" id="message" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= historyDetail.getHistory().getMessage()%></textarea>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <select id="historyStatus" name="historyStatus" class="cursor-pointer mt-1 block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                                 <%
-                                                    for (historyStatus.status status : historyStatus.status.values()) {
-                                                        if (status.toString().equals(list.get(index).getHistory().getHistoryStatus())) {
+                                                    for (HistoryStatus.status status : HistoryStatus.status.values()) {
+                                                        if (status.toString().equals(historyDetail.getHistory().getHistoryStatus())) {
                                                 %>
                                                 <option value="<%= status.toString()%>" selected class="cursor-pointer"><%= status.toString()%></option>
                                                 <%

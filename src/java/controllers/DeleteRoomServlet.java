@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.History;
+import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 import java.sql.Date;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import repositories.HistoryRepository;
 import repositories.RoomRepository;
 import variables.Routers;
+import variables.UserRole;
 
 @WebServlet(name = "DeleteRoomServlet", urlPatterns = {"/" + Routers.DELETE_ROOM_SERVLET})
 public class DeleteRoomServlet extends HttpServlet {
@@ -50,9 +52,20 @@ public class DeleteRoomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            UseGuard useGuard = new UseGuard(request, response);
+
+            if (!useGuard.useAuth()) {
+                response.sendRedirect(Routers.LOGIN_SERVLET);
+                return;
+            }
+
+            if (!useGuard.useRole(UserRole.role.ADMIN)) {
+                response.sendRedirect(Routers.INDEX_SERVLET);
+                return;
+            }
             processRequest(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(DeleteRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 
@@ -60,9 +73,20 @@ public class DeleteRoomServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            UseGuard useGuard = new UseGuard(request, response);
+
+            if (!useGuard.useAuth()) {
+                response.sendRedirect(Routers.LOGIN_SERVLET);
+                return;
+            }
+
+            if (!useGuard.useRole(UserRole.role.ADMIN)) {
+                response.sendRedirect(Routers.INDEX_SERVLET);
+                return;
+            }
             processRequest(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(DeleteRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 

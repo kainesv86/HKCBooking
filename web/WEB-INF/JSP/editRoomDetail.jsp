@@ -1,5 +1,5 @@
 <%@page import="variables.Routers"%>
-<%@page import="variables.roomStatus"%>
+<%@page import="variables.RoomStatus"%>
 <%@page import="entities.Room"%>
 <%@page import="entities.RoomType"%>
 <%@page import="java.util.ArrayList"%>
@@ -71,7 +71,7 @@
                             <label for="roomStatus" class="block text-sm font-medium text-gray-700">Room Status</label>
                             <select id="roomStatus" name="roomStatus" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                 <%
-                                    for (roomStatus.status status : roomStatus.status.values()) {
+                                    for (RoomStatus.status status : RoomStatus.status.values()) {
                                 %>
                                 <option value="<%= status.toString()%>" <% if (status.toString().equals(room.getRoomStatus())) { %> selected <% }%> ><%= status.toString()%></option>
                                 <% }%>

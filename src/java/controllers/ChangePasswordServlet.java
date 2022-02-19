@@ -84,10 +84,10 @@ public class ChangePasswordServlet extends HttpServlet {
             } else {
                 request.setAttribute("messageError", "Update failed, please check on fields above");
             }
+            request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
-        request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
     }
 
     @Override

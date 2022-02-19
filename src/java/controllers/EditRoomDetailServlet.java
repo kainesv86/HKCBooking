@@ -7,12 +7,11 @@ package controllers;
 
 import entities.Room;
 import entities.RoomType;
+import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 import variables.Routers;
+import variables.UserRole;
 
 @WebServlet(name = "EditRoomDetailServlet", urlPatterns = {"/" + Routers.EDIT_ROOM_DETAIL_SERVLET})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1024, maxFileSize = 1024 * 1024 * 1024, maxRequestSize = 1024 * 1024 * 1024)
@@ -78,11 +78,13 @@ public class EditRoomDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (handlOnGet(request, response)) {
-                request.getRequestDispatcher(Routers.EDIT_ROOM_DETAIL_PAGE).forward(request, response);
+            if (!handlOnGet(request, response)) {
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
+                return;
             }
+            request.getRequestDispatcher(Routers.EDIT_ROOM_DETAIL_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(EditRoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 
@@ -90,6 +92,18 @@ public class EditRoomDetailServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            UseGuard useGuard = new UseGuard(request, response);
+
+            if (!useGuard.useAuth()) {
+                response.sendRedirect(Routers.LOGIN_SERVLET);
+                return;
+            }
+
+            if (!useGuard.useRole(UserRole.role.ADMIN)) {
+                response.sendRedirect(Routers.INDEX_SERVLET);
+                return;
+            }
+
             if (handlOnPost(request, response)) {
                 response.sendRedirect(Routers.EDIT_ROOM_SERVLET);
                 return;
@@ -99,7 +113,8 @@ public class EditRoomDetailServlet extends HttpServlet {
             response.sendRedirect(Routers.EDIT_ROOM_DETAIL_SERVLET + "?roomId" + roomId);
 
         } catch (Exception ex) {
-            Logger.getLogger(EditRoomDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 

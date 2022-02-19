@@ -77,10 +77,10 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(Routers.INDEX_SERVLET);
                 return;
             }
+            request.getRequestDispatcher(Routers.LOGIN_PAGE).forward(request, response);
         } catch (Exception ex) {
-            System.out.println("Something got error");
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
-        request.getRequestDispatcher(Routers.LOGIN_PAGE).forward(request, response);
     }
 
     @Override

@@ -10,21 +10,21 @@ import helper.GetVariable;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import repositories.RoomDetailRepository;
 import services.RoomService;
+import variables.RoomStatus;
 import variables.Routers;
 
 @WebServlet(name = "FilterServlet", urlPatterns = {"/" + Routers.FILTER_SERVLET})
 public class FilterServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void handleOnPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         GetVariable gv = new GetVariable(request);
@@ -38,23 +38,63 @@ public class FilterServlet extends HttpServlet {
 
         ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
 
+        roomDetails = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
+
         if (checkIn != null && checkOut != null) {
             Date checkInDate = Date.valueOf(checkIn);
             Date checkOutDate = Date.valueOf(checkOut);
             roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkInDate, checkOutDate);
         }
 
+        roomDetails = RoomService.filterRoomByName(roomDetails, roomName);
+        roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
+
+        HttpSession session = request.getSession();
+        Date minCheckIn = (Date) session.getAttribute("minCheckIn");
+        Date minCheckOut = (Date) session.getAttribute("minCheckOut");
+
+        if (minCheckIn == null || minCheckOut == null) {
+            minCheckIn = new Date(System.currentTimeMillis());
+            minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
+        }
+
+        request.setAttribute("minCheckIn", minCheckIn.toString());
+        request.setAttribute("minCheckOut", minCheckOut.toString());
         request.setAttribute("roomDetails", roomDetails);
+        request.setAttribute("currentPage", 1);
+    }
+
+    protected void handleOnGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
+        GetVariable gv = new GetVariable(request);
+
+        Integer currentPage = gv.getInt("page", "Page", 1, Integer.MAX_VALUE, 1);
+        currentPage = currentPage != null ? currentPage : 1;
+        System.out.println(currentPage);
+        request.setAttribute("currentPage", currentPage);
+
+        HttpSession session = request.getSession();
+        ArrayList<RoomDetail> roomDetailsClone = (ArrayList<RoomDetail>) session.getAttribute("roomDetailsClone");
+
+        if (roomDetailsClone == null) {
+            RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
+            ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
+            roomDetailsClone = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
+        }
+
+        System.out.println(roomDetailsClone.size());
+
+        request.setAttribute("roomDetails", roomDetailsClone);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+            handleOnGet(request, response);
             request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(FilterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 
@@ -62,10 +102,11 @@ public class FilterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+            handleOnPost(request, response);
             request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(FilterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 

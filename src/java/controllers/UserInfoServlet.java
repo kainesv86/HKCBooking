@@ -89,10 +89,10 @@ public class UserInfoServlet extends HttpServlet {
             } else {
                 request.setAttribute("messageError", "Update failed, please check on fields above");
             }
+            request.getRequestDispatcher(Routers.USER_INFO_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(UserInfoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
-        request.getRequestDispatcher(Routers.USER_INFO_PAGE).forward(request, response);
 
     }
 

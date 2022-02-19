@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 import variables.Routers;
+import variables.UserRole;
 
 @WebServlet(name = "AddRoomServlet", urlPatterns = {"/" + Routers.ADD_ROOM_SERVLET})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1024, maxFileSize = 1024 * 1024 * 1024, maxRequestSize = 1024 * 1024 * 1024)
@@ -49,9 +50,8 @@ public class AddRoomServlet extends HttpServlet {
         room.setRoomStatus("READY");
 
         RoomRepository roomRepo = new RoomRepository();
-        roomRepo.addRoom(room);
 
-        return true;
+        return roomRepo.addRoom(room);
     }
 
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
@@ -73,18 +73,21 @@ public class AddRoomServlet extends HttpServlet {
             return;
         }
 
-        if (!useGuard.useRole("ADMIN")) {
+        if (!useGuard.useRole(UserRole.role.ADMIN)) {
             response.sendRedirect(Routers.INDEX_SERVLET);
             return;
         }
 
         try {
-            handleOnGet(request, response);
+            if (!handleOnGet(request, response)) {
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
+                return;
+            }
+            request.getRequestDispatcher(Routers.ADD_ROOM_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
 
-        request.getRequestDispatcher(Routers.ADD_ROOM_PAGE).forward(request, response);
     }
 
     /**
