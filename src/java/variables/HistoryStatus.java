@@ -9,7 +9,7 @@ package variables;
  *
  * @author Kaine
  */
-public class historyStatus {
+public class HistoryStatus {
 
     public static enum status {
         PENDING,

@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@page import="repositories.UserRepository"%>
 <%@page import="entities.User"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -24,7 +25,7 @@
             <p class="mt-1 text-sm text-gray-500">Check Out: ${param.endDate}</p>
         </div>
 
-        <form action="CartServlet" method="POST" class="flex flex-col">
+        <form action="<%= Routers.CART_SERVLET%>" method="POST" class="flex flex-col">
             <% if (user != null) {%>
             <div class="mt-4">
 
@@ -55,7 +56,7 @@
                 <input type="text" value="${param.index}" name="index" class="hidden">
                 <c:choose>
                     <c:when test="<%= userId == null%>">
-                        <a href="LoginServlet" class="text-sm font-medium cursor-pointer text-rose-600 hover:text-rose-500">You need to login before booking</a>
+                        <a href="<%=Routers.LOGIN_SERVLET%>" class="text-sm font-medium cursor-pointer text-rose-600 hover:text-rose-500">You need to login before booking</a>
                     </c:when>
                     <c:otherwise>
                         <p class="flex items-center text-sm text-gray-700 space-x-2">
@@ -64,17 +65,11 @@
                         </p>
                     </c:otherwise>
                 </c:choose>
-                <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="RemoveCartItem?index=${param.index}">
+                <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="<%=Routers.REMOVE_CART_ITEM_SERVLET%>=${param.index}">
                     <span>Remove</span>
                 </a>
 
             </div>
-
-
-
-
-
-
         </form>
     </div>
 </li>

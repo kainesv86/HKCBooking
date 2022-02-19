@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%
     String fullname = (String) session.getAttribute("fullname");
 %>
@@ -5,7 +6,7 @@
     <!-- Sidebar component, swap this element with another sidebar if you like -->
     <div class="flex-1 flex flex-col min-h-0 bg-rose-600 px-2">
         <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-            <a class="flex items-center ml-2" href="IndexServlet">
+            <a class="flex items-center ml-2" href="<%=Routers.INDEX_SERVLET%>">
                 <div class="w-10 h-10">
                     <svg  viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_512_6848)">
@@ -24,20 +25,20 @@
             </a>
             <nav class="mt-5 flex-1 px-2 space-y-1">
                 <!-- Current: "bg-indigo-800 text-white", Default: "text-white hover:bg-indigo-600 hover:bg-opacity-75" -->
-                <a href="BookingOrdersServlet" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
+                <a href="<%=Routers.BOOKING_ORDERS_SERVLET%>" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
                     <svg class="mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-800 " width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7 15H14V17H7V15ZM7 11H17V13H7V11ZM7 7H17V9H7V7ZM19 3H14.82C14.4 1.84 13.3 1 12 1C10.7 1 9.6 1.84 9.18 3H5C4.86 3 4.73 3.01 4.6 3.04C4.21 3.12 3.86 3.32 3.59 3.59C3.41 3.77 3.26 3.99 3.16 4.23C3.06 4.46 3 4.72 3 5V19C3 19.27 3.06 19.54 3.16 19.78C3.26 20.02 3.41 20.23 3.59 20.42C3.86 20.69 4.21 20.89 4.6 20.97C4.73 20.99 4.86 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM12 2.75C12.41 2.75 12.75 3.09 12.75 3.5C12.75 3.91 12.41 4.25 12 4.25C11.59 4.25 11.25 3.91 11.25 3.5C11.25 3.09 11.59 2.75 12 2.75ZM19 19H5V5H19V19Z" fill="currentColor"/>
                     </svg>
                     Booking orders
                 </a>
 
-                <a href="AddRoomServlet" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
+                <a href="<%= Routers.ADD_ROOM_SERVLET%>" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
                     <svg class="mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-800 " width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 7C11.45 7 11 7.45 11 8V11H8C7.45 11 7 11.45 7 12C7 12.55 7.45 13 8 13H11V16C11 16.55 11.45 17 12 17C12.55 17 13 16.55 13 16V13H16C16.55 13 17 12.55 17 12C17 11.45 16.55 11 16 11H13V8C13 7.45 12.55 7 12 7ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="currentColor"/>
                     </svg>
                     Add Room
                 </a>
-                <a href="#" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
+                <a href="<%= Routers.EDIT_ROOM_SERVLET%>" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
                     <svg class="mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-800 " width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 8L15 12H18C18 15.31 15.31 18 12 18C10.99 18 10.03 17.75 9.2 17.3L7.74 18.76C8.97 19.54 10.43 20 12 20C16.42 20 20 16.42 20 12H23L19 8ZM6 12C6 8.69 8.69 6 12 6C13.01 6 13.97 6.25 14.8 6.7L16.26 5.24C15.03 4.46 13.57 4 12 4C7.58 4 4 7.58 4 12H1L5 16L9 12H6Z" fill="currentColor"/>
                     </svg>

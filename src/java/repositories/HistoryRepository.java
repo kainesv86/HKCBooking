@@ -94,6 +94,37 @@ public class HistoryRepository {
         }
     }
 
+    public ArrayList<History> getAllHistoryByRoomId(Integer roomId) throws SQLException, Exception {
+        try {
+            repo = RepoConnector.connectDatabase();
+            String sql = "SELECT * FROM hkcbooking_history WHERE roomId=?";
+            preStm = repo.prepareStatement(sql);
+            preStm.setInt(1, roomId);
+            rs = preStm.executeQuery();
+            ArrayList<History> list = new ArrayList<History>();
+            while (rs.next()) {
+                Integer historyId = rs.getInt("historyId");
+                String message = rs.getString("message");
+                String historyStatus = rs.getString("historyStatus");
+                Date startDate = rs.getDate("startDate");
+                Date endDate = rs.getDate("endDate");
+                String note = rs.getString("note");
+                String fullName = rs.getString("fullName");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                Float total = rs.getFloat("total");
+                Integer userId = rs.getInt("userId");
+                roomId = rs.getInt("roomId");
+
+                list.add(new History(historyId, userId, message, historyStatus, fullName, phone, address, roomId, startDate, endDate, note, total));
+
+            }
+            return list;
+        } finally {
+            this.closeRepo();
+        }
+    }
+
     public History getRoomByDate(Date d1, Date d2) throws SQLException, Exception {
         try {
             String sql = "SELECT * FROM hkcbooking_history where startDate=? AND endDate=?";
@@ -175,6 +206,40 @@ public class HistoryRepository {
                 preStm.setString(1, history.getNote());
                 preStm.setInt(2, history.getHistoryId());
                 preStm.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateHistoryByDeleteRoom(History history) throws Exception {
+
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_history \n"
+                    + "SET historyStatus = 'CANCEL',\n"
+                    + "[message] = ? \n"
+                    + "WHERE startDate <= ? AND roomId=? AND historyStatus != 'CANCEL' ";
+
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, history.getMessage());
+                preStm.setDate(2, history.getStartDate());
+                preStm.setInt(3, history.getRoomId());
+
+                System.out.println(preStm.executeUpdate());
                 return true;
             }
         } catch (Exception e) {

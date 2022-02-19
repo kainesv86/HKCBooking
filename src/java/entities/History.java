@@ -40,6 +40,10 @@ public class History {
         this.total = total;
     }
 
+    public History(Integer userId, String message, String historyStatus, Integer roomId, Date startDate, Date endDate, String note, Float total) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public Integer getHistoryId() {
         return historyId;
     }

@@ -3,7 +3,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>check</title>
@@ -18,7 +17,7 @@
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
                 <div class="min-h-full flex flex-1 px-96 pt-16">
-                    <form action="<%=Routers.USER_INFO_SERVLET%>" method="POST" class="space-y-8 divide-y divide-gray-200 w-full border-rose-600 border-2 p-4 rounded-md h-fit">
+                    <form action="<%= Routers.USER_INFO_SERVLET%>" method="POST" class="space-y-8 divide-y divide-gray-200 w-full border-rose-600 border-2 p-4 rounded-md h-fit">
                     <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
                         <div class="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
                             <div>
@@ -48,7 +47,6 @@
                                     <jsp:param name="value" value="<%= user.getPhone()%>" />
                                     <jsp:param name="error" value="${requestScope.phoneError}"/>
                                 </jsp:include>
-
                                 <jsp:include page="./Components/Input.jsp">
                                     <jsp:param name="type" value="email"/>
                                     <jsp:param name="key" value="email"/>
@@ -68,8 +66,10 @@
                             </div>
                         </div>
                         <div class="pt-5">
-                            <div class="flex justify-end">
-                                <button type="reset" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
+                            <div class="flex justify-end items-center text-sm">
+                                <p class="text-red-500">${requestScope.messageError}<p/>
+                                <p class="text-green-500">${requestScope.message}<p/>
+                                <a href="<%= Routers.CHANGE_PASSWORD_SERVLET%>" class="ml-3 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Change Password</a>
                                 <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600">Save</button>
                             </div>
                         </div>

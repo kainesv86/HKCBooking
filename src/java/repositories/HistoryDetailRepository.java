@@ -20,7 +20,7 @@ import java.util.ArrayList;
  *
  * @author Kaine
  */
-public class HistoryDetailRepo {
+public class HistoryDetailRepository {
 
     private Connection repo;
     private PreparedStatement preStm;

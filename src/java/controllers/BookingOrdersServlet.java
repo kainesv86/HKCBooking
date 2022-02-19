@@ -10,7 +10,6 @@ import entities.HistoryDetail;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,26 +18,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import repositories.HistoryDetailRepo;
+import repositories.HistoryDetailRepository;
 import repositories.HistoryRepository;
+import variables.Routers;
 import variables.UserRole;
 
-/**
- *
- * @author Kaine
- */
-@WebServlet(name = "BookingOrdersServlet", urlPatterns = {"/BookingOrdersServlet"})
+@WebServlet(name = "BookingOrdersServlet", urlPatterns = {"/" + Routers.BOOKING_ORDERS_SERVLET})
 public class BookingOrdersServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
@@ -66,26 +53,17 @@ public class BookingOrdersServlet extends HttpServlet {
             throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
         String status = gv.getString("status", "status", 0, 15, null);
-        HistoryDetailRepo historyDetailRepo = new HistoryDetailRepo();
-        ArrayList<HistoryDetail> list = historyDetailRepo.getAllHistoryDetail(status);
+        HistoryDetailRepository historyDetailRepo = new HistoryDetailRepository();
+        ArrayList<HistoryDetail> historyDetails = historyDetailRepo.getAllHistoryDetail(status);
 
         if (status != null) {
             request.setAttribute("location", status);
         }
-        request.setAttribute("list", list);
+        request.setAttribute("historyDetails", historyDetails);
         return true;
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -93,31 +71,24 @@ public class BookingOrdersServlet extends HttpServlet {
         UseGuard useGuard = new UseGuard(request, response);
 
         if (!useGuard.useAuth()) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect(Routers.LOGIN_SERVLET);
             return;
         }
 
-        if (!useGuard.useRole("ADMIN")) {
-            response.sendRedirect("IndexServlet");
+        if (!useGuard.useRole(UserRole.role.ADMIN)) {
+            response.sendRedirect(Routers.INDEX_SERVLET);
             return;
         }
 
         try {
             handleOnGet(request, response);
+            request.getRequestDispatcher(Routers.BOOKING_ORDERS_PAGE).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
-        request.getRequestDispatcher("/WEB-INF/JSP/bookingOrders.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -132,10 +103,10 @@ public class BookingOrdersServlet extends HttpServlet {
 
         try {
             if (handleOnPost(request, response)) {
-                response.sendRedirect("BookingOrdersServlet" + location);
+                response.sendRedirect(Routers.BOOKING_ORDERS_SERVLET + location);
             }
         } catch (Exception ex) {
-            Logger.getLogger(BookingOrdersServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
 
     }
