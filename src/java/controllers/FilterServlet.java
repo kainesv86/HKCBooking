@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import repositories.RoomDetailRepository;
 import services.RoomService;
 import variables.Routers;
@@ -44,6 +45,17 @@ public class FilterServlet extends HttpServlet {
             roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkInDate, checkOutDate);
         }
 
+        HttpSession session = request.getSession();
+        Date minCheckIn = (Date) session.getAttribute("minCheckIn");
+        Date minCheckOut = (Date) session.getAttribute("minCheckOut");
+
+        if (minCheckIn == null || minCheckOut == null) {
+            minCheckIn = new Date(System.currentTimeMillis());
+            minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
+        }
+
+        request.setAttribute("minCheckIn", minCheckIn.toString());
+        request.setAttribute("minCheckOut", minCheckOut.toString());
         request.setAttribute("roomDetails", roomDetails);
     }
 

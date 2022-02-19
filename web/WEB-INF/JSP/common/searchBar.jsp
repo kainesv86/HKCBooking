@@ -22,6 +22,7 @@
             <jsp:include page="../Components/InputDate.jsp">
                 <jsp:param name="key" value="checkIn"/>
                 <jsp:param name="label" value="Check In"/>
+                <jsp:param name="min" value="${param.minCheckIn}" />
             </jsp:include>
         </div>
 
@@ -29,6 +30,7 @@
             <jsp:include page="../Components/InputDate.jsp">
                 <jsp:param name="key" value="checkOut"/>
                 <jsp:param name="label" value="Check Out"/>
+                <jsp:param name="min" value="${param.minCheckOut}"/>
             </jsp:include>
         </div>
 

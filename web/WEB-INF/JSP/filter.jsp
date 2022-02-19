@@ -15,6 +15,8 @@
     <body>
         <%
             ArrayList<RoomDetail> roomDetails = (ArrayList<RoomDetail>) request.getAttribute("roomDetails");
+            String minCheckIn = (String) request.getAttribute("minCheckIn");
+            String minCheckOut = (String) request.getAttribute("minCheckOut");
         %>
 
         <div class="flex flex-col min-h-screen">
@@ -35,9 +37,12 @@
 
                     <div class="py-10 px-60 flex justify-center">
                         <div class="mr-4">
-                        <jsp:include page="./common/searchBar.jsp"></jsp:include>
-                        </div>
-                        <div class="flex flex-col">
+                        <jsp:include page="./common/searchBar.jsp">
+                            <jsp:param name="minCheckIn" value="<%=minCheckIn%>"/>
+                            <jsp:param name="minCheckOut" value="<%=minCheckOut%>"/>
+                        </jsp:include>
+                    </div>
+                    <div class="flex flex-col">
 
                         <% for (RoomDetail roomDetail : roomDetails) {
 
