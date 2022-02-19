@@ -8,6 +8,7 @@ package services;
 import entities.History;
 import java.sql.Date;
 import java.util.ArrayList;
+import variables.HistoryStatus;
 
 /**
  *
@@ -47,5 +48,24 @@ public class HistoryService {
 
     public static boolean isValidDateInput(Date inputCheckIn, Date inputCheckOut) {
         return inputCheckIn.before(inputCheckOut);
+    }
+
+    public static ArrayList<History> filterHistoryByStatus(ArrayList<History> histories, HistoryStatus.status status, boolean isReverse) {
+
+        if (!isReverse) {
+            for (History history : (ArrayList<History>) histories.clone()) {
+                if (history.getHistoryStatus().equals(status.toString())) {
+                    histories.remove(history);
+                }
+            }
+        } else {
+            for (History history : (ArrayList<History>) histories.clone()) {
+                if (!history.getHistoryStatus().equals(status.toString())) {
+                    histories.remove(history);
+                }
+            }
+        }
+
+        return histories;
     }
 }

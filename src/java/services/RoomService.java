@@ -11,6 +11,7 @@ import entities.RoomDetail;
 import java.sql.Date;
 import java.util.ArrayList;
 import repositories.HistoryRepository;
+import variables.HistoryStatus;
 import variables.RoomStatus;
 
 /**
@@ -25,6 +26,7 @@ public class RoomService {
 
         for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
             ArrayList<History> histories = historyRepository.getAllHistoryByRoomId(roomDetail.getRoom().getRoomId());
+            histories = HistoryService.filterHistoryByStatus(histories, HistoryStatus.status.CANCEL, false);
             if (!histories.isEmpty() && !HistoryService.isValidDateBooking(histories, checkInDate, checkOutDate)) {
                 roomDetails.remove(roomDetail);
             }

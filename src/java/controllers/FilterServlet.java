@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.RoomDetailRepository;
 import services.RoomService;
+import variables.RoomStatus;
 import variables.Routers;
 
 @WebServlet(name = "FilterServlet", urlPatterns = {"/" + Routers.FILTER_SERVLET})
@@ -36,6 +37,8 @@ public class FilterServlet extends HttpServlet {
         RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
 
         ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
+
+        roomDetails = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
 
         if (checkIn != null && checkOut != null) {
             Date checkInDate = Date.valueOf(checkIn);
