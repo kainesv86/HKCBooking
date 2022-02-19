@@ -25,6 +25,7 @@ public class Routers {
     public static final String ADD_ROOM_SERVLET = "AddRoomServlet";
     public static final String EDIT_ROOM_SERVLET = "EditRoomServlet";
     public static final String EDIT_ROOM_DETAIL_SERVLET = "EditRoomDetailServlet";
+    public static final String ADD_ROOM_TYPE_SERVLET = "AddRoomTypeServlet";
     public static final String USERS_SERVLET = "UsersServlet";
 
     // Action no-Redirect
@@ -47,6 +48,7 @@ public class Routers {
     public static final String EDIT_ROOM_PAGE = "/WEB-INF/JSP/editRoom.jsp";
     public static final String EDIT_ROOM_DETAIL_PAGE = "/WEB-INF/JSP/editRoomDetail.jsp";
     public static final String USERS_PAGE = "/WEB-INF/JSP/editRoomDetail.jsp";
+    public static final String ADD_ROOM_TYPE_PAGE = "/WEB-INF/JSP/addRoomType.jsp";
 
     // Discpatcher no-Action
     public static final String ERROR_404_PAGE = "/WEB-INF/JSP/404Page.jsp";
