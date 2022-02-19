@@ -48,6 +48,12 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        HttpSession session = request.getSession();
+        long millis = System.currentTimeMillis();
+        java.sql.Date minDateCheckIn = new java.sql.Date(millis);
+        System.out.println(minDateCheckIn);
+//        session.setAttribute("minDate", minDateCheckIn);
         try {
             if (!handleOnGet(request, response)) {
                 request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
