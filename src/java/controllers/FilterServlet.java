@@ -10,8 +10,6 @@ import helper.GetVariable;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,6 +42,9 @@ public class FilterServlet extends HttpServlet {
             Date checkOutDate = Date.valueOf(checkOut);
             roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkInDate, checkOutDate);
         }
+
+        roomDetails = RoomService.filterRoomByName(roomDetails, roomName);
+        roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
 
         HttpSession session = request.getSession();
         Date minCheckIn = (Date) session.getAttribute("minCheckIn");

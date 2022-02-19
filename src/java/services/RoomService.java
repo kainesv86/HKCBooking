@@ -42,4 +42,39 @@ public class RoomService {
         return roomDetails;
     }
 
+    public static ArrayList<RoomDetail> filterRoomByPriceBooking(ArrayList<RoomDetail> roomDetails, Float minValue, Float maxValue) throws Exception {
+
+        if (minValue != null) {
+            for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
+                if (roomDetail.getRoom().getPrice() <= minValue) {
+                    roomDetails.remove(roomDetail);
+                }
+
+            }
+        }
+        if (maxValue != null) {
+            for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
+                if (roomDetail.getRoom().getPrice() >= maxValue) {
+                    roomDetails.remove(roomDetail);
+                }
+
+            }
+        }
+
+        return roomDetails;
+    }
+
+    public static ArrayList<RoomDetail> filterRoomByName(ArrayList<RoomDetail> roomDetails, String roomName) throws Exception {
+
+        if (roomName != null) {
+            for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
+                if (!roomDetail.getRoomType().getRoomName().toLowerCase().contains(roomName.toLowerCase())) {
+                    roomDetails.remove(roomDetail);
+                }
+
+            }
+        }
+
+        return roomDetails;
+    }
 }
