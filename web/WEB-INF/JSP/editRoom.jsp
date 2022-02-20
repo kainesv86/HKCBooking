@@ -25,7 +25,7 @@
 
                     <div class="flex flex-col items-center">
                         <form action="<%=Routers.ADD_PARAMS_SERVLET%>" method="POST" class="bg-rose-600 py-6 px-12 flex flex-col rounded-md mb-4">
-                        <input readonly required hidden value="<%= Routers.EDIT_ROOM_SERVLET%>" type="text"/>
+                        <input readonly required hidden value="<%= Routers.EDIT_ROOM_SERVLET%>" type="text" name="redirectTo"/>
                         <div class="flex mb-2">
                             <div class="flex flex-col mr-4">
                                 <label for="roomId" class="block text-sm text-gray-100 font-semibold">Room Id</label>
@@ -67,13 +67,15 @@
                             </div>
                             <div class="flex flex-col mr-4 w-60">
                                 <label for="roomStatus" class="block text-sm text-gray-100 font-semibold">Room Status</label>
-                                <select id="roomStatus" name="roomTypeId" class="block w-full pl-3 pr-10 py-1 text-base border-gray-200 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
+                                <select id="roomStatus" name="roomStatus" class="block w-full pl-3 pr-10 py-1 text-base border-gray-200 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                     <option value="" selected></option>
                                     <%
                                         for (RoomStatus.status status : RoomStatus.status.values()) {
+                                            if (status != RoomStatus.status.DELETED) {
                                     %>
                                     <option value="<%= status.toString()%>" ><%=status.toString()%></option>
                                     <% }
+                                        }
                                     %>
 
                                 </select>

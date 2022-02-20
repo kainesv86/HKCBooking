@@ -35,10 +35,9 @@ public class AddParamsServlet extends HttpServlet {
             throws ServletException, IOException {
         GetVariable gv = new GetVariable(request);
 
-        String urlParams = "";
+        String redirectTo = gv.getString("redirectTo", "", 0, 256, Routers.INDEX_SERVLET);
 
-        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
-        urlParams += roomTypeId != null ? "?roomTypeId=" + roomTypeId : "";
+        String urlParams = redirectTo;
 
         Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
         urlParams += roomId != null ? "?roomId=" + roomId : "";
@@ -55,7 +54,13 @@ public class AddParamsServlet extends HttpServlet {
         Float maxPrice = gv.getFloat("maxPrice", "Max Price", 0, Float.MAX_VALUE, null);
         urlParams += maxPrice != null ? "?maxPrice=" + maxPrice : "";
 
-        response.sendRedirect(Routers.EDIT_ROOM_SERVLET + urlParams);
+        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
+        urlParams += roomTypeId != null ? "?roomTypeId=" + roomTypeId : "";
+
+        String roomStatus = gv.getString("roomStatus", "Room status", 0, 256, null);
+        urlParams += roomStatus != null ? "?roomStatus=" + roomStatus : "";
+
+        response.sendRedirect(urlParams);
     }
 
     @Override

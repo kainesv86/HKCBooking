@@ -28,12 +28,11 @@ public class EditRoomServlet extends HttpServlet {
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
 
-        GetVariable gv = new GetVariable(request);
-        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
-
         RoomDetailRepository roomDetailRepository = new RoomDetailRepository();
         ArrayList<RoomDetail> roomDetails = roomDetailRepository.getAllRoomDetail();
 
+        GetVariable gv = new GetVariable(request);
+        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
         for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
             if (roomDetail.getRoom().getRoomStatus().equals(RoomStatus.status.DELETED.toString())) {
                 roomDetails.remove(roomDetail);
