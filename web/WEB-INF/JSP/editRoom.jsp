@@ -1,3 +1,4 @@
+<%@page import="variables.RoomStatus"%>
 <%@page import="variables.Routers"%>
 <%@page import="entities.RoomType"%>
 <%@page import="entities.RoomDetail"%>
@@ -23,29 +24,30 @@
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <form action="AddParamsServlet" method="POST" class="bg-rose-600 py-6 px-12 flex flex-col rounded-md mb-4">
-                            <div class="flex mb-2">
-                                <div class="flex flex-col mr-4">
-                                    <label for="${param.key}" class="block text-sm text-gray-100 font-semibold">Room Id</label>
-                                <input  id="username" name="${param.key}" type="${param.type}"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                        <form action="<%=Routers.ADD_PARAMS_SERVLET%>" method="POST" class="bg-rose-600 py-6 px-12 flex flex-col rounded-md mb-4">
+                        <input readonly required hidden value="<%= Routers.EDIT_ROOM_SERVLET%>" type="text"/>
+                        <div class="flex mb-2">
+                            <div class="flex flex-col mr-4">
+                                <label for="roomId" class="block text-sm text-gray-100 font-semibold">Room Id</label>
+                                <input  id="roomId" name="roomId" type="text"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
                             <div class="flex flex-col mr-4">
-                                <label for="${param.key}" class="block text-sm text-gray-100 font-semibold">Room name</label>
-                                <input  id="username" name="${param.key}" type="${param.type}"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <label for="roomName" class="block text-sm text-gray-100 font-semibold">Room name</label>
+                                <input  id="roomName" name="roomName" type="text}"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
                             <div class="flex flex-col mr-4">
-                                <label for="${param.key}" class="block text-sm text-gray-100 font-semibold">Capacity</label>
-                                <input  id="username" name="${param.key}" type="${param.type}"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <label for="capacity" class="block text-sm text-gray-100 font-semibold">Capacity</label>
+                                <input  id="capacity" name="capacity" type="number" min="0"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
 
                             <div class="flex flex-col mr-4">
-                                <label for="${param.key}" class="block text-sm text-gray-100 font-semibold">Min price</label>
-                                <input  id="username" name="${param.key}" type="${param.type}"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <label for="minPrice" class="block text-sm text-gray-100 font-semibold">Min price</label>
+                                <input  id="minPrice" name="minPrice" type="number" min="0" class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
 
                             <div class="flex flex-col">
-                                <label for="${param.key}" class="block text-sm text-gray-100 font-semibold">Min price</label>
-                                <input  id="username" name="${param.key}" type="${param.type}"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                <label for="maxPrice" class="block text-sm text-gray-100 font-semibold">Min price</label>
+                                <input  id="maxPrice" name="maxPrice" type="number" min="0" class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
                         </div>
 
@@ -64,9 +66,16 @@
                                 </select>
                             </div>
                             <div class="flex flex-col mr-4 w-60">
-                                <label for="${param.key}" class="block text-sm text-gray-100 font-semibold">Room Status</label>
+                                <label for="roomStatus" class="block text-sm text-gray-100 font-semibold">Room Status</label>
                                 <select id="roomStatus" name="roomTypeId" class="block w-full pl-3 pr-10 py-1 text-base border-gray-200 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                     <option value="" selected></option>
+                                    <%
+                                        for (RoomStatus.status status : RoomStatus.status.values()) {
+                                    %>
+                                    <option value="<%= status.toString()%>" ><%=status.toString()%></option>
+                                    <% }
+                                    %>
+
                                 </select>
                             </div>
                         </div>
