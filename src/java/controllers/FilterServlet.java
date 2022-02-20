@@ -28,9 +28,11 @@ public class FilterServlet extends HttpServlet {
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         GetVariable gv = new GetVariable(request);
-        String roomName = gv.getString("roomName", "Room name", 0, 256, "");
-        String checkIn = gv.getString("checkIn", "Check In", 0, 30, null);
-        String checkOut = gv.getString("checkOut", "Check In", 0, 30, null);
+
+        String roomName = gv.getString("roomName", "Room name", 0, 256, null);
+        Date checkIn = gv.getDate("checkIn", "Check In Date", null);
+        Date checkOut = gv.getDate("checkOut", "Check Out Date", null);
+
         Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, null);
         Float maxPrice = gv.getFloat("maxPrice", "Max Price", 0, Float.MAX_VALUE, null);
 
@@ -41,9 +43,7 @@ public class FilterServlet extends HttpServlet {
         roomDetails = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
 
         if (checkIn != null && checkOut != null) {
-            Date checkInDate = Date.valueOf(checkIn);
-            Date checkOutDate = Date.valueOf(checkOut);
-            roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkInDate, checkOutDate);
+            roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkIn, checkOut);
         }
 
         roomDetails = RoomService.filterRoomByName(roomDetails, roomName);

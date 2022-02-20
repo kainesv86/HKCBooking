@@ -178,18 +178,19 @@ public class UserRepository {
     public ArrayList<User> getAllUserList() throws Exception {
         try {
             repo = RepoConnector.connectDatabase();
-            String sql = "SELECT username,password,fullname,address,phone,role,email FROM hkcbooking_user";
+            String sql = "SELECT userId,username,password,fullname,address,phone,role,email FROM hkcbooking_user";
             preStm = repo.prepareStatement(sql);
             rs = preStm.executeQuery();
             ArrayList<User> list = new ArrayList<User>();
             while (rs.next()) {
+                Integer userId = rs.getInt("userId");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
                 String role = rs.getString("role");
-                list.add(new User(username, password, username, address, phone, role, email));
+                list.add(new User(userId, username, password, username, address, phone, role, email));
             }
             return list;
         } finally {

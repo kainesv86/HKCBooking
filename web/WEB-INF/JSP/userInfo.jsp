@@ -4,9 +4,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>check</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="User Information"/>
+        </jsp:include>
     </head>
     <body>
 

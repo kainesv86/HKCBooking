@@ -76,17 +76,17 @@ public class RoomTypeRepository {
             this.closeRepo();
         }
     }
+
     public boolean addRoomType(RoomType roomType) {
-        String INSERT_USER_SQL = "INSERT INTO hkcbooking_room_type"
-                + "(roomTypeId,roomName,capacity,acreage) VALUES"
-                + "(?,?,?,?)";
+        String sql = "INSERT INTO hkcbooking_room_type"
+                + "(roomName,capacity,acreage) VALUES "
+                + "(?,?,?)";
         try {
             repo = RepoConnector.connectDatabase();
-            preStm = repo.prepareStatement(INSERT_USER_SQL);
-            preStm.setInt(1, roomType.getRoomTypeId());
-            preStm.setString(2, roomType.getRoomName());
-            preStm.setInt(3, roomType.getCapacity());
-            preStm.setInt(4, roomType.getAcreage());
+            preStm = repo.prepareStatement(sql);
+            preStm.setString(1, roomType.getRoomName());
+            preStm.setInt(2, roomType.getCapacity());
+            preStm.setInt(3, roomType.getAcreage());
             preStm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,8 +94,8 @@ public class RoomTypeRepository {
         }
         return true;
     }
-    
-    public boolean checkRoomTypeExist(int roomTypeId,String RoomName) {
+
+    public boolean checkRoomTypeExist(int roomTypeId, String RoomName) {
         String CHECK_TYPE_SQL = "SELECT RoomName FROM hkcbooking_room_type "
                 + "WHERE RoomTypeID =? OR RoomName=?";
         try {

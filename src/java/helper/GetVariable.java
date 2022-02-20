@@ -2,6 +2,7 @@ package helper;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -156,6 +157,18 @@ public class GetVariable {
         }
         return uploadDir + "/" + fileName;
 
+    }
+
+    public Date getDate(String key, String label, Date defaultValue) {
+        String dateString = this.getString(key, label, 1, 30, defaultValue != null ? defaultValue.toString() : null);
+        Date date;
+        try {
+            date = Date.valueOf(dateString);
+        } catch (Exception e) {
+            request.setAttribute(key + "Error", label + " must be a date");
+            return null;
+        }
+        return date;
     }
 
 }

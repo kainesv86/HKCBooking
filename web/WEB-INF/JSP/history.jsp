@@ -1,3 +1,4 @@
+<%@page import="variables.HistoryStatus"%>
 <%@page import="variables.Routers"%>
 <%@page import="entities.HistoryDetail"%>
 <%@page import="entities.User"%>
@@ -7,9 +8,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>JSP Page</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="Booking History"/>
+        </jsp:include>
     </head>
     <body>
         <%
@@ -86,8 +87,15 @@
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button type="submit" class="text-indigo-600 hover:text-indigo-900">Save</button>
+                                            <div class="flex flex-col flex-start">
+                                                <button type="submit" class="text-indigo-600 hover:text-indigo-900 font-semibold" >Save</button>
+                                                <% if (list.get(index).getHistory().getHistoryStatus().equals(HistoryStatus.status.PENDING.toString())) {%>
+                                                <a href="<%= Routers.CANCEL_HISTORY_SERVLET%>?historyId=<%= list.get(index).getHistory().getHistoryId()%>" onclick="return confirm('Are you sure?')" class="text-rose-600 hover:text-rose-500">Cancel</a>
+                                                <% } %>
+                                            </div>
                                         </td>
+
+
                                     </form>
                                     </tr>
                                     <% }%>

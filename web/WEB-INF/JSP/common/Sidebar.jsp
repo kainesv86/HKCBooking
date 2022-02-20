@@ -44,13 +44,13 @@
                     </svg>
                     Edit Room
                 </a>
-                <a href="#" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
+                <a href="<%=Routers.ADD_ROOM_TYPE_SERVLET%>" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
                     <svg class="mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-800 " width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M15 8C14.45 8 14 8.45 14 9V11H12C11.45 11 11 11.45 11 12C11 12.55 11.45 13 12 13H14V15C14 15.55 14.45 16 15 16C15.55 16 16 15.55 16 15V13H18C18.55 13 19 12.55 19 12C19 11.45 18.55 11 18 11H16V9C16 8.45 15.55 8 15 8ZM2 12C2 9.42 3.4 7.17 5.48 5.96C5.8 5.77 6.01 5.45 6.01 5.08C6.01 4.31 5.17 3.83 4.5 4.22C1.82 5.78 0 8.68 0 12C0 15.32 1.82 18.22 4.5 19.78C5.17 20.17 6.01 19.69 6.01 18.92C6.01 18.55 5.8 18.23 5.48 18.04C3.4 16.83 2 14.58 2 12ZM15 3C10.04 3 6 7.04 6 12C6 16.96 10.04 21 15 21C19.96 21 24 16.96 24 12C24 7.04 19.96 3 15 3ZM15 19C11.14 19 8 15.86 8 12C8 8.14 11.14 5 15 5C18.86 5 22 8.14 22 12C22 15.86 18.86 19 15 19Z" fill="currentColor"/>
                     </svg>
                     Add Room Type
                 </a>
-                <a href="#" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
+                <a href="<%= Routers.USERS_SERVLET%>" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
                     <svg class="mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-800" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M16.6699 13.13C18.0399 14.06 18.9999 15.32 18.9999 17V20H21.9999C22.5499 20 22.9999 19.55 22.9999 19V17C22.9999 14.82 19.4299 13.53 16.6699 13.13Z" fill="currentColor"/>
                         <path d="M9 12C11.2091 12 13 10.2091 13 8C13 5.79086 11.2091 4 9 4C6.79086 4 5 5.79086 5 8C5 10.2091 6.79086 12 9 12Z" fill="currentColor"/>

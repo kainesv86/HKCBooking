@@ -7,9 +7,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="Edit room details"/>
+        </jsp:include>
     </head>
     <body>
         <%
@@ -25,8 +25,7 @@
                     enctype="multipart/form-data"
                     class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
                     >
-
-                    <input value="<%= room.getRoomId()%>" readonly name="roomId" class="hidden"/>
+                    <input value="<%= room.getRoomId()%>" readonly name="roomId" type="number" class="hidden"/>
                     <div class="space-y-8 divide-y divide-gray-200">
                         <div>
                             <div>
@@ -38,7 +37,8 @@
                                     <%
                                         for (RoomType roomType : roomTypes) {
                                     %>
-                                    <option value="<%= roomType.getRoomTypeId()%>" <% if (roomType.getRoomTypeId() == room.getRoomTypeId()) { %> selected <% }%> ><%= roomType.getRoomName()%></option>
+                                    <option value="<%= roomType.getRoomTypeId()%>" <% if (roomType.getRoomTypeId() == room.getRoomId()) {
+                                            %> selected <% }%> ><%= roomType.getRoomName()%></option>
                                     <% }%>
                                 </select>
                             </div>
@@ -71,9 +71,11 @@
                             <label for="roomStatus" class="block text-sm font-medium text-gray-700">Room Status</label>
                             <select id="roomStatus" name="roomStatus" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                 <%
-                                    for (RoomStatus.status status : RoomStatus.status.values()) {
+                                    for (RoomStatus.status status
+                                            : RoomStatus.status.values()) {
                                 %>
-                                <option value="<%= status.toString()%>" <% if (status.toString().equals(room.getRoomStatus())) { %> selected <% }%> ><%= status.toString()%></option>
+                                <option value="<%= status.toString()%>" <% if (status.toString().equals(room.getRoomStatus())) {
+                                        %> selected <% }%> ><%= status.toString()%></option>
                                 <% }%>
                             </select>
                         </div>

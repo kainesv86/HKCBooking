@@ -23,6 +23,9 @@ public class RoomType {
         this.acreage = acreage;
     }
 
+    public RoomType() {
+    }
+
     public Integer getRoomTypeId() {
         return roomTypeId;
     }
