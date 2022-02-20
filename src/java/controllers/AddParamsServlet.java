@@ -34,11 +34,26 @@ public class AddParamsServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         GetVariable gv = new GetVariable(request);
-        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
+
         String urlParams = "";
-        if (roomTypeId != null) {
-            urlParams += "?roomTypeId=" + roomTypeId;
-        }
+
+        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
+        urlParams += roomTypeId != null ? "?roomTypeId=" + roomTypeId : "";
+
+        Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
+        urlParams += roomId != null ? "?roomId=" + roomId : "";
+
+        String roomName = gv.getString("roomName", "Room name", 0, 256, null);
+        urlParams += roomName != null ? "?roomName=" + roomName : "";
+
+        Integer capacity = gv.getInt("capacity", "Capacity", 1, 256, null);
+        urlParams += capacity != null ? "?capacity=" + capacity : "";
+
+        Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, null);
+        urlParams += minPrice != null ? "?minPrice=" + minPrice : "";
+
+        Float maxPrice = gv.getFloat("maxPrice", "Max Price", 0, Float.MAX_VALUE, null);
+        urlParams += maxPrice != null ? "?maxPrice=" + maxPrice : "";
 
         response.sendRedirect(Routers.EDIT_ROOM_SERVLET + urlParams);
     }
