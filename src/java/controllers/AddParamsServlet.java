@@ -40,25 +40,28 @@ public class AddParamsServlet extends HttpServlet {
         String urlParams = redirectTo;
 
         Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
-        urlParams += roomId != null ? "?roomId=" + roomId : "";
+        urlParams += roomId != null ? "&?roomId=" + roomId : "";
 
         String roomName = gv.getString("roomName", "Room name", 0, 256, null);
-        urlParams += roomName != null ? "?roomName=" + roomName : "";
+        urlParams += roomName != null ? "&?roomName=" + roomName : "";
 
         Integer capacity = gv.getInt("capacity", "Capacity", 1, 256, null);
-        urlParams += capacity != null ? "?capacity=" + capacity : "";
+        urlParams += capacity != null ? "&?capacity=" + capacity : "";
 
         Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, null);
-        urlParams += minPrice != null ? "?minPrice=" + minPrice : "";
+        urlParams += minPrice != null ? "&?minPrice=" + minPrice : "";
 
         Float maxPrice = gv.getFloat("maxPrice", "Max Price", 0, Float.MAX_VALUE, null);
-        urlParams += maxPrice != null ? "?maxPrice=" + maxPrice : "";
+        urlParams += maxPrice != null ? "&?maxPrice=" + maxPrice : "";
 
         Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
-        urlParams += roomTypeId != null ? "?roomTypeId=" + roomTypeId : "";
+        urlParams += roomTypeId != null ? "&?roomTypeId=" + roomTypeId : "";
 
         String roomStatus = gv.getString("roomStatus", "Room status", 0, 256, null);
-        urlParams += roomStatus != null ? "?roomStatus=" + roomStatus : "";
+        urlParams += roomStatus != null ? "&?roomStatus=" + roomStatus : "";
+
+        urlParams = urlParams.replace(redirectTo + "&?", redirectTo + "?");
+        urlParams = urlParams.replace("&?", "&");
 
         response.sendRedirect(urlParams);
     }

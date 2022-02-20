@@ -44,14 +44,14 @@ public class EditRoomServlet extends HttpServlet {
         for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
 
             boolean isValidExistRoom = !roomDetail.getRoom().getRoomStatus().equals(RoomStatus.status.DELETED.toString());
-            boolean isValidRoomTypeId = !Objects.equals(roomTypeId, roomDetail.getRoomType().getRoomTypeId());
+            boolean isValidRoomTypeId = roomTypeId == null || Objects.equals(roomTypeId, roomDetail.getRoomType().getRoomTypeId());
             boolean isValidRoomName = roomName == null || (roomName != null && roomDetail.getRoomType().getRoomName().toLowerCase().contains(roomName.toLowerCase()));
             boolean isValidCapacity = capacity == null || Objects.equals(roomDetail.getRoomType().getCapacity(), capacity);
             boolean isValidRoomStatus = roomStatus == null || (roomStatus != null && roomDetail.getRoom().getRoomStatus().equals(roomStatus));
 
             boolean isValid = isValidExistRoom && isValidRoomTypeId && isValidRoomName && isValidCapacity && isValidRoomStatus;
 
-            System.out.println(roomTypeId + " : " + roomStatus);
+            System.out.println(isValidExistRoom + " : " + isValidRoomTypeId + " : " + isValidRoomName + " : " + isValidCapacity + " : " + isValidRoomStatus);
             if (!isValid) {
                 roomDetails.remove(roomDetail);
             }
