@@ -29,7 +29,14 @@ public class FilterServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         GetVariable gv = new GetVariable(request);
 
+        Integer page = gv.getInt("page", "Page", 1, Integer.MAX_VALUE, 1);
+        page = page != null ? page : 1;
+        request.setAttribute("page", page);
+
+        HttpSession session = request.getSession();
+
         String roomName = gv.getString("roomName", "Room name", 0, 256, null);
+
         Date checkIn = gv.getDate("checkIn", "Check In Date", null);
         Date checkOut = gv.getDate("checkOut", "Check Out Date", null);
 
@@ -44,12 +51,13 @@ public class FilterServlet extends HttpServlet {
 
         if (checkIn != null && checkOut != null) {
             roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkIn, checkOut);
+            request.setAttribute("checkIn", checkIn.toString());
+            request.setAttribute("checkOut", checkOut.toString());
         }
 
         roomDetails = RoomService.filterRoomByName(roomDetails, roomName);
         roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
 
-        HttpSession session = request.getSession();
         Date minCheckIn = (Date) session.getAttribute("minCheckIn");
         Date minCheckOut = (Date) session.getAttribute("minCheckOut");
 
@@ -61,37 +69,17 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("minCheckIn", minCheckIn.toString());
         request.setAttribute("minCheckOut", minCheckOut.toString());
         request.setAttribute("roomDetails", roomDetails);
-        request.setAttribute("currentPage", 1);
-    }
 
-    protected void handleOnGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        GetVariable gv = new GetVariable(request);
-
-        Integer currentPage = gv.getInt("page", "Page", 1, Integer.MAX_VALUE, 1);
-        currentPage = currentPage != null ? currentPage : 1;
-        System.out.println(currentPage);
-        request.setAttribute("currentPage", currentPage);
-
-        HttpSession session = request.getSession();
-        ArrayList<RoomDetail> roomDetailsClone = (ArrayList<RoomDetail>) session.getAttribute("roomDetailsClone");
-
-        if (roomDetailsClone == null) {
-            RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
-            ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
-            roomDetailsClone = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
-        }
-
-        System.out.println(roomDetailsClone.size());
-
-        request.setAttribute("roomDetails", roomDetailsClone);
+        request.setAttribute("roomName", roomName);
+        request.setAttribute("minPrice", minPrice);
+        request.setAttribute("maxPrice", maxPrice);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            handleOnGet(request, response);
+            handleOnPost(request, response);
             request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);

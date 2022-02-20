@@ -85,7 +85,7 @@
                             <button type="submit" class="flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-semibold text-rose-500 bg-gray-100 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200">Filter</button>
                         </div>
                     </form>
-                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 fade-in">
                         <div class="py-2 align-middle inline-block min-w-auto sm:px-6 lg:px-8">
                             <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                 <table class="min-w-full divide-y divide-gray-200">
@@ -115,7 +115,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex-shrink-0 h-60 w-80">
-                                            <img class="h-full w-full object-cover object-fit" src="<%= roomDetail.getRoom().getUrlImage()%>" alt="" />
+                                            <img class="h-full w-full object-cover object-fit"  src="<%= roomDetail.getRoom().getUrlImage()%>" alt="" />
                                         </div>
 
                                     </td>

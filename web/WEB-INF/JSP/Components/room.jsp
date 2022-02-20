@@ -1,5 +1,5 @@
 <%@page import="variables.Routers"%>
-<div class="flex w-fit bg-gray-100 rounded-md shadow-md overflow-hidden transform hover:scale-110 duration-300 mb-4">
+<div class="flex bg-gray-100 rounded-md shadow-md overflow-hidden transform hover:scale-105 duration-300 fade-in">
     <div class="h-40 w-36 block">
         <img src="${param.urlImage == "null" ? "../../public/images/default-image.jpg" : param.urlImage }" alt="" class="object-cover w-full h-full"/>
     </div>

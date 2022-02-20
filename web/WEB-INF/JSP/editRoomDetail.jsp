@@ -52,7 +52,7 @@
                             <div>
                                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Room Image</label>
                                 <div class="h-auto w-auto">
-                                    <img class="h-full w-full object-cover object-fit" src="<%= room.getUrlImage()%>" alt="" />
+                                    <img class="h-full w-full object-cover object-fit" id="pre-photo" src="<%= room.getUrlImage()%>" alt="" />
                                 </div>
                                 <div class="mt-2">
                                     <input id="imageUrl" name="imageUrl" type="file" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
@@ -90,5 +90,22 @@
                     </div>
                 </form>
             </div>
+            <script>
+                window.onload = function () {
+                    document.getElementById("imageUrl").addEventListener(
+                            "change",
+                            function () {
+                                const reader = new FileReader();
+                                reader.onload = function () {
+                                    const dataURL = reader.result;
+                                    const output = document.getElementById("pre-photo");
+                                    output.src = dataURL;
+                                };
+                                reader.readAsDataURL(this.files[0]);
+                            },
+                            false
+                            );
+                };
+            </script>
     </body>
 </html>

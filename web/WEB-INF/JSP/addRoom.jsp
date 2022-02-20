@@ -21,7 +21,7 @@
                     <form
                         action="<%= Routers.ADD_ROOM_SERVLET%>" method="POST"
                     enctype="multipart/form-data"
-                    class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
+                    class="space-y-8 divide-y divide-gray-200 fade-in min-w-[480px] max-w-[800px]"
                     >
                     <div class="space-y-8 divide-y divide-gray-200">
                         <div>
