@@ -46,7 +46,7 @@
                             </div>
 
                             <div class="flex flex-col">
-                                <label for="maxPrice" class="block text-sm text-gray-100 font-semibold">Min price</label>
+                                <label for="maxPrice" class="block text-sm text-gray-100 font-semibold">Max price</label>
                                 <input  id="maxPrice" name="maxPrice" type="number" min="0" class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
                         </div>
