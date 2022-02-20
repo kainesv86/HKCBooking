@@ -8,6 +8,7 @@ package controllers;
 import helper.GetVariable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,9 +61,17 @@ public class AddParamsServlet extends HttpServlet {
         String roomStatus = gv.getString("roomStatus", "Room status", 0, 256, null);
         urlParams += roomStatus != null ? "&?roomStatus=" + roomStatus : "";
 
+        Date checkIn = gv.getDate("checkIn", "Check In", null);
+        Date checkOut = gv.getDate("checkOut", "Check Out", null);
+        urlParams += checkIn != null && checkOut != null ? "&?checkIn=" + checkIn + "&?checkOut=" + checkOut : "";
+
+        Integer page = gv.getInt("page", "Page", 0, Integer.MAX_VALUE, null);
+        urlParams += page != null ? "&?page=" + page : "";
+
         urlParams = urlParams.replace(redirectTo + "&?", redirectTo + "?");
         urlParams = urlParams.replace("&?", "&");
 
+//        System.out.println(urlParams);
         response.sendRedirect(urlParams);
     }
 

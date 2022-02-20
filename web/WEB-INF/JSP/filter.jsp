@@ -20,16 +20,24 @@
 
             String minCheckIn = (String) request.getAttribute("minCheckIn");
             String minCheckOut = (String) request.getAttribute("minCheckOut");
-            Integer listLimit = 10;
-            Integer currentPage = (Integer) request.getAttribute("currentPage");
 
-            Integer lowerList = (currentPage - 1) * listLimit;
+            Integer listLimit = 10;
+            Integer currentPage = (Integer) request.getAttribute("page");
+            if (currentPage > 0) {
+                --currentPage;
+            }
+
+            Integer lowerList = currentPage * listLimit;
             Integer upperList = lowerList + listLimit >= roomDetails.size() ? roomDetails.size() : lowerList + listLimit;
 
             Integer maxPagination = roomDetails.size() % listLimit == 0 ? roomDetails.size() / listLimit : (roomDetails.size() / listLimit) + 1;
             Integer lowerPagination = currentPage - 3 <= 0 ? 0 : currentPage - 3;
             Integer upperPagination = currentPage + 3 >= maxPagination ? maxPagination : currentPage + 3;
-            System.out.println(lowerPagination + " : " + upperPagination);
+
+            Float minPrice = (Float) request.getAttribute("minPrice");
+            Float maxPrice = (Float) request.getAttribute("maxPrice");
+            String checkIn = (String) request.getAttribute("checkIn");
+            String checkOut = (String) request.getAttribute("checkOut");
         %>
 
         <div class="flex flex-col min-h-screen">
@@ -76,34 +84,66 @@
                 </div>
             </div>
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    <span class="sr-only">Previous</span>
-                    <!-- Heroicon name: solid/chevron-left -->
-                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </a>
+                <form href="<%= Routers.ADD_PARAMS_SERVLET%>" >
+                    <button type="submit" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        <span class="sr-only">Previous</span>
+                        <!-- Heroicon name: solid/chevron-left -->
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <input value="<%=checkIn%>" type="text" name="checkIn" hidden readonly/>
+                    <input value="<%=checkOut%>" type="text" name="checkOut" hidden readonly/>
+                    <input value="<%=minPrice%>" type="number" name="minPrice" hidden readonly/>
+                    <input value="<%=maxPrice%>" type="number" name="maxPrice" hidden readonly/>
+                    <input name="page" readonly hidden type="text" value="<%=currentPage + 1 - 1%>" required readonly>
+                    <input readonly required hidden value="<%= Routers.FILTER_SERVLET%>" type="text" name="redirectTo"/>
+                </form>
                 <%
                     for (int index = lowerPagination; index < upperPagination; index++) {
 
                 %>
-                <a href="<%= Routers.FILTER_SERVLET%>?page=<%=index + 1%>" class="<% if (index == currentPage - 1) { %> z-10 bg-indigo-50 border-indigo-500 text-indigo-600 <%
-                } else { %>
+                <form action="<%= Routers.ADD_PARAMS_SERVLET%>" method="POST">
+                    <button type="submit"   class="
+                            <% if (index == currentPage) {
+                            %>
+                            z-10 bg-indigo-50 border-indigo-500 text-indigo-600
+                            <% } else { %>
+                            bg-white border-gray-300 text-gray-500 hover:bg-gray-50
+                            <%
+                                }
+                            %>
+                            relative inline-flex items-center px-4 py-2 border text-sm font-medium"> <%=index + 1%>
+                    </button>
 
-                   bg-white border-gray-300 text-gray-500 hover:bg-gray-50
-                   <%
-                       }%> relative inline-flex items-center px-4 py-2 border text-sm font-medium"> <%=index + 1%> </a>
+                    <input value="<%=checkIn%>" type="text" name="checkIn" hidden readonly/>
+                    <input value="<%=checkOut%>" type="text" name="checkOut" hidden readonly/>
+                    <input value="<%=minPrice%>" type="number" name="minPrice" hidden readonly/>
+                    <input value="<%=maxPrice%>" type="number" name="maxPrice" hidden readonly/>
+                    <input name="page" readonly hidden type="text" value="<%=index + 1%>" required readonly>
+                    <input readonly required hidden value="<%= Routers.FILTER_SERVLET%>" type="text" name="redirectTo"/>
+                </form>
                 <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
                 <% }
                 %>
                 <!--<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 2 </a>-->
-                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    <span class="sr-only">Next</span>
-                    <!-- Heroicon name: solid/chevron-right -->
-                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </a>
+
+                <form href="<%= Routers.ADD_PARAMS_SERVLET%>" >
+                    <button type="submit" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        <span class="sr-only">Next</span>
+                        <!-- Heroicon name: solid/chevron-right -->
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <input value="<%=checkIn%>" type="text" name="checkIn" hidden readonly/>
+                    <input value="<%=checkOut%>" type="text" name="checkOut" hidden readonly/>
+                    <input value="<%=minPrice%>" type="number" name="minPrice" hidden readonly/>
+                    <input value="<%=maxPrice%>" type="number" name="maxPrice" hidden readonly/>
+                    <input name="page" readonly hidden type="text" value="<%=currentPage + 1 + 1%>" required readonly>
+                    <input readonly required hidden value="<%= Routers.FILTER_SERVLET%>" type="text" name="redirectTo"/>
+                </form>
+
             </nav>
         </div>
     </body>
