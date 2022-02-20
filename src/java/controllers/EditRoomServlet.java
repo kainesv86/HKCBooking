@@ -50,8 +50,6 @@ public class EditRoomServlet extends HttpServlet {
             boolean isValidRoomStatus = roomStatus == null || (roomStatus != null && roomDetail.getRoom().getRoomStatus().equals(roomStatus));
 
             boolean isValid = isValidExistRoom && isValidRoomTypeId && isValidRoomName && isValidCapacity && isValidRoomStatus;
-
-            System.out.println(isValidExistRoom + " : " + isValidRoomTypeId + " : " + isValidRoomName + " : " + isValidCapacity + " : " + isValidRoomStatus);
             if (!isValid) {
                 roomDetails.remove(roomDetail);
             }

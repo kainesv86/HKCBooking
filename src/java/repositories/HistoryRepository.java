@@ -193,7 +193,7 @@ public class HistoryRepository {
         return false;
     }
 
-    public boolean updateHistoryByUser(History history) throws Exception {
+    public boolean updateNoteHistory(History history) throws Exception {
 
         Connection repo = null;
         try {
@@ -205,6 +205,36 @@ public class HistoryRepository {
                 preStm = repo.prepareStatement(query);
                 preStm.setString(1, history.getNote());
                 preStm.setInt(2, history.getHistoryId());
+                preStm.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateHistoryByBookingCancel(History history) throws Exception {
+
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_history SET historyStatus=?"
+                    + " WHERE historyId=? AND userId=?";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, history.getHistoryStatus());
+                preStm.setInt(2, history.getHistoryId());
+                preStm.setInt(3, history.getUserId());
                 preStm.executeUpdate();
                 return true;
             }

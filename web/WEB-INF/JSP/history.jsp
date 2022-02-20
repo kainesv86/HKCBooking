@@ -1,3 +1,4 @@
+<%@page import="variables.HistoryStatus"%>
 <%@page import="variables.Routers"%>
 <%@page import="entities.HistoryDetail"%>
 <%@page import="entities.User"%>
@@ -86,8 +87,15 @@
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button type="submit" class="text-indigo-600 hover:text-indigo-900">Save</button>
+                                            <div class="flex flex-col flex-start">
+                                                <button type="submit" class="text-indigo-600 hover:text-indigo-900 font-semibold" >Save</button>
+                                                <% if (list.get(index).getHistory().getHistoryStatus().equals(HistoryStatus.status.PENDING.toString())) {%>
+                                                <a href="<%= Routers.CANCEL_HISTORY_SERVLET%>?historyId=<%= list.get(index).getHistory().getHistoryId()%>" onclick="return confirm('Are you sure?')" class="text-rose-600 hover:text-rose-500">Cancel</a>
+                                                <% } %>
+                                            </div>
                                         </td>
+
+
                                     </form>
                                     </tr>
                                     <% }%>

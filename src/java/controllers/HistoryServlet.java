@@ -42,7 +42,7 @@ public class HistoryServlet extends HttpServlet {
         history.setNote(note);
 
         HistoryRepository historyRepo = new HistoryRepository();
-        historyRepo.updateHistoryByUser(history);
+        historyRepo.updateNoteHistory(history);
 
         return true;
     }
