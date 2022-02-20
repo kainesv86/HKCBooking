@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>JSP Page</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="Login HKCBooking"/>
+        </jsp:include>
     </head>
     <body>
         <div class="flex flex-col min-h-screen">

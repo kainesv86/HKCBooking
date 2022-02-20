@@ -6,7 +6,9 @@
 package controllers;
 
 import entities.RoomDetail;
+import entities.RoomType;
 import guard.UseGuard;
+import helper.GetVariable;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.RoomDetailRepository;
+import repositories.RoomTypeRepository;
 import variables.Routers;
 import variables.RoomStatus;
 import variables.UserRole;
@@ -25,6 +28,9 @@ public class EditRoomServlet extends HttpServlet {
     protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
 
+        GetVariable gv = new GetVariable(request);
+        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
+
         RoomDetailRepository roomDetailRepository = new RoomDetailRepository();
         ArrayList<RoomDetail> roomDetails = roomDetailRepository.getAllRoomDetail();
 
@@ -32,8 +38,15 @@ public class EditRoomServlet extends HttpServlet {
             if (roomDetail.getRoom().getRoomStatus().equals(RoomStatus.status.DELETED.toString())) {
                 roomDetails.remove(roomDetail);
             }
+            if (roomTypeId != null && roomTypeId != roomDetail.getRoomType().getRoomTypeId()) {
+                roomDetails.remove(roomDetail);
+            }
         }
 
+        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
+        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
+
+        request.setAttribute("roomTypes", roomTypes);
         request.setAttribute("roomDetails", roomDetails);
         return true;
     }

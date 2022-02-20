@@ -50,7 +50,7 @@
                     </svg>
                     Add Room Type
                 </a>
-                <a href="#" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
+                <a href="<%= Routers.USERS_SERVLET%>" class="text-white font-semibold group flex items-center px-2 py-2 text-sm hover:text-gray-800 rounded-md hover:bg-gray-100">
                     <svg class="mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-800" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M16.6699 13.13C18.0399 14.06 18.9999 15.32 18.9999 17V20H21.9999C22.5499 20 22.9999 19.55 22.9999 19V17C22.9999 14.82 19.4299 13.53 16.6699 13.13Z" fill="currentColor"/>
                         <path d="M9 12C11.2091 12 13 10.2091 13 8C13 5.79086 11.2091 4 9 4C6.79086 4 5 5.79086 5 8C5 10.2091 6.79086 12 9 12Z" fill="currentColor"/>
