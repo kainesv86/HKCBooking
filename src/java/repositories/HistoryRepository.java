@@ -259,7 +259,7 @@ public class HistoryRepository {
             String query = "UPDATE hkcbooking_history \n"
                     + "SET historyStatus = 'CANCEL',\n"
                     + "[message] = ? \n"
-                    + "WHERE startDate <= ? AND roomId=? AND historyStatus != 'CANCEL' ";
+                    + "WHERE startDate >= ? AND roomId=? AND historyStatus <> 'CANCEL' ";
 
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(query);
