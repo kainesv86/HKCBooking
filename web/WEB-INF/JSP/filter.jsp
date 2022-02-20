@@ -71,7 +71,7 @@
                             <jsp:param name="maxPrice" value="<%= maxPrice%>"/>
                         </jsp:include>
                     </div>
-                    <div class="flex flex-col">
+                    <div class="grid  grid-cols-2 gap-4 ">
                         <% if (roomDetails.size() > 0) { %>
                         <%
                             for (int index = lowerList; index < upperList; index++) {
@@ -114,6 +114,8 @@
                     </div>
                 </div>
             </div>
+            <% if (roomDetails.size() > 0) {%>
+
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                 <form href="<%= Routers.ADD_PARAMS_SERVLET%>" >
                     <button type="submit" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
@@ -176,6 +178,7 @@
                 </form>
 
             </nav>
+            <% }%>
         </div>
     </body>
 </html>

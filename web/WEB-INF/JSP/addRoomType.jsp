@@ -20,7 +20,7 @@
                 <div class="bg-gray-100 flex-1 py-20 justify-center flex items-center">
                     <form
                         action="<%= Routers.ADD_ROOM_TYPE_SERVLET%>" method="POST"
-                    class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
+                    class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px] fade-in"
                     >
                     <div class="space-y-8 divide-y divide-gray-200">
                         <div>

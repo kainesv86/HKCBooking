@@ -12,13 +12,14 @@
         <jsp:include page="common/header.jsp">
             <jsp:param name="title" value="HKCBooking"/>
         </jsp:include>
+
     </head>
     <body>
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
-                <div class="min-h-full flex bg-gray-50 flex-1  items-center">
-                    <main class="flex h-full justify-center px-20">
-                        <div class="text-center py-48 lg:text-left ">
+                <div class="min-h-full flex bg-gray-50 flex-1  items-center ">
+                    <main class="flex h-full justify-center px-20 ">
+                        <div class="text-center py-48 lg:text-left fade-in-index opacity-0">
                             <div class="px-4 sm:px-8 xl:pr-16 flex-1">
                                 <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl flex flex-col">
                                     <span class="block xl:inline">Find your next</span>
@@ -32,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-1/2 h-full">
+                    <div class="w-1/2 h-full zoom-in">
                         <img class="inset-0 w-full h-full object-cover object-fit rounded-md" src="https://wallpaperaccess.com/full/2690557.jpg" alt="" />
                     </div>
                 </main>
