@@ -34,15 +34,15 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("page", page);
 
         HttpSession session = request.getSession();
-        ArrayList<RoomDetail> roomDetailsClone = (ArrayList<RoomDetail>) session.getAttribute("roomDetailsClone");
-
-        if (roomDetailsClone == null) {
-            RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
-            ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
-            roomDetailsClone = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
-        }
-
-        request.setAttribute("roomDetails", roomDetailsClone);
+//        ArrayList<RoomDetail> roomDetailsClone = (ArrayList<RoomDetail>) session.getAttribute("roomDetailsClone");
+//
+//        if (roomDetailsClone == null) {
+//            RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
+//            ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
+//            roomDetailsClone = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
+//        }
+//
+//        request.setAttribute("roomDetails", roomDetailsClone);
 
         String roomName = gv.getString("roomName", "Room name", 0, 256, null);
 
@@ -60,6 +60,8 @@ public class FilterServlet extends HttpServlet {
 
         if (checkIn != null && checkOut != null) {
             roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkIn, checkOut);
+            request.setAttribute("checkIn", checkIn.toString());
+            request.setAttribute("checkOut", checkOut.toString());
         }
 
         roomDetails = RoomService.filterRoomByName(roomDetails, roomName);
@@ -78,8 +80,6 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("roomDetails", roomDetails);
 
         request.setAttribute("roomName", roomName);
-        request.setAttribute("checkIn", checkIn.toString());
-        request.setAttribute("checkOut", checkOut.toString());
         request.setAttribute("minPrice", minPrice);
         request.setAttribute("maxPrice", maxPrice);
     }
@@ -91,6 +91,7 @@ public class FilterServlet extends HttpServlet {
             handleOnPost(request, response);
             request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
+            ex.printStackTrace();
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }

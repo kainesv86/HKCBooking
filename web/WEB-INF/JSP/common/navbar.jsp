@@ -25,8 +25,9 @@
                     </div>
                     <p class="text-white text-3xl">HKCBooking</p>
                 </a>
-                <div class="hidden lg:block lg:ml-6">
+                <div class="hidden lg:block lg:ml-6 flex items-center">
                     <div class="flex space-x-4">
+                        <a href="<%= Routers.FILTER_SERVLET%>" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Find out now!</a>
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <% if (userRole != null && userRole.equals("ADMIN")) {%>
                         <a href="<%= Routers.BOOKING_ORDERS_SERVLET%>" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Switch to Admin page</a>
@@ -62,7 +63,7 @@
             </div>
             <div class="hidden lg:block lg:ml-4">
                 <div class="flex items-center">
-                    <a href="CartServlet" class="mr-4">
+                    <a href="<%= Routers.CART_SERVLET%>" class="mr-4">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.5 27C8.85 27 7.515 28.35 7.515 30C7.515 31.65 8.85 33 10.5 33C12.15 33 13.5 31.65 13.5 30C13.5 28.35 12.15 27 10.5 27ZM1.5 6H4.5L9.9 17.385L5.43 25.5H28.5V22.5H10.5L12.15 19.5H25.11L32.565 6H7.815L6.405 3H1.5V6ZM25.5 27C23.85 27 22.515 28.35 22.515 30C22.515 31.65 23.85 33 25.5 33C27.15 33 28.5 31.65 28.5 30C28.5 28.35 27.15 27 25.5 27Z" fill="white"/>
                         </svg>
@@ -98,8 +99,8 @@
                         </c:when>
                         <c:otherwise>
                             <div class="flex">
-                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded mr-4" href="LoginServlet">Login</a>
-                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded" href="RegisterServlet">Register</a>
+                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded mr-4" href="<%= Routers.LOGIN_SERVLET%>">Login</a>
+                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded" href="<%= Routers.REGISTER_SERVLET%>">Register</a>
                             </div>
                         </c:otherwise>
                     </c:choose>

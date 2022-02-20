@@ -22,6 +22,7 @@
             <jsp:include page="../Components/InputDate.jsp">
                 <jsp:param name="key" value="checkIn"/>
                 <jsp:param name="label" value="Check In"/>
+                <jsp:param name="inputValue" value="${param.checkIn}"/>
                 <jsp:param name="min" value="${param.minCheckIn}" />
             </jsp:include>
         </div>
@@ -30,6 +31,7 @@
             <jsp:include page="../Components/InputDate.jsp">
                 <jsp:param name="key" value="checkOut"/>
                 <jsp:param name="label" value="Check Out"/>
+                <jsp:param name="inputValue" value="${param.checkOut}"/>
                 <jsp:param name="min" value="${param.minCheckOut}"/>
             </jsp:include>
         </div>
@@ -37,9 +39,9 @@
         <div class="flex mb-2 flex-col  ">
             <label class="text-white font-semibold">Price</label>
             <div class="flex text-gray-700 justify-between">
-                <input type="number" step="any" min="0" name="minPrice" class="px-2 py-1 rounded-md w-36"/>
+                <input type="number" step="any" min="0" name="minPrice" class="px-2 py-1 rounded-md w-36" value="${param.minPrice != null ? param.minPrice : ""}"/>
                 <p class="font-semibold text-white">~</p>
-                <input type="number" step="any" min="0" name="maxPrice" class="px-2 py-1 rounded-md w-36"/>
+                <input type="number" step="any" min="0" name="maxPrice" class="px-2 py-1 rounded-md w-36" value="${param.maxPrice != "null" ? param.maxPrice : ""}"/>
             </div>
         </div>
     </div>
