@@ -10,7 +10,7 @@
 
 <li class="flex py-6">
     <div class="flex-shrink-0">
-        <img src="https://cdn.vietnambiz.vn/2019/11/4/dd32d9b188d86d6d8dc40d1ff9a0ebf6-15728512315071030248829.jpg" alt="Front side of mint cotton t-shirt with wavey lines pattern." class="w-24 h-24 rounded-md object-center object-cover sm:w-32 sm:h-32" />
+        <img src="${param.imageUrl}" alt="" class="w-24 h-24 rounded-md object-center object-cover sm:w-32 sm:h-32" />
     </div>
 
     <div class="ml-4 flex-1 flex flex-col sm:ml-6">

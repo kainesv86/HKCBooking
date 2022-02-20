@@ -35,6 +35,7 @@
                                             for (int index = 0; index < cart.size(); index++) {
                                         %>
                                         <jsp:include page="./Components/CartItem.jsp">
+                                            <jsp:param name="imageUrl" value="<%= cart.get(index).getRoom().getUrlImage()%>"/>
                                             <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
                                             <jsp:param name="startDate" value="<%= cart.get(index).getStartDate()%>" />
                                             <jsp:param name="endDate" value="<%= cart.get(index).getEndDate()%>" />
