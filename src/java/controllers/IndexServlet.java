@@ -23,42 +23,10 @@ import variables.RoomStatus;
 @WebServlet(name = "IndexServlet", urlPatterns = {"/" + Routers.INDEX_SERVLET})
 public class IndexServlet extends HttpServlet {
 
-    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-
-        RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
-        ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
-        roomDetails = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
-
-        HttpSession session = request.getSession();
-        Date minCheckIn = (Date) session.getAttribute("minCheckIn");
-        Date minCheckOut = (Date) session.getAttribute("minCheckOut");
-
-        if (minCheckIn == null || minCheckOut == null) {
-            minCheckIn = new Date(System.currentTimeMillis());
-            minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
-        }
-
-        request.setAttribute("minCheckIn", minCheckIn.toString());
-        request.setAttribute("minCheckOut", minCheckOut.toString());
-        request.setAttribute("roomDetails", roomDetails);
-        return true;
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession session = request.getSession();
-        long millis = System.currentTimeMillis();
-        java.sql.Date minDateCheckIn = new java.sql.Date(millis);
-        System.out.println(minDateCheckIn);
-//        session.setAttribute("minDate", minDateCheckIn);
         try {
-            if (!handleOnGet(request, response)) {
-                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
-                return;
-            }
             request.getRequestDispatcher(Routers.INDEX_PAGE).forward(request, response);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);

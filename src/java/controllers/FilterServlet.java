@@ -34,15 +34,6 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("page", page);
 
         HttpSession session = request.getSession();
-//        ArrayList<RoomDetail> roomDetailsClone = (ArrayList<RoomDetail>) session.getAttribute("roomDetailsClone");
-//
-//        if (roomDetailsClone == null) {
-//            RoomDetailRepository roomDetailRepo = new RoomDetailRepository();
-//            ArrayList<RoomDetail> roomDetails = roomDetailRepo.getAllRoomDetail();
-//            roomDetailsClone = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
-//        }
-//
-//        request.setAttribute("roomDetails", roomDetailsClone);
 
         String roomName = gv.getString("roomName", "Room name", 0, 256, null);
 
@@ -91,7 +82,6 @@ public class FilterServlet extends HttpServlet {
             handleOnPost(request, response);
             request.getRequestDispatcher(Routers.FILTER_PAGE).forward(request, response);
         } catch (Exception ex) {
-            ex.printStackTrace();
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
