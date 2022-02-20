@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/common/pagination.jsp</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/common/searchBar.jsp</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/IndexServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/services/HistoryService.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/services/RoomService.java</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/filter.jsp</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/index.jsp</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/FilterServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/variables/HistoryStatus.java</file>
+            <file>file:/D:/HKCC/HKCBooking/src/java/entities/History.java</file>
+            <file>file:/D:/HKCC/HKCBooking/src/java/controllers/UsersServlet.java</file>
+            <file>file:/D:/HKCC/HKCBooking/src/java/repositories/RoomDetailRepository.java</file>
+            <file>file:/D:/HKCC/HKCBooking/src/java/entities/User.java</file>
+            <file>file:/D:/HKCC/HKCBooking/src/java/repositories/UserRepository.java</file>
         </group>
     </open-files>
 </project-private>
