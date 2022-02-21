@@ -68,6 +68,13 @@ public class AddParamsServlet extends HttpServlet {
         Integer page = gv.getInt("page", "Page", 0, Integer.MAX_VALUE, null);
         urlParams += page != null ? "&?page=" + page : "";
 
+        Integer userId = gv.getInt("userId", "User Id", 0, Integer.MAX_VALUE, null);
+        urlParams += userId != null ? "&?userId=" + userId : "";
+
+        Date startDate = gv.getDate("startDate", "Start Date", null);
+        Date endDate = gv.getDate("endDate", "End Date", null);
+        urlParams += startDate != null && endDate != null ? "&?startDate=" + startDate + "&?endDate=" + endDate : "";
+
         urlParams = urlParams.replace(redirectTo + "&?", redirectTo + "?");
         urlParams = urlParams.replace("&?", "&");
 

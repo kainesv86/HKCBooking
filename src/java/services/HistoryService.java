@@ -68,4 +68,17 @@ public class HistoryService {
 
         return histories;
     }
+
+    public static ArrayList<History> filterHistoryByDate(ArrayList<History> histories, Date startDate, Date endDate) {
+        if (startDate.after(endDate)) {
+            histories.clear();
+            return histories;
+        }
+        for (History history : (ArrayList<History>) histories.clone()) {
+            if (!history.getStartDate().after(startDate) || !history.getStartDate().before(endDate)) {
+                histories.remove(history);
+            }
+        }
+        return histories;
+    }
 }
