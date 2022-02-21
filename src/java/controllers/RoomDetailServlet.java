@@ -18,9 +18,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,12 +49,18 @@ public class RoomDetailServlet extends HttpServlet {
             return false;
         }
 
-        Date minCheckIn = new Date(System.currentTimeMillis());
-        LocalDate minCheckOut = minCheckIn.toLocalDate().plusDays(1);
+        HttpSession session = request.getSession();
+        Date minCheckIn = (Date) session.getAttribute("minCheckIn");
+        Date minCheckOut = (Date) session.getAttribute("minCheckOut");
 
-        request.setAttribute("roomDetail", roomDetail);
+        if (minCheckIn == null || minCheckOut == null) {
+            minCheckIn = new Date(System.currentTimeMillis());
+            minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
+        }
+
         request.setAttribute("minCheckIn", minCheckIn.toString());
         request.setAttribute("minCheckOut", minCheckOut.toString());
+        request.setAttribute("roomDetail", roomDetail);
 
         return true;
     }

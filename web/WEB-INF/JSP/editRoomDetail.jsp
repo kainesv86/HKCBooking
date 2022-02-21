@@ -7,9 +7,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="Edit room details"/>
+        </jsp:include>
     </head>
     <body>
         <%
@@ -25,8 +25,7 @@
                     enctype="multipart/form-data"
                     class="space-y-8 divide-y divide-gray-200 min-w-[480px] max-w-[800px]"
                     >
-
-                    <input value="<%= room.getRoomId()%>" readonly name="roomId" class="hidden"/>
+                    <input value="<%= room.getRoomId()%>" readonly name="roomId" type="number" class="hidden"/>
                     <div class="space-y-8 divide-y divide-gray-200">
                         <div>
                             <div>
@@ -38,7 +37,8 @@
                                     <%
                                         for (RoomType roomType : roomTypes) {
                                     %>
-                                    <option value="<%= roomType.getRoomTypeId()%>" <% if (roomType.getRoomTypeId() == room.getRoomTypeId()) { %> selected <% }%> ><%= roomType.getRoomName()%></option>
+                                    <option value="<%= roomType.getRoomTypeId()%>" <% if (roomType.getRoomTypeId() == room.getRoomId()) {
+                                            %> selected <% }%> ><%= roomType.getRoomName()%></option>
                                     <% }%>
                                 </select>
                             </div>
@@ -52,7 +52,7 @@
                             <div>
                                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Room Image</label>
                                 <div class="h-auto w-auto">
-                                    <img class="h-full w-full object-cover object-fit" src="<%= room.getUrlImage()%>" alt="" />
+                                    <img class="h-full w-full object-cover object-fit" id="pre-photo" src="<%= room.getUrlImage()%>" alt="" />
                                 </div>
                                 <div class="mt-2">
                                     <input id="imageUrl" name="imageUrl" type="file" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
@@ -71,9 +71,11 @@
                             <label for="roomStatus" class="block text-sm font-medium text-gray-700">Room Status</label>
                             <select id="roomStatus" name="roomStatus" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm rounded-md">
                                 <%
-                                    for (RoomStatus.status status : RoomStatus.status.values()) {
+                                    for (RoomStatus.status status
+                                            : RoomStatus.status.values()) {
                                 %>
-                                <option value="<%= status.toString()%>" <% if (status.toString().equals(room.getRoomStatus())) { %> selected <% }%> ><%= status.toString()%></option>
+                                <option value="<%= status.toString()%>" <% if (status.toString().equals(room.getRoomStatus())) {
+                                        %> selected <% }%> ><%= status.toString()%></option>
                                 <% }%>
                             </select>
                         </div>
@@ -88,5 +90,22 @@
                     </div>
                 </form>
             </div>
+            <script>
+                window.onload = function () {
+                    document.getElementById("imageUrl").addEventListener(
+                            "change",
+                            function () {
+                                const reader = new FileReader();
+                                reader.onload = function () {
+                                    const dataURL = reader.result;
+                                    const output = document.getElementById("pre-photo");
+                                    output.src = dataURL;
+                                };
+                                reader.readAsDataURL(this.files[0]);
+                            },
+                            false
+                            );
+                };
+            </script>
     </body>
 </html>

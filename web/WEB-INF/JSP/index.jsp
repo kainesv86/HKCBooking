@@ -1,3 +1,4 @@
+<%@page import="variables.Routers"%>
 <%@page import="entities.RoomDetail"%>
 <%@page import="helper.FunctionJSP"%>
 <%@page import="entities.RoomType"%>
@@ -8,54 +9,34 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="HKCBooking"/>
+        </jsp:include>
+
     </head>
     <body>
-        <%
-            ArrayList<RoomDetail> roomDetails = (ArrayList<RoomDetail>) request.getAttribute("roomDetails");
-        %>
-
         <div class="flex flex-col min-h-screen">
             <jsp:include page="./common/navbar.jsp"></jsp:include>
-                <div class="min-h-full flex flex-col bg-gray-200 flex-1">
-                    <div class="h-[40rem] w-full object-cover flex items-center justify-center relative">
-                        <div class="text-gray-100 max-w-5xl px-4 sm:px-6 lg:px-8 w-fit -ml-[30rem] z-10">
-                            <h1 class="text-5xl mb-2">Find your next stay</h1>
-                            <h2 class="text-2xl indent-7">Search deals on hotels and much more...</h2>
-                        </div>
-                        <div class="absolute h-full w-full">
-                            <div class="h-full w-full absolute">
-                                <img class="w-full h-full object-fit object-cover object-bottom" src="https://wallpaperaccess.com/full/2690557.jpg" alt="" />
+                <div class="min-h-full flex bg-gray-50 flex-1  items-center ">
+                    <main class="flex h-full justify-center px-20 ">
+                        <div class="text-center py-48 lg:text-left fade-in-index opacity-0">
+                            <div class="px-4 sm:px-8 xl:pr-16 flex-1">
+                                <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl flex flex-col">
+                                    <span class="block xl:inline">Find your next</span>
+                                    <span class="block text-rose-500 xl:inline">room stay</span>
+                                </h1>
+                                <p class="mt-3 max-w-md mx-auto text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">Search deals on hotels, homes, and much more...</p>
+                                <div class="mt-10 sm:flex sm:justify-center lg:justify-start">
+                                    <div class="rounded-md shadow">
+                                        <a href="<%=Routers.FILTER_SERVLET%>" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 md:py-4 md:text-lg md:px-10"> Get started </a>
+                                </div>
                             </div>
-                            <div class="block w-full h-full bg-gray-900 absolute opacity-50"></div>
                         </div>
                     </div>
-
-                    <div class="py-10 px-60 flex justify-center">
-                        <div class="mr-4">
-                        <jsp:include page="./common/searchBar.jsp"></jsp:include>
-                        </div>
-                        <div class="flex flex-col">
-
-                        <% for (RoomDetail roomDetail : roomDetails) {
-
-                        %>
-                        <jsp:include page="./Components/room.jsp">
-                            <jsp:param name="urlImage" value="<%=roomDetail.getRoom().getUrlImage()%>"/>
-                            <jsp:param name="roomName" value="<%=roomDetail.getRoomType().getRoomName()%>"/>
-                            <jsp:param name="capacity" value="<%=roomDetail.getRoomType().getCapacity()%>"/>
-                            <jsp:param name="price" value="<%=roomDetail.getRoom().getPrice()%>"/>
-                            <jsp:param name="description" value="<%=roomDetail.getRoom().getDescription()%>"/>
-                            <jsp:param name="roomId" value="<%=roomDetail.getRoom().getRoomId()%>"/>
-                        </jsp:include>
-                        <% }%>
-
-                        <div/>
-
+                    <div class="w-1/2 h-full zoom-in">
+                        <img class="inset-0 w-full h-full object-cover object-fit rounded-md" src="https://wallpaperaccess.com/full/2690557.jpg" alt="" />
                     </div>
-                </div>
+                </main>
             </div>
         </div>
     </body>

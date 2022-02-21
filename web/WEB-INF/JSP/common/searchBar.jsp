@@ -1,6 +1,6 @@
 <%@page import="variables.Routers"%>
-<form class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96" action="<%= Routers.FILTER_SERVLET%>" method="POST">
-
+<form class="flex flex-col px-5 py-10 bg-rose-600 rounded-md overflow-hidden w-96" action="<%= Routers.ADD_PARAMS_SERVLET%>" method="POST">
+    <input readonly required hidden value="<%= Routers.FILTER_SERVLET%>" type="text" name="redirectTo"/>
     <label class="text-center text-white mb-4 text-2xl font-medium">Search filter</label>
     <div class="flex-1 flex justify-center px-2 lg:justify-end flex-col">
         <div class="w-full mb-2">
@@ -13,7 +13,7 @@
                     </svg>
                 </div>
                 <div class="flex items-center">
-                    <input id="search" name="search" class="flex-1 block pl-10 pr-6 py-2 rounded-tl-md rounded-bl-md leading-5 bg-gray-700 text-gray-300 placeholder-gray-400 outline-none focus:bg-gray-100 focus:text-gray-900 sm:text-sm hover:bg-gray-100" placeholder="Search" type="search"/>
+                    <input id="roomName" name="roomName" class="flex-1 block pl-10 pr-6 py-2 rounded-tl-md rounded-bl-md leading-5 bg-gray-700 text-gray-300 placeholder-gray-400 outline-none focus:bg-gray-100 focus:text-gray-900 sm:text-sm hover:bg-gray-100" placeholder="Search" type="search"/>
                     <button type="submit" class="bg-rose-700 rounded-tr-md rounded-br-md text-white text-sm hover:bg-rose-800 py-2 px-2">Search</button>
                 </div>
             </div>
@@ -22,6 +22,8 @@
             <jsp:include page="../Components/InputDate.jsp">
                 <jsp:param name="key" value="checkIn"/>
                 <jsp:param name="label" value="Check In"/>
+                <jsp:param name="inputValue" value="${param.checkIn}"/>
+                <jsp:param name="min" value="${param.minCheckIn}" />
             </jsp:include>
         </div>
 
@@ -29,15 +31,17 @@
             <jsp:include page="../Components/InputDate.jsp">
                 <jsp:param name="key" value="checkOut"/>
                 <jsp:param name="label" value="Check Out"/>
+                <jsp:param name="inputValue" value="${param.checkOut}"/>
+                <jsp:param name="min" value="${param.minCheckOut}"/>
             </jsp:include>
         </div>
 
         <div class="flex mb-2 flex-col  ">
             <label class="text-white font-semibold">Price</label>
             <div class="flex text-gray-700 justify-between">
-                <input type="number" step="any" min="100000" value="100000" class="px-2 py-1 rounded-md w-36"/>
+                <input type="number" step="any" min="0" name="minPrice" class="px-2 py-1 rounded-md w-36" value="${param.minPrice != null ? param.minPrice : ""}"/>
                 <p class="font-semibold text-white">~</p>
-                <input type="number" step="any" min="100000" value="100000" class="px-2 py-1 rounded-md w-36"/>
+                <input type="number" step="any" min="0" name="maxPrice" class="px-2 py-1 rounded-md w-36" value="${param.maxPrice != "null" ? param.maxPrice : ""}"/>
             </div>
         </div>
     </div>

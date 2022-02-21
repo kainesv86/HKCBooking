@@ -26,7 +26,7 @@ import variables.UserRole;
  *
  * @author Kaine
  */
-@WebServlet(name = "AddRoomTypeServlet", urlPatterns = {"/AddRoomTypeServlet"})
+@WebServlet(name = "AddRoomTypeServlet", urlPatterns = {"/" + Routers.ADD_ROOM_TYPE_SERVLET})
 public class AddRoomTypeServlet extends HttpServlet {
 
     protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
@@ -34,36 +34,22 @@ public class AddRoomTypeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         GetVariable gv = new GetVariable(request);
-        Integer roomTypeId = gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
-        String roomName = gv.getString("roomName", "Room Name", 0, 500, "");
+        String roomName = gv.getString("roomName", "Room Name", 0, 100, null);
         Integer capacity = gv.getInt("capacity", "Capacity", 0, Integer.MAX_VALUE, null);
         Integer acreage = gv.getInt("acreage", "Acreage", 0, Integer.MAX_VALUE, null);
 
-        if (roomTypeId == null || roomName == null || capacity == null || acreage == null) {
+        if (roomName == null || capacity == null || acreage == null) {
             return false;
         }
 
         RoomType roomType = new RoomType();
-        roomType.setRoomTypeId(roomTypeId);
         roomType.setRoomName(roomName);
         roomType.setCapacity(capacity);
         roomType.setAcreage(acreage);
 
         RoomTypeRepository roomRepo = new RoomTypeRepository();
-        if (roomRepo.checkRoomTypeExist(roomTypeId, roomName)) {
-            return false;
-        }
         return roomRepo.addRoomType(roomType);
 
-    }
-
-    protected boolean handleOnGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-        ArrayList<RoomType> roomTypes = roomTypeRepo.getAllRoomType();
-        request.setAttribute("roomTypes", roomTypes);
-
-        return true;
     }
 
     @Override
@@ -82,43 +68,27 @@ public class AddRoomTypeServlet extends HttpServlet {
         }
 
         try {
-            if (!handleOnGet(request, response)) {
-                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
-                return;
-            }
             request.getRequestDispatcher(Routers.ADD_ROOM_TYPE_PAGE).forward(request, response);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (!handleOnPost(request, response)) {
-            request.setAttribute("message", "Add room type failed, roomTypeId or RoomName existed");
-        } else {
-            request.setAttribute("message", "Add room type successful");
-        }
 
         try {
-            RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
-            ArrayList<RoomType> roomTypes;
-            roomTypes = roomTypeRepo.getAllRoomType();
-            request.setAttribute("roomTypes", roomTypes);
+            if (!handleOnPost(request, response)) {
+                request.setAttribute("message", "Add room type failed, roomTypeId or RoomName existed");
+            } else {
+                request.setAttribute("message", "Add room type successful");
+            }
+            response.sendRedirect("AddRoomTypeServlet");
         } catch (Exception ex) {
-            Logger.getLogger(AddRoomTypeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
 
-        response.sendRedirect("AddRoomTypeServlet");
     }
 
     /**

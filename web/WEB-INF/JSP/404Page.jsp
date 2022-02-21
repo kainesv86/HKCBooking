@@ -9,9 +9,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="Error 404"/>
+        </jsp:include>
     </head>
     <body>
         <div class="flex flex-col min-h-screen">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="">
                     <div class="text-center">
-                        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Page not found.</h1>
+                        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Page not found or something went wrong</h1>
                         <p class="mt-2 text-base text-gray-500">Sorry, we couldn’t find the page you’re looking for.</p>
                         <div class="mt-6">
                             <a href="<%= Routers.INDEX_SERVLET%>" class="text-base font-medium text-rose-600 hover:text-rose-500">Go back home<span aria-hidden="true"> &rarr;</span></a>

@@ -38,7 +38,7 @@ public class AddRoomServlet extends HttpServlet {
         String imageUrl = gv.getFile("imageUrl", "Room Image", 1080 * 1080);
         String description = gv.getString("description", "desciption", 0, 500, "");
 
-        if (price == null || price == null || imageUrl == null || description == null) {
+        if (price == null || imageUrl == null || description == null) {
             return false;
         }
 
