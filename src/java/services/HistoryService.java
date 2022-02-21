@@ -47,7 +47,7 @@ public class HistoryService {
     }
 
     public static boolean isValidDateInput(Date inputCheckIn, Date inputCheckOut) {
-        return inputCheckIn.before(inputCheckOut);
+        return inputCheckIn != null && inputCheckOut != null && inputCheckIn.before(inputCheckOut);
     }
 
     public static ArrayList<History> filterHistoryByStatus(ArrayList<History> histories, HistoryStatus.status status, boolean isReverse) {
