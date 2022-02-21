@@ -62,40 +62,33 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("roomName", roomName);
 
         //Filter by price (NaN for someone try to make wrong in param)
-        Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, null);
-        Float maxPrice = gv.getFloat("maxPrice", "Max Price", 0, Float.MAX_VALUE, null);
+        Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, Float.valueOf("-1"));
 
-        String priceError = "";
+        Float maxPrice = gv.getFloat("maxPrice", "Max Price", minPrice != null && !minPrice.equals(NaN) ? minPrice : 0, Float.MAX_VALUE, Float.valueOf("-1"));
 
-        if (minPrice != null || maxPrice != null) {
-            if (minPrice.compareTo(NaN) != 0 && maxPrice.compareTo(NaN) != 0) {
-                System.out.println(minPrice + " : " + maxPrice);
-                if (minPrice > maxPrice) {
-                    roomDetails.clear();
-                    priceError = "Max price must greater than min price";
-                    request.setAttribute("priceError", priceError);
-                } else {
-                    roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
-                }
+        // -1 only set by getFloat function when that min or max price didn't provide and if it had, it will dependent on condition
+        if (minPrice != -1 && maxPrice != -1) {
+            roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
+        }
+
+        String minPriceError = (String) request.getAttribute("minPriceError");
+        String maxPriceError = (String) request.getAttribute("maxPriceError");
+
+        if (minPriceError != null || maxPriceError != null) {
+            String priceError = "";
+            priceError += minPriceError != null ? minPriceError : "";
+            priceError += minPriceError != null && maxPriceError != null ? ", " : "";
+            priceError += maxPriceError != null ? maxPriceError : "";
+            request.setAttribute("priceError", priceError);
+        } else {
+            // this condition will work to set default value in input tag
+            if (minPrice != -1 && maxPrice == -1) {
                 request.setAttribute("minPrice", minPrice);
                 request.setAttribute("maxPrice", maxPrice);
-            } else {
-                if (minPrice.compareTo(NaN) == 0) {
-                    priceError += (String) request.getAttribute("minPriceError");
-                }
-                if (minPrice.compareTo(NaN) == 0 && maxPrice.compareTo(NaN) == 0) {
-                    priceError += ", ";
-                }
-                if (maxPrice.compareTo(NaN) == 0) {
-                    priceError += (String) request.getAttribute("maxPriceError");
-                }
-
-                roomDetails.clear();
-                request.setAttribute("priceError", priceError);
             }
-
         }
-        //Set min date that input date can set
+
+//        Set min date that input date can set
         HttpSession session = request.getSession();
 
         Date minCheckIn = (Date) session.getAttribute("minCheckIn");
@@ -107,14 +100,11 @@ public class FilterServlet extends HttpServlet {
             minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
         }
 
-        request.setAttribute(
-                "minCheckIn", minCheckIn.toString());
-        request.setAttribute(
-                "minCheckOut", minCheckOut.toString());
+        request.setAttribute("minCheckIn", minCheckIn.toString());
+        request.setAttribute("minCheckOut", minCheckOut.toString());
 
         //Room after filter all condition
-        request.setAttribute(
-                "roomDetails", roomDetails);
+        request.setAttribute("roomDetails", roomDetails);
 
     }
 
