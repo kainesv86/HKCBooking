@@ -44,6 +44,7 @@ public class Routers {
     public static final String CHANGE_PASSWORD_PAGE = "/WEB-INF/JSP/changePassword.jsp";
     public static final String BOOKING_ORDERS_PAGE = "/WEB-INF/JSP/bookingOrders.jsp";
     public static final String ADD_ROOM_PAGE = "/WEB-INF/JSP/addRoom.jsp";
+    public static final String ADD_ROOM_TYPE_PAGE = "/WEB-INF/JSP/addRoomType.jsp";
     public static final String EDIT_ROOM_PAGE = "/WEB-INF/JSP/editRoom.jsp";
     public static final String EDIT_ROOM_DETAIL_PAGE = "/WEB-INF/JSP/editRoomDetail.jsp";
     public static final String USERS_PAGE = "/WEB-INF/JSP/editRoomDetail.jsp";

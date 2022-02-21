@@ -115,7 +115,7 @@ public class AddRoomTypeServlet extends HttpServlet {
             roomTypes = roomTypeRepo.getAllRoomType();
             request.setAttribute("roomTypes", roomTypes);
         } catch (Exception ex) {
-            Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddRoomTypeServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         response.sendRedirect("AddRoomTypeServlet");

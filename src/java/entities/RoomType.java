@@ -16,6 +16,9 @@ public class RoomType {
     private Integer capacity;
     private Integer acreage;
 
+    public RoomType() {
+    }
+
     public RoomType(Integer roomTypeId, String roomName, Integer capacity, Integer acreage) {
         this.roomTypeId = roomTypeId;
         this.roomName = roomName;
