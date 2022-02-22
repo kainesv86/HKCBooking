@@ -75,7 +75,7 @@ public class HistoryService {
             return histories;
         }
         for (History history : (ArrayList<History>) histories.clone()) {
-            if (!history.getStartDate().after(startDate) || !history.getStartDate().before(endDate)) {
+            if (history.getStartDate().compareTo(startDate) < 0 || history.getStartDate().compareTo(endDate) > 0) {
                 histories.remove(history);
             }
         }

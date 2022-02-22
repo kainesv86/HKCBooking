@@ -14,7 +14,10 @@
     <body>
         <%
             ArrayList<History> list = (ArrayList<History>) request.getAttribute("list");
-            String userId = (String) request.getAttribute("userId");
+            Integer userId = (Integer) request.getAttribute("userId");
+
+            String startDate = (String) request.getAttribute("startDate");
+            String endDate = (String) request.getAttribute("endDate");
         %>
 
 
@@ -26,27 +29,24 @@
                     <form action="<%=Routers.ADD_PARAMS_SERVLET%>" method="POST" class="bg-rose-600 py-6 px-12 flex flex-col rounded-md mb-4">
                     <input readonly required hidden value="<%= Routers.USER_HISTORIES_SERVLET%>" type="text" name="redirectTo"/>
                     <div class="flex items-end">
-                        <div class="flex flex-col mr-4">
+                        <div class="flex flex-col mr-4 -translate-y-2">
                             <label for="userId" class="block text-sm text-gray-100 font-semibold">User Id</label>
                             <input  required value="<%= userId != null ? userId : ""%>" id="userId" name="userId" type="text"  class="appearance-none block w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                            <p class="mt-2 text-sm text-white">${requestScope.userId}</p>
                         </div>
                         <div class="mr-4">
                             <jsp:include page="./Components/InputDate.jsp">
                                 <jsp:param name="key" value="startDate"/>
                                 <jsp:param name="label" value="Start date"/>
-                                <jsp:param name="inputValue" value="${param.checkIn}"/>
-                                <jsp:param name="min" value="${param.minCheckIn}" />
-                                <jsp:param name="error" value="${requestScope.checkInError}" />
+                                <jsp:param name="inputValue" value="<%=startDate%>"/>
+                                <jsp:param name="error" value="${requestScope.startDateError}" />
                             </jsp:include>
                         </div>
                         <div class="mr-4">
                             <jsp:include page="./Components/InputDate.jsp">
                                 <jsp:param name="key" value="endDate"/>
                                 <jsp:param name="label" value="End date"/>
-                                <jsp:param name="inputValue" value="${param.checkIn}"/>
-                                <jsp:param name="min" value="${param.minCheckIn}" />
-                                <jsp:param name="error" value="${requestScope.checkInError}" />
+                                <jsp:param name="inputValue" value="<%=endDate%>"/>
+                                <jsp:param name="error" value="${requestScope.endDateError}" />
                             </jsp:include>
                         </div>
                         <div class="-translate-y-2">
