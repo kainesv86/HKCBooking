@@ -70,18 +70,15 @@ public class RoomDetailServlet extends HttpServlet {
         HttpSession session = request.getSession();
         GetVariable gv = new GetVariable(request);
         Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
-        String startDate = gv.getString("startDate", "Start date", 0, 20, null);
-        String endDate = gv.getString("endDate", "End date", 0, 20, null);
+        Date checkIn = gv.getDate("checkIn", "Check In", null);
+        Date checkOut = gv.getDate("checkOut", "Check Out", null);
 
         request.setAttribute("roomId", roomId);
 
-        if (roomId == null || startDate == null || endDate == null) {
+        if (roomId == null || checkOut == null || checkIn == null) {
             session.setAttribute("message", "End date and start date is required");
             return false;
         }
-
-        Date checkIn = Date.valueOf(startDate);
-        Date checkOut = Date.valueOf(endDate);
 
         if (!HistoryService.isValidDateInput(checkIn, checkOut)) {
             session.setAttribute("message", "End date must greater than start date");

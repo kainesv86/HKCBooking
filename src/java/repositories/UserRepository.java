@@ -185,12 +185,13 @@ public class UserRepository {
             while (rs.next()) {
                 Integer userId = rs.getInt("userId");
                 String username = rs.getString("username");
+                String fullname = rs.getString("fullname");
                 String password = rs.getString("password");
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
                 String role = rs.getString("role");
-                list.add(new User(userId, username, password, username, address, phone, role, email));
+                list.add(new User(userId, username, password, fullname, address, phone, role, email));
             }
             return list;
         } finally {

@@ -24,6 +24,7 @@
                 <jsp:param name="label" value="Check In"/>
                 <jsp:param name="inputValue" value="${param.checkIn}"/>
                 <jsp:param name="min" value="${param.minCheckIn}" />
+                <jsp:param name="error" value="${requestScope.checkInError}" />
             </jsp:include>
         </div>
 
@@ -33,6 +34,7 @@
                 <jsp:param name="label" value="Check Out"/>
                 <jsp:param name="inputValue" value="${param.checkOut}"/>
                 <jsp:param name="min" value="${param.minCheckOut}"/>
+                <jsp:param name="error" value="${requestScope.checkOutError}" />
             </jsp:include>
         </div>
 
@@ -43,6 +45,7 @@
                 <p class="font-semibold text-white">~</p>
                 <input type="number" step="any" min="0" name="maxPrice" class="px-2 py-1 rounded-md w-36" value="${param.maxPrice != "null" ? param.maxPrice : ""}"/>
             </div>
+            <p class="mt-2 text-sm text-white" >${requestScope.priceError}</p>
         </div>
     </div>
 
