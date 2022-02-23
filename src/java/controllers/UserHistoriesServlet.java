@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.History;
+import guard.UseGuard;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import repositories.HistoryRepository;
+import variables.Routers;
+import variables.UserRole;
 
 /**
  *
@@ -34,19 +37,20 @@ public class UserHistoriesServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
-        
+
         Integer uid = (Integer) request.getAttribute("uid");
         HistoryRepository hr = new HistoryRepository();
         try {
-            ArrayList<History> histories =  hr.getAllHistoryByUserId(uid);
+            ArrayList<History> histories = hr.getAllHistoryByUserId(uid);
+            request.setAttribute("histories", histories);
+            return true;
         } catch (Exception ex) {
             Logger.getLogger(UserHistoriesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -61,7 +65,23 @@ public class UserHistoriesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        UseGuard useGuard = new UseGuard(request, response);
+
+        if (!useGuard.useAuth()) {
+            response.sendRedirect(Routers.LOGIN_SERVLET);
+            return;
+        }
+
+        try {
+            if (!processRequest(request, response)) {
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
+                return;
+            }
+            request.getRequestDispatcher(Routers.USERS_PAGE).forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
+        }
     }
 
     /**
