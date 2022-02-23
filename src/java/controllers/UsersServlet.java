@@ -54,7 +54,7 @@ public class UsersServlet extends HttpServlet {
                 request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
                 return;
             }
-            request.getRequestDispatcher(Routers.USER_HISTORIES_PAGE).forward(request, response);
+            request.getRequestDispatcher(Routers.USERS_PAGE).forward(request, response);
         } catch (Exception ex) {
             ex.printStackTrace();
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);

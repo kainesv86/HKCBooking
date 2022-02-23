@@ -69,7 +69,6 @@
                                 <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">Add</button>
                             </div>
                         </div>
-
                         <p class="text-gray-800 text-sm font-semibold"><%=message == null ? "" : message%><p/>
                 </form>
             </div>

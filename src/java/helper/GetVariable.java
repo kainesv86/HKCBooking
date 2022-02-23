@@ -2,6 +2,7 @@ package helper;
 
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Float.NaN;
 import java.sql.Date;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -54,7 +55,7 @@ public class GetVariable {
             number = Float.parseFloat(value);
         } catch (Exception e) {
             request.setAttribute(key + "Error", label + " must be a number ");
-            return null;
+            return NaN;
         }
 
         if (number >= maxValue) {

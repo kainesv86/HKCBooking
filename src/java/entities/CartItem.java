@@ -15,16 +15,18 @@ public class CartItem {
 
     private Room room;
     private String roomName;
-    private Date startDate;
-    private Date endDate;
+    private Date checkIn;
+    private Date checkOut;
     private Float total;
+    private String error;
 
-    public CartItem(Room room, String roomName, Date startDate, Date endDate, Float total) {
+    public CartItem(Room room, String roomName, Date checkIn, Date checkOut, Float total, String error) {
         this.room = room;
         this.roomName = roomName;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
         this.total = total;
+        this.error = error;
     }
 
     public Room getRoom() {
@@ -43,20 +45,20 @@ public class CartItem {
         this.roomName = roomName;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getCheckIn() {
+        return checkIn;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setCheckIn(Date checkIn) {
+        this.checkIn = checkIn;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getCheckOut() {
+        return checkOut;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setCheckOut(Date checkOut) {
+        this.checkOut = checkOut;
     }
 
     public Float getTotal() {
@@ -65,6 +67,14 @@ public class CartItem {
 
     public void setTotal(Float total) {
         this.total = total;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 
 }

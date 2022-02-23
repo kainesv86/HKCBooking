@@ -96,14 +96,14 @@
 
                                         <div class="mb-2">
                                             <jsp:include page="./Components/InputDate.jsp">
-                                                <jsp:param name="key" value="startDate"/>
+                                                <jsp:param name="key" value="checkIn"/>
                                                 <jsp:param name="label" value="Check In"/>
                                                 <jsp:param name="min" value="<%=minCheckIn%>" />
                                             </jsp:include>
                                         </div>
 
                                         <jsp:include page="./Components/InputDate.jsp">
-                                            <jsp:param name="key" value="endDate"/>
+                                            <jsp:param name="key" value="checkOut"/>
                                             <jsp:param name="label" value="Check out"/>
                                             <jsp:param name="min" value="<%=minCheckOut%>" />
                                         </jsp:include>

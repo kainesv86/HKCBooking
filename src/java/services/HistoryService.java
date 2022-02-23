@@ -47,7 +47,7 @@ public class HistoryService {
     }
 
     public static boolean isValidDateInput(Date inputCheckIn, Date inputCheckOut) {
-        return inputCheckIn.before(inputCheckOut);
+        return inputCheckIn != null && inputCheckOut != null && inputCheckIn.before(inputCheckOut);
     }
 
     public static ArrayList<History> filterHistoryByStatus(ArrayList<History> histories, HistoryStatus.status status, boolean isReverse) {
@@ -66,6 +66,19 @@ public class HistoryService {
             }
         }
 
+        return histories;
+    }
+
+    public static ArrayList<History> filterHistoryByDate(ArrayList<History> histories, Date startDate, Date endDate) {
+        if (startDate.after(endDate)) {
+            histories.clear();
+            return histories;
+        }
+        for (History history : (ArrayList<History>) histories.clone()) {
+            if (history.getStartDate().compareTo(startDate) < 0 || history.getStartDate().compareTo(endDate) > 0) {
+                histories.remove(history);
+            }
+        }
         return histories;
     }
 }

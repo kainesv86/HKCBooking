@@ -8,6 +8,7 @@ package services;
 import entities.History;
 import entities.Room;
 import entities.RoomDetail;
+import static java.lang.Float.NaN;
 import java.sql.Date;
 import java.util.ArrayList;
 import repositories.HistoryRepository;
@@ -48,23 +49,35 @@ public class RoomService {
 
     public static ArrayList<RoomDetail> filterRoomByPriceBooking(ArrayList<RoomDetail> roomDetails, Float minValue, Float maxValue) throws Exception {
 
-        if (minValue != null) {
-            for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
-                if (roomDetail.getRoom().getPrice() < minValue) {
-                    roomDetails.remove(roomDetail);
+        if (minValue != null || maxValue != null) {
+            if ((minValue != null && minValue.compareTo(NaN) != 0) && (maxValue != null && maxValue.compareTo(NaN) != 0)) {
+                if (minValue > maxValue) {
+                    roomDetails.clear();
+                    return roomDetails;
                 }
 
-            }
-        }
-        if (maxValue != null) {
-            for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
-                if (roomDetail.getRoom().getPrice() > maxValue) {
-                    roomDetails.remove(roomDetail);
+                if (minValue != null) {
+                    for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
+                        if (roomDetail.getRoom().getPrice() < minValue) {
+                            roomDetails.remove(roomDetail);
+                        }
+
+                    }
                 }
 
+                if (maxValue != null) {
+                    for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
+                        if (roomDetail.getRoom().getPrice() > maxValue) {
+                            roomDetails.remove(roomDetail);
+                        }
+                    }
+                }
+            } else {
+                System.out.println(minValue + " : " + maxValue);
+                roomDetails.clear();
             }
-        }
 
+        }
         return roomDetails;
     }
 
