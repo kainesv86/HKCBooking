@@ -76,7 +76,7 @@
                                         </td>
 
                                         <td class="px-6 py-4">
-                                            <textarea rows="4" name="note" id="note" class="shadow-md focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getNote()%></textarea>
+                                            <textarea rows="4" name="note" id="note" placeholder="Enter your note here" class="focus:ring-rose-500 focus:border-rose-500 block sm:text-sm border-gray-300 rounded-md w-48"><%= list.get(index).getHistory().getNote()%></textarea>
                                         </td>
                                         <td class="px-6 py-4">
                                             <p class="text-sm text-gray-900 w-48 text-justify"><%= list.get(index).getHistory().getMessage()%></p>

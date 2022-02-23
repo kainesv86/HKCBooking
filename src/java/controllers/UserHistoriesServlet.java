@@ -5,19 +5,27 @@
  */
 package controllers;
 
+import entities.History;
+import helper.GetVariable;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import repositories.HistoryRepository;
+import services.HistoryService;
+import variables.Routers;
 
 /**
  *
  * @author Kaine
  */
-@WebServlet(name = "UserHistoriesServlet", urlPatterns = {"/UserHistoriesServlet"})
+@WebServlet(name = "UserHistoriesServlet", urlPatterns = {"/" + Routers.USER_HISTORIES_SERVLET})
 public class UserHistoriesServlet extends HttpServlet {
 
     /**
@@ -29,57 +37,55 @@ public class UserHistoriesServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UserHistoriesServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserHistoriesServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+        GetVariable gv = new GetVariable(request);
+        Integer userId = gv.getInt("userId", "User Id", 0, Integer.MAX_VALUE, null);
+
+        if (userId == null) {
+            return false;
         }
+
+        Date startDate = gv.getDate("startDate", "Start Date", null);
+        Date endDate = gv.getDate("endDate", "End Date", null);
+
+        HistoryRepository hr = new HistoryRepository();
+        ArrayList<History> list = hr.getAllHistoryByUserId(userId);
+
+        if (startDate != null && endDate != null) {
+            list = HistoryService.filterHistoryByDate(list, startDate, endDate);
+            request.setAttribute("startDate", startDate.toString());
+            request.setAttribute("endDate", endDate.toString());
+            if (!HistoryService.isValidDateInput(startDate, endDate)) {
+                list.clear();
+                request.setAttribute("checkOutError", "End date must greater than start date");
+            }
+        }
+
+        request.setAttribute("list", list);
+        request.setAttribute("userId", userId);
+        return true;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        try {
+            if (!processRequest(request, response)) {
+                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
+                return;
+            };
+            request.getRequestDispatcher(Routers.USER_HISTORIES_PAGE).forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
+        }
+
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

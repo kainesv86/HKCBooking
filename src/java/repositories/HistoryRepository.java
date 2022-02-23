@@ -125,6 +125,37 @@ public class HistoryRepository {
         }
     }
 
+    public ArrayList<History> getAllHistoryByUserId(Integer userId) throws SQLException, Exception {
+        try {
+            repo = RepoConnector.connectDatabase();
+            String sql = "SELECT * FROM hkcbooking_history WHERE userId=?";
+            preStm = repo.prepareStatement(sql);
+            preStm.setInt(1, userId);
+            rs = preStm.executeQuery();
+            ArrayList<History> list = new ArrayList<History>();
+            while (rs.next()) {
+                Integer historyId = rs.getInt("historyId");
+                userId = rs.getInt("userId");
+                String message = rs.getString("message");
+                String historyStatus = rs.getString("historyStatus");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                Integer roomId = rs.getInt("roomId");
+                Date startDate = rs.getDate("startDate");
+                Date endDate = rs.getDate("endDate");
+                String note = rs.getString("note");
+                Float total = rs.getFloat("total");
+
+                list.add(new History(historyId, userId, message, historyStatus, fullName, phone, address, roomId, startDate, endDate, note, total));
+
+            }
+            return list;
+        } finally {
+            this.closeRepo();
+        }
+    }
+
     public History getRoomByDate(Date d1, Date d2) throws SQLException, Exception {
         try {
             String sql = "SELECT * FROM hkcbooking_history where startDate=? AND endDate=?";
@@ -259,7 +290,7 @@ public class HistoryRepository {
             String query = "UPDATE hkcbooking_history \n"
                     + "SET historyStatus = 'CANCEL',\n"
                     + "[message] = ? \n"
-                    + "WHERE startDate <= ? AND roomId=? AND historyStatus != 'CANCEL' ";
+                    + "WHERE startDate >= ? AND roomId=? AND historyStatus <> 'CANCEL' ";
 
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(query);

@@ -3,6 +3,7 @@
 <%
     String fullname = (String) session.getAttribute("fullname");
     String userRole = (String) session.getAttribute("userRole");
+    Integer userId = (Integer) session.getAttribute("userId");
 %>
 <nav class="bg-rose-600 z-index-10">
     <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
@@ -25,8 +26,9 @@
                     </div>
                     <p class="text-white text-3xl">HKCBooking</p>
                 </a>
-                <div class="hidden lg:block lg:ml-6">
+                <div class="hidden lg:block lg:ml-6 flex items-center">
                     <div class="flex space-x-4">
+                        <a href="<%= Routers.FILTER_SERVLET%>" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Find out now!</a>
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <% if (userRole != null && userRole.equals("ADMIN")) {%>
                         <a href="<%= Routers.BOOKING_ORDERS_SERVLET%>" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Switch to Admin page</a>
@@ -62,7 +64,7 @@
             </div>
             <div class="hidden lg:block lg:ml-4">
                 <div class="flex items-center">
-                    <a href="CartServlet" class="mr-4">
+                    <a href="<%= Routers.CART_SERVLET%>" class="mr-4">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.5 27C8.85 27 7.515 28.35 7.515 30C7.515 31.65 8.85 33 10.5 33C12.15 33 13.5 31.65 13.5 30C13.5 28.35 12.15 27 10.5 27ZM1.5 6H4.5L9.9 17.385L5.43 25.5H28.5V22.5H10.5L12.15 19.5H25.11L32.565 6H7.815L6.405 3H1.5V6ZM25.5 27C23.85 27 22.515 28.35 22.515 30C22.515 31.65 23.85 33 25.5 33C27.15 33 28.5 31.65 28.5 30C28.5 28.35 27.15 27 25.5 27Z" fill="white"/>
                         </svg>
@@ -77,11 +79,12 @@
                                         <p class="font-semibold text-white"><%=fullname%></p>
                                         <div class="relative group">
                                             <span class="sr-only">Open user menu</span>
-                                            <button class="h-16 w-16 flex justify-center items-center">
+                                            <button  class="h-16 w-16 flex justify-center items-center">
                                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M16 2.6665C8.64002 2.6665 2.66669 8.63984 2.66669 15.9998C2.66669 23.3598 8.64002 29.3332 16 29.3332C23.36 29.3332 29.3334 23.3598 29.3334 15.9998C29.3334 8.63984 23.36 2.6665 16 2.6665ZM16 6.6665C18.2134 6.6665 20 8.45317 20 10.6665C20 12.8798 18.2134 14.6665 16 14.6665C13.7867 14.6665 12 12.8798 12 10.6665C12 8.45317 13.7867 6.6665 16 6.6665ZM16 25.5998C12.6667 25.5998 9.72002 23.8932 8.00002 21.3065C8.04002 18.6532 13.3334 17.1998 16 17.1998C18.6534 17.1998 23.96 18.6532 24 21.3065C22.28 23.8932 19.3334 25.5998 16 25.5998Z" fill="#FFFDFD"/>
+                                                    <a href="UserHistoriesServlet?uid=<%=userId%>">
+                                                        <path d="M16 2.6665C8.64002 2.6665 2.66669 8.63984 2.66669 15.9998C2.66669 23.3598 8.64002 29.3332 16 29.3332C23.36 29.3332 29.3334 23.3598 29.3334 15.9998C29.3334 8.63984 23.36 2.6665 16 2.6665ZM16 6.6665C18.2134 6.6665 20 8.45317 20 10.6665C20 12.8798 18.2134 14.6665 16 14.6665C13.7867 14.6665 12 12.8798 12 10.6665C12 8.45317 13.7867 6.6665 16 6.6665ZM16 25.5998C12.6667 25.5998 9.72002 23.8932 8.00002 21.3065C8.04002 18.6532 13.3334 17.1998 16 17.1998C18.6534 17.1998 23.96 18.6532 24 21.3065C22.28 23.8932 19.3334 25.5998 16 25.5998Z" fill="#FFFDFD"/>
+                                                    </a>
                                                 </svg>
-
                                             </button>
                                             <div class="z-index-10 group-focus:block hover:block hidden absolute right-0 top-3/4 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none group-hover:block bg-gray-100 z-10" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                                 <!-- Active: "bg-gray-100", Not Active: "" -->
@@ -98,8 +101,8 @@
                         </c:when>
                         <c:otherwise>
                             <div class="flex">
-                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded mr-4" href="LoginServlet">Login</a>
-                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded" href="RegisterServlet">Register</a>
+                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded mr-4" href="<%= Routers.LOGIN_SERVLET%>">Login</a>
+                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded" href="<%= Routers.REGISTER_SERVLET%>">Register</a>
                             </div>
                         </c:otherwise>
                     </c:choose>

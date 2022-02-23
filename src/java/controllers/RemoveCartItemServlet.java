@@ -26,6 +26,7 @@ public class RemoveCartItemServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         GetVariable gv = new GetVariable(request);
         Integer index = gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
+        System.out.println("Index: " + index);
 
         if (index == null) {
             return;
