@@ -35,6 +35,7 @@ public class Routers {
     public static final String DELETE_ROOM_SERVLET = "DeleteRoomServlet";
     public static final String ADD_PARAMS_SERVLET = "AddParamsServlet";
     public static final String CANCEL_HISTORY_SERVLET = "CancelHistoryServlet";
+    public static final String REVIEW_SERVLET = "ReviewServlet";
 
     // For Dispatcher
     public static final String INDEX_PAGE = "/WEB-INF/JSP/index.jsp";
