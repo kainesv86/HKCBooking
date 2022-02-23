@@ -43,9 +43,24 @@ public class FilterServlet extends HttpServlet {
 
         roomDetails = RoomService.filterRoomByStatus(roomDetails, RoomStatus.status.READY);
 
+        //        Set min date that input date can set
+        HttpSession session = request.getSession();
+
+        Date minCheckIn = (Date) session.getAttribute("minCheckIn");
+        Date minCheckOut = (Date) session.getAttribute("minCheckOut");
+
+        if (minCheckIn == null || minCheckOut
+                == null) {
+            minCheckIn = new Date(System.currentTimeMillis());
+            minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
+        }
+
+        request.setAttribute("minCheckIn", minCheckIn.toString());
+        request.setAttribute("minCheckOut", minCheckOut.toString());
+
         //Filter by date but required in input tag, not in post param
-        Date checkIn = gv.getDate("checkIn", "Check in", null);
-        Date checkOut = gv.getDate("checkOut", "Check out", null);
+        Date checkIn = gv.getDate("checkIn", "Check in", minCheckIn);
+        Date checkOut = gv.getDate("checkOut", "Check out", minCheckOut);
 
         if (checkIn != null && checkOut != null) {
             roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkIn, checkOut);
@@ -87,21 +102,6 @@ public class FilterServlet extends HttpServlet {
                 request.setAttribute("maxPrice", maxPrice);
             }
         }
-
-//        Set min date that input date can set
-        HttpSession session = request.getSession();
-
-        Date minCheckIn = (Date) session.getAttribute("minCheckIn");
-        Date minCheckOut = (Date) session.getAttribute("minCheckOut");
-
-        if (minCheckIn == null || minCheckOut
-                == null) {
-            minCheckIn = new Date(System.currentTimeMillis());
-            minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
-        }
-
-        request.setAttribute("minCheckIn", minCheckIn.toString());
-        request.setAttribute("minCheckOut", minCheckOut.toString());
 
         //Room after filter all condition
         request.setAttribute("roomDetails", roomDetails);

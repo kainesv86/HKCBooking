@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.HistoryRepository;
 import repositories.UserRepository;
+import services.HistoryService;
+import variables.HistoryStatus;
 import variables.Routers;
 
 @WebServlet(name = "CartServlet", urlPatterns = {"/" + Routers.CART_SERVLET})
@@ -51,11 +51,12 @@ public class CartServlet extends HttpServlet {
         }
 
         request.setAttribute("cart", cart);
+
         return true;
     }
 
     protected boolean handleOnPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException, Exception {
         GetVariable gv = new GetVariable(request);
 
         Integer index = gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
@@ -80,19 +81,27 @@ public class CartServlet extends HttpServlet {
 
         Integer userId = (Integer) session.getAttribute("userId");
         String message = "";
-        String historyStatus = "PENDING";
+        String historyStatus = HistoryStatus.status.PENDING.toString();
         Integer roomId = cartItem.getRoom().getRoomId();
-        Date startDate = (Date) cartItem.getStartDate();
-        Date endDate = (Date) cartItem.getEndDate();
+        Date checkIn = (Date) cartItem.getCheckIn();
+        Date checkOut = (Date) cartItem.getCheckOut();
         String note = "";
         Float total = cartItem.getTotal();
 
-        cart.remove(cartItem);
-        session.setAttribute("cart", cart);
-
-        History history = new History(userId, userId, message, historyStatus, fullname, phone, address, roomId, startDate, endDate, note, total);
         HistoryRepository historyRepo = new HistoryRepository();
-        return historyRepo.addHistory(history);
+
+        ArrayList<History> histories = historyRepo.getAllHistoryByRoomId(roomId);
+        if (!HistoryService.isValidDateBooking(histories, checkIn, checkOut)) {
+            cartItem.setError("This room had been booked by someone else, please try remove this in the cart and try to another date or another room");
+            cart.set(index, cartItem);
+        } else {
+            cart.remove(cartItem);
+            History history = new History(userId, userId, message, historyStatus, fullname, phone, address, roomId, checkIn, checkOut, note, total);
+            historyRepo.addHistory(history);
+        }
+
+        session.setAttribute("cart", cart);
+        return true;
 
     }
 
@@ -108,10 +117,8 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (!handleOnPost(request, response)) {
-                request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
-                return;
-            };
+            handleOnPost(request, response);
+
             HttpSession session = request.getSession();
 
             ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");

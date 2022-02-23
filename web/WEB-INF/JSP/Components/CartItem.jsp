@@ -65,11 +65,12 @@
                         </p>
                     </c:otherwise>
                 </c:choose>
-                <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer" href="<%=Routers.REMOVE_CART_ITEM_SERVLET%>=${param.index}">
+                <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer text-left" href="<%=Routers.REMOVE_CART_ITEM_SERVLET%>?index=${param.index}">
                     <span>Remove</span>
                 </a>
 
             </div>
+            <p class="text-sm font-medium text-rose-600">${param.errorMessage}</p>
         </form>
     </div>
 </li>
