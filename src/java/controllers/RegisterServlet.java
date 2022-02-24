@@ -10,9 +10,6 @@ import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-//import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.UserRepository;
+import services.UserService;
 import variables.Routers;
 
 /**
@@ -45,6 +43,17 @@ public class RegisterServlet extends HttpServlet {
         if (username == null || password == null || fullname == null || confirmPassword == null || phone == null || email == null) {
             return false;
         }
+
+        if (!UserService.isValidPhone(phone)) {
+            request.setAttribute("phoneError", "Must be a phone number");
+            return false;
+        }
+
+        if (!UserService.isValidEmail(email)) {
+            request.setAttribute("emailError", "Must be an email");
+            return false;
+        }
+
         if (!confirmPassword.equals(password)) {
             request.setAttribute("confirmPasswordError", "Confirm password is not correct");
             return false;
