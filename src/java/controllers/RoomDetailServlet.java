@@ -6,6 +6,8 @@
 package controllers;
 
 import entities.CartItem;
+import entities.History;
+import entities.Review;
 import entities.Room;
 import entities.RoomDetail;
 import entities.RoomType;
@@ -24,10 +26,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import repositories.HistoryRepository;
+import repositories.ReviewRepository;
 import repositories.RoomDetailRepository;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 import services.HistoryService;
+import services.ReviewService;
 import variables.Routers;
 
 @WebServlet(name = "RoomDetailServlet", urlPatterns = {"/" + Routers.ROOM_DETAIL_SERVLET})
@@ -58,9 +63,16 @@ public class RoomDetailServlet extends HttpServlet {
             minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
         }
 
+        ReviewRepository reviewRepo = new ReviewRepository();
+        ArrayList<Review> reviews = reviewRepo.getReviewByRoomId(roomId);
+        Float rateOverall = ReviewService.reviewRateOverall(reviews);
+
+        request.setAttribute("rateOverall", rateOverall);
+        request.setAttribute("reviews", reviews);
         request.setAttribute("minCheckIn", minCheckIn.toString());
         request.setAttribute("minCheckOut", minCheckOut.toString());
         request.setAttribute("roomDetail", roomDetail);
+        request.setAttribute("roomId", roomId);
 
         return true;
     }
@@ -73,6 +85,8 @@ public class RoomDetailServlet extends HttpServlet {
         Date checkIn = gv.getDate("checkIn", "Check In", null);
         Date checkOut = gv.getDate("checkOut", "Check Out", null);
 
+        System.out.println(checkIn + " : " + checkOut);
+
         request.setAttribute("roomId", roomId);
 
         if (roomId == null || checkOut == null || checkIn == null) {
@@ -82,6 +96,14 @@ public class RoomDetailServlet extends HttpServlet {
 
         if (!HistoryService.isValidDateInput(checkIn, checkOut)) {
             session.setAttribute("message", "End date must greater than start date");
+            return false;
+        }
+
+        HistoryRepository historyRepo = new HistoryRepository();
+        ArrayList<History> histories = historyRepo.getAllHistoryByRoomId(roomId);
+
+        if (!HistoryService.isValidDateBooking(histories, checkIn, checkOut)) {
+            session.setAttribute("message", "Someone have booked this room in those date, please try to another date");
             return false;
         }
 
@@ -102,7 +124,7 @@ public class RoomDetailServlet extends HttpServlet {
         RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
         RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
 
-        cart.add(new CartItem(room, roomType.getRoomName(), checkIn, checkOut, total));
+        cart.add(new CartItem(room, roomType.getRoomName(), checkIn, checkOut, total, ""));
 
         session.setAttribute("cart", cart);
         session.setAttribute("message", "Add cart successful");
@@ -115,11 +137,14 @@ public class RoomDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+
             if (!handleOnGet(request, response)) {
                 request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
                 return;
             }
             request.getRequestDispatcher(Routers.ROOM_DETAIL_PAGE).forward(request, response);
+            HttpSession session = request.getSession();
+            session.setAttribute("message", null);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }

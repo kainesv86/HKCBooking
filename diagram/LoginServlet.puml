@@ -1,56 +1,64 @@
-@startuml loginAccount
+@startuml loginServlet
 
 hide footbox
-mainframe <b>sd</b> Login Account
+mainframe <b>sd</b> Login Servlet
 actor User
 participant "Browser" as Browser
-participant ":LoginController" as LoginController
-participant ":GetParam" as GetParam
-participant ":UserDAO" as UserDao
-participant "Database" as DB
+participant ":LoginServlet" as LoginServlet
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+participant ":UserRepository" as UserRepository
+participant "Database" as Database
 
 
 User ->> Browser: Click on login link
-activate Browser
+    activate Browser
+        Browser ->> LoginServlet : GET /LoginServlet
+        activate LoginServlet
+            LoginServlet ->> UseGuard: UseGuard.UseAuth(): boolean
+                activate UseGuard
+                    UseGuard ->> LoginServlet: return isLogin
+                deactivate UseGuard
+            alt already login
+                LoginServlet ->> Browser: Redirect /IndexServlet
+            else not already login
+                LoginServlet ->> Browser: forward login.jsp
+            end
+        deactivate LoginServlet
 
-Browser ->> LoginController: GET /LoginController
-activate LoginController
-LoginController -->> Browser: forward login.jsp
-deactivate LoginController
+User ->> Browser: Submit form
+    Browser ->> LoginServlet : Post /LoginServlet
+    activate LoginServlet
+        LoginServlet ->> GetVariable: GetVariable.getString(String key, String label, int minLength, int maxLength, String defaultValue)
+            activate GetVariable
+                GetVariable ->> LoginServlet: return username
+                GetVariable ->> LoginServlet: return password
+            deactivate GetVariable
+        alt invalid data 
+            LoginServlet ->> Browser: forward login.jsp
+        else valid data
+            LoginServlet ->> UserRepository: getUserByUsername(String username):User
+                activate UserRepository
+                    UserRepository ->> Database: executeQuery()
+                        activate Database 
+                            Database ->> UserRepository: return result set
+                        deactivate Database
+                    UserRepository ->> LoginServlet: return User
+                deactivate UserRepository
+            alt not exist user
+                LoginServlet ->> Browser: forward login.jsp
+            else exist user
+                alt invalid password
+                    LoginServlet ->> Browser: forward login.jsp
+                else valid password
+                    LoginServlet ->> LoginServlet : HttpSession.setAttribute("userRole", user.getRole()):void
+                    LoginServlet ->> LoginServlet : HttpSession.setAttribute("userId", user.getUserId()):void
+                    LoginServlet ->> LoginServlet : HttpSession.setAttribute("fullname", user.getFullname()):void
+                    LoginServlet ->> Browser: Redirect /IndexServlet
+    deactivate LoginServlet                     
+    deactivate Browser
+                end
+                
+            end
 
-
-
-User ->> Browser: Submit on login form
-    Browser ->> LoginController: POST /LoginController
-    activate LoginController
-    LoginController ->> GetParam: getStringParam(HttpServletRequest request, String field, String label, int min, int max,String defaultValue):String
-    activate GetParam
-    GetParam -->> LoginController: return username, password
-    deactivate GetParam
-alt invalid data
-    LoginController -->> Browser: forward login.jsp
-else valid data
-    LoginController ->> UserDao: getOneUserByUsername(String username): User
-    activate UserDao
-    UserDao ->> DB: executeQuery()
-    activate DB
-    DB -->> UserDao: Return result set
-    deactivate DB
-    UserDao -->> LoginController: User
-    deactivate UserDao
-    deactivate GetParam
-    alt Not found user
-        LoginController -->> Browser: forward login.jsp
-    else Found user
-        LoginController ->> LoginController: comparePassword(String inputPassword, String databasePassword, int key): boolean
-        alt Incorrect password
-            LoginController -->> Browser: forward login.jsp
-        else Correct password
-            LoginController ->> LoginController: HttpSession.setAttribute(String arg0, Object arg1): void
-            LoginController -->> Browser: Redirect /IndexController 
-            deactivate LoginController
-            deactivate Browser
         end
-    end       
-end
-@enduml

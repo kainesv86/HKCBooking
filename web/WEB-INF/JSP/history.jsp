@@ -63,6 +63,7 @@
                                                     <img class="h-20 w-20" src="<%= list.get(index).getRoom().getUrlImage()%>" alt="" />
                                                 </div>
                                                 <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Id: #<%= list.get(index).getHistory().getHistoryId()%></div>
                                                     <a href="<%= Routers.ROOM_DETAIL_SERVLET%>?roomId=<%= list.get(index).getRoom().getRoomId()%>" class="text-sm font-medium text-gray-900 cursor-pointer"><%= list.get(index).getRoomType().getRoomName()%></a>
                                                     <div class="text-sm text-gray-500"><%= list.get(index).getHistory().getTotal()%>$</div>
                                                     <div class="text-sm text-gray-500"><%= list.get(index).getHistory().getStartDate()%> ~ <%= list.get(index).getHistory().getEndDate()%></div>
