@@ -67,7 +67,7 @@ public class HistoryRepository {
     public ArrayList<History> getAllHistory() throws SQLException, Exception {
         try {
             repo = RepoConnector.connectDatabase();
-            String sql = "SELECT * FROM hkcbooking_history";
+            String sql = "SELECT * FROM hkcbooking_history ORDER BY historyId DESC";
             preStm = repo.prepareStatement(sql);
             rs = preStm.executeQuery();
             ArrayList<History> list = new ArrayList<History>();
@@ -97,7 +97,7 @@ public class HistoryRepository {
     public ArrayList<History> getAllHistoryByRoomId(Integer roomId) throws SQLException, Exception {
         try {
             repo = RepoConnector.connectDatabase();
-            String sql = "SELECT * FROM hkcbooking_history WHERE roomId=?";
+            String sql = "SELECT * FROM hkcbooking_history WHERE roomId=? ORDER BY historyId DESC";
             preStm = repo.prepareStatement(sql);
             preStm.setInt(1, roomId);
             rs = preStm.executeQuery();
@@ -128,7 +128,7 @@ public class HistoryRepository {
     public ArrayList<History> getAllHistoryByUserId(Integer userId) throws SQLException, Exception {
         try {
             repo = RepoConnector.connectDatabase();
-            String sql = "SELECT * FROM hkcbooking_history WHERE userId=?";
+            String sql = "SELECT * FROM hkcbooking_history WHERE userId=? ORDER BY historyId DESC";
             preStm = repo.prepareStatement(sql);
             preStm.setInt(1, userId);
             rs = preStm.executeQuery();
@@ -158,7 +158,7 @@ public class HistoryRepository {
 
     public History getRoomByDate(Date d1, Date d2) throws SQLException, Exception {
         try {
-            String sql = "SELECT * FROM hkcbooking_history where startDate=? AND endDate=?";
+            String sql = "SELECT * FROM hkcbooking_history where startDate=? AND endDate=? ORDER BY historyId DESC";
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(sql);
             preStm.setDate(1, d1);

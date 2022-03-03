@@ -8,6 +8,9 @@ package repositories;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 /**
  *
@@ -16,6 +19,7 @@ import java.sql.SQLException;
 public class RepoConnector {
 
     public static Connection connectDatabase() {
+<<<<<<< HEAD
         Connection connection = null;
         String id = "localhost";
         String instanceName = "MSSQLSERVER";
@@ -37,5 +41,17 @@ public class RepoConnector {
         }
 
         return connection;
+=======
+        try {
+            Context context = new InitialContext();
+            Context end = (Context) context.lookup("java:comp/env");
+            DataSource env = (DataSource) end.lookup("DatabaseConfig");
+            Connection conn = env.getConnection();
+            return conn;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+>>>>>>> 1e519d4dcc98669fe3533a103c3c608df080446c
     }
 }
