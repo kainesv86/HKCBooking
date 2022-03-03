@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import repositories.HistoryRepository;
 import repositories.UserRepository;
 import services.HistoryService;
+import services.UserService;
 import variables.HistoryStatus;
 import variables.Routers;
 
@@ -68,6 +69,10 @@ public class CartServlet extends HttpServlet {
             return false;
         }
 
+        if (!UserService.isValidPhone(phone)) {
+            request.setAttribute("phoneError", "Must be a phone number");
+            return false;
+        }
         HttpSession session = request.getSession();
 
         ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
