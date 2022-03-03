@@ -19,29 +19,6 @@ import javax.sql.DataSource;
 public class RepoConnector {
 
     public static Connection connectDatabase() {
-<<<<<<< HEAD
-        Connection connection = null;
-        String id = "localhost";
-        String instanceName = "MSSQLSERVER";
-        String port = "1433";
-        String db = "HKCBooking";
-        String username = "sa";
-        String password = "1234567890";
-
-        String urlDatabase = String.format("jdbc:sqlserver://%s\\%s:%s;databaseName=%s;user=%s;password=%s", id, instanceName, port, db, username, password);
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(urlDatabase);
-            System.out.println("Connection to database successfull");
-        } catch (SQLException error) {
-            error.printStackTrace();
-        } catch (ClassNotFoundException error) {
-            error.printStackTrace();
-        }
-
-        return connection;
-=======
         try {
             Context context = new InitialContext();
             Context end = (Context) context.lookup("java:comp/env");
@@ -52,6 +29,5 @@ public class RepoConnector {
             e.printStackTrace();
         }
         return null;
->>>>>>> 1e519d4dcc98669fe3533a103c3c608df080446c
     }
 }
