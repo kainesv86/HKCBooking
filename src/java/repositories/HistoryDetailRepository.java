@@ -66,7 +66,7 @@ public class HistoryDetailRepository {
                     + "LEFT JOIN hkcbooking_room\n"
                     + "ON hkcbooking_history.roomId = hkcbooking_room.roomId\n"
                     + "LEFT JOIN hkcbooking_room_type\n"
-                    + "ON hkcbooking_room_type.roomTypeId = hkcbooking_room.roomTypeId\n";
+                    + "ON hkcbooking_room_type.roomTypeId = hkcbooking_room.roomTypeId ORDER BY historyId DESC\n";
 
             if (status != null) {
                 sql += "WHERE historyStatus=?";
@@ -144,7 +144,7 @@ public class HistoryDetailRepository {
                     + "ON hkcbooking_history.roomId = hkcbooking_room.roomId\n"
                     + "LEFT JOIN hkcbooking_room_type\n"
                     + "ON hkcbooking_room_type.roomTypeId = hkcbooking_room.roomTypeId\n"
-                    + "WHERE userId=?";
+                    + "WHERE userId=? ORDER BY historyId DESC";
 
             if (status != null) {
                 sql += " AND historyStatus=?";

@@ -32,6 +32,7 @@ import repositories.RoomDetailRepository;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 import services.HistoryService;
+import services.ReviewService;
 import variables.Routers;
 
 @WebServlet(name = "RoomDetailServlet", urlPatterns = {"/" + Routers.ROOM_DETAIL_SERVLET})
@@ -64,7 +65,9 @@ public class RoomDetailServlet extends HttpServlet {
 
         ReviewRepository reviewRepo = new ReviewRepository();
         ArrayList<Review> reviews = reviewRepo.getReviewByRoomId(roomId);
+        Float rateOverall = ReviewService.reviewRateOverall(reviews);
 
+        request.setAttribute("rateOverall", rateOverall);
         request.setAttribute("reviews", reviews);
         request.setAttribute("minCheckIn", minCheckIn.toString());
         request.setAttribute("minCheckOut", minCheckOut.toString());
