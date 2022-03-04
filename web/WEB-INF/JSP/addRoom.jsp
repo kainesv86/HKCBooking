@@ -34,7 +34,7 @@
                                     <%
                                         for (RoomType roomType : roomTypes) {
                                     %>
-                                    <option value="<%= roomType.getRoomTypeId()%>"><%= roomType.getRoomName()%></option>
+                                    <option value="<%= roomType.getRoomTypeId()%>"><%= roomType.getRoomName()%> - <%= roomType.getAcreage()%> square meters - <%= roomType.getCapacity()%> People</option>
                                     <% }%>
                                 </select>
                             </div>
