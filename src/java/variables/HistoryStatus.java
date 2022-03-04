@@ -1,15 +1,21 @@
-package variables;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package variables;
 
 /**
  *
- * @author kaine
+ * @author Kaine
  */
-public class routes {
+public class HistoryStatus {
+
+    public static enum status {
+        PENDING,
+        READY,
+        COMPLETED,
+        CANCEL
+    }
 
 }

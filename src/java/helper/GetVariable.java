@@ -1,8 +1,13 @@
-
 package helper;
 
+import java.io.File;
+import java.io.IOException;
+import static java.lang.Float.NaN;
+import java.sql.Date;
+import java.util.UUID;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.Part;
 
 public class GetVariable {
 
@@ -50,7 +55,7 @@ public class GetVariable {
             number = Float.parseFloat(value);
         } catch (Exception e) {
             request.setAttribute(key + "Error", label + " must be a number ");
-            return null;
+            return NaN;
         }
 
         if (number >= maxValue) {
@@ -94,6 +99,77 @@ public class GetVariable {
         }
 
         return numValue;
+    }
+
+    public String getFileName(Part part) {
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+
+        return null;
+    }
+
+    public String getFile(String key, String label, long maxSize) throws IOException, ServletException {
+        //get upload file;
+        Part filePart = request.getPart(key);
+        if (filePart == null) {
+            return null;
+        }
+        if (this.getFileName(filePart).equals("")) {
+            request.setAttribute(key + "Error", label + " is required");
+            return null;
+        }
+        //upload dir where save the image in server
+        String uploadDir = "public/images";
+        //get absolute path to project
+        String appPath = request.getServletContext().getRealPath("");
+        appPath = appPath.replace('\\', '/');
+        //path to save file
+        String fullSavePath = null;
+        if (appPath.endsWith("/")) {
+            fullSavePath = appPath + uploadDir;
+        } else {
+            fullSavePath = appPath + "/" + uploadDir;
+        }
+
+        //create if the folder is not existed
+        File fileSaveDir = new File(fullSavePath);
+
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+
+        //check size
+        if (filePart.getSize() > maxSize) {
+            request.setAttribute(key + "Error", label + " is too large");
+            return null;
+        }
+
+        String fileName = UUID.randomUUID().toString() + this.getFileName(filePart);
+
+        //absolute path to image
+        String filePath = null;
+        if (fileName != null && fileName.length() > 0) {
+            filePath = fullSavePath + File.separator + fileName;
+            // save to file
+            filePart.write(filePath);
+        }
+        return uploadDir + "/" + fileName;
+
+    }
+
+    public Date getDate(String key, String label, Date defaultValue) {
+        String dateString = this.getString(key, label, 1, 30, defaultValue != null ? defaultValue.toString() : null);
+        Date date;
+        try {
+            date = Date.valueOf(dateString);
+        } catch (Exception e) {
+            request.setAttribute(key + "Error", label + " must be a date");
+            return null;
+        }
+        return date;
     }
 
 }

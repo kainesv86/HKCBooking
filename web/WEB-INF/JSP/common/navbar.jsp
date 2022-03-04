@@ -1,10 +1,15 @@
+<%@page import="variables.Routers"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<% String fullname = (String) session.getAttribute("fullname");%>
+<%
+    String fullname = (String) session.getAttribute("fullname");
+    String userRole = (String) session.getAttribute("userRole");
+    Integer userId = (Integer) session.getAttribute("userId");
+%>
 <nav class="bg-rose-600 z-index-10">
     <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
             <div class="flex items-center px-2 lg:px-0">
-                <a class="flex items-center" href="IndexServlet">
+                <a class="flex items-center" href="<%= Routers.INDEX_SERVLET%>">
                     <div class="w-10 h-10">
                         <svg  viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_512_6848)">
@@ -21,13 +26,13 @@
                     </div>
                     <p class="text-white text-3xl">HKCBooking</p>
                 </a>
-                <div class="hidden lg:block lg:ml-6">
+                <div class="hidden lg:block lg:ml-6 flex items-center">
                     <div class="flex space-x-4">
+                        <a href="<%= Routers.FILTER_SERVLET%>" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Find out now!</a>
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <a href="#" class="text-gray-100 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                        <a href="#" class="text-gray-100 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Team</a>
-                        <a href="#" class="text-gray-100 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Projects</a>
-                        <a href="#" class="text-gray-100 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
+                        <% if (userRole != null && userRole.equals("ADMIN")) {%>
+                        <a href="<%= Routers.BOOKING_ORDERS_SERVLET%>" class="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">Switch to Admin page</a>
+                        <% }%>
                     </div>
                 </div>
             </div>
@@ -59,34 +64,33 @@
             </div>
             <div class="hidden lg:block lg:ml-4">
                 <div class="flex items-center">
+                    <a href="<%= Routers.CART_SERVLET%>" class="mr-4">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.5 27C8.85 27 7.515 28.35 7.515 30C7.515 31.65 8.85 33 10.5 33C12.15 33 13.5 31.65 13.5 30C13.5 28.35 12.15 27 10.5 27ZM1.5 6H4.5L9.9 17.385L5.43 25.5H28.5V22.5H10.5L12.15 19.5H25.11L32.565 6H7.815L6.405 3H1.5V6ZM25.5 27C23.85 27 22.515 28.35 22.515 30C22.515 31.65 23.85 33 25.5 33C27.15 33 28.5 31.65 28.5 30C28.5 28.35 27.15 27 25.5 27Z" fill="white"/>
+                        </svg>
+
+                    </a>
                     <c:choose>
                         <c:when test="${fullname != null}">
                             <div class="flex items-center">
-                                <button type="button" class="flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                    <span class="sr-only">View notifications</span>
-                                    <!-- Heroicon name: outline/bell -->
-                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                    </svg>
-                                </button>
-
                                 <!-- Profile dropdown -->
                                 <div class="ml-4 relative flex-shrink-0">
                                     <div class="flex items-center">
                                         <p class="font-semibold text-white"><%=fullname%></p>
                                         <div class="relative group">
                                             <span class="sr-only">Open user menu</span>
-                                            <button class="h-16 w-16 flex justify-center items-center">
+                                            <button  class="h-16 w-16 flex justify-center items-center">
                                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M16 2.6665C8.64002 2.6665 2.66669 8.63984 2.66669 15.9998C2.66669 23.3598 8.64002 29.3332 16 29.3332C23.36 29.3332 29.3334 23.3598 29.3334 15.9998C29.3334 8.63984 23.36 2.6665 16 2.6665ZM16 6.6665C18.2134 6.6665 20 8.45317 20 10.6665C20 12.8798 18.2134 14.6665 16 14.6665C13.7867 14.6665 12 12.8798 12 10.6665C12 8.45317 13.7867 6.6665 16 6.6665ZM16 25.5998C12.6667 25.5998 9.72002 23.8932 8.00002 21.3065C8.04002 18.6532 13.3334 17.1998 16 17.1998C18.6534 17.1998 23.96 18.6532 24 21.3065C22.28 23.8932 19.3334 25.5998 16 25.5998Z" fill="#FFFDFD"/>
+                                                    <a href="UserHistoriesServlet?uid=<%=userId%>">
+                                                        <path d="M16 2.6665C8.64002 2.6665 2.66669 8.63984 2.66669 15.9998C2.66669 23.3598 8.64002 29.3332 16 29.3332C23.36 29.3332 29.3334 23.3598 29.3334 15.9998C29.3334 8.63984 23.36 2.6665 16 2.6665ZM16 6.6665C18.2134 6.6665 20 8.45317 20 10.6665C20 12.8798 18.2134 14.6665 16 14.6665C13.7867 14.6665 12 12.8798 12 10.6665C12 8.45317 13.7867 6.6665 16 6.6665ZM16 25.5998C12.6667 25.5998 9.72002 23.8932 8.00002 21.3065C8.04002 18.6532 13.3334 17.1998 16 17.1998C18.6534 17.1998 23.96 18.6532 24 21.3065C22.28 23.8932 19.3334 25.5998 16 25.5998Z" fill="#FFFDFD"/>
+                                                    </a>
                                                 </svg>
-
                                             </button>
-                                            <div class="z-index-10 group-focus:block hover:block hidden absolute right-0 top-3/4 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none group-hover:block bg-gray-100" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                            <div class="z-index-10 group-focus:block hover:block hidden absolute right-0 top-3/4 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none group-hover:block bg-gray-100 z-10" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                                 <!-- Active: "bg-gray-100", Not Active: "" -->
-                                                <a href="UpdateUserServlet" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-tl-md rounded-tr-md" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-1">Booking History</a>
-                                                <a href="LogoutServlet" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-bl-md rounded-br-md" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                                <a href="<%= Routers.USER_INFO_SERVLET%>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-tl-md rounded-tr-md" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                                <a href="<%= Routers.HISTORY_SERVLET%>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-1">Booking History</a>
+                                                <a href="<%= Routers.LOGOUT_SERVLET%>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white rounded-bl-md rounded-br-md" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                                             </div>
                                         </div>
 
@@ -97,46 +101,12 @@
                         </c:when>
                         <c:otherwise>
                             <div class="flex">
-                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded mr-4" href="LoginServlet">Login</a>
-                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded" href="RegisterServlet">Register</a>
+                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded mr-4" href="<%= Routers.LOGIN_SERVLET%>">Login</a>
+                                <a class="bg-white text-base font-semibold text-rose-600 px-2 py-1 rounded" href="<%= Routers.REGISTER_SERVLET%>">Register</a>
                             </div>
                         </c:otherwise>
                     </c:choose>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="lg:hidden" id="mobile-menu">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Team</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Calendar</a>
-        </div>
-        <div class="pt-4 pb-3 border-t border-gray-700">
-            <div class="flex items-center px-5">
-                <div class="flex-shrink-0">
-                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                </div>
-                <div class="ml-3">
-                    <div class="text-base font-medium text-white">Tom Cook</div>
-                    <div class="text-sm font-medium text-gray-400">tom@example.com</div>
-                </div>
-                <button type="button" class="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                    <span class="sr-only">View notifications</span>
-                    <!-- Heroicon name: outline/bell -->
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                </button>
-            </div>
-            <div class="mt-3 px-2 space-y-1">
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Your Profile</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Settings</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Sign out</a>
             </div>
         </div>
     </div>

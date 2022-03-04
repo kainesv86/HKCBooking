@@ -5,123 +5,98 @@
  */
 package controllers;
 
+import entities.User;
 import guard.UseGuard;
+import helper.GetVariable;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import repositories.UserRepository;
+import variables.Routers;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
+@WebServlet(name = "RegisterServlet", urlPatterns = {"/" + Routers.REGISTER_SERVLET})
 public class RegisterServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        boolean check = true;
-        response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String cfpassword = request.getParameter("cfpassword");
-//        System.out.println(username + " " + password);
-//        request.setAttribute("info", username + password);
-        String username_err = "", email_err = "", pwd_err = "", cfpwd_err = "";
-        if (username.equals("")) {
-            username_err = "Can not be plank!";
-        }
-        if (username_err.length() > 0) {
-            request.setAttribute("username_err", username_err);
-            check = false;
-        }
-        if (email.equals("")) {
-            email_err = "Can not be plank!";
-        }
-        if (email_err.length() > 0) {
-            request.setAttribute("email_err", email_err);
-            check = false;
-        }
-        if (password.equals("")) {
-            pwd_err = "Can  not be plank!";
-        }
-        if (pwd_err.length() > 0) {
-            request.setAttribute("pwd_err", pwd_err);
-            check = false;
-        }
-        if (cfpassword.equals("") || !cfpassword.equals(password)) {
-            cfpwd_err = "Confirm password is not valid!";
-        }
-//        if (cfpassword.equals(check))
-        if (cfpwd_err.length() > 0) {
-            request.setAttribute("cfpwd_err", cfpwd_err);
-            check = false;
-        }
-        return check;
+    private UserRepository ur = new UserRepository();
 
+    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException, ClassNotFoundException {
+
+        GetVariable gv = new GetVariable(request);
+        String username = gv.getString("username", "Username", 8, 30, null);
+        String password = gv.getString("password", "Password", 8, 30, null);
+        String fullname = gv.getString("fullname", "FullName", 1, 50, null);
+        String confirmPassword = gv.getString("confirmPassword", "confirmPassword", 1, 50, null);
+        String phone = gv.getString("phone", "Phone", 9, 11, null);
+        String email = gv.getString("email", "Email", 1, 50, null);
+
+        if (username == null || password == null || fullname == null || confirmPassword == null || phone == null || email == null) {
+            return false;
+        }
+        if (!confirmPassword.equals(password)) {
+            request.setAttribute("confirmPasswordError", "Confirm password is not correct");
+            return false;
+        }
+        User user = new User(username, password, fullname, "", phone, "USER", email);
+
+        try {
+            UserRepository ur = new UserRepository();
+            User u = ur.getUserByUsername(username);
+            if (u != null) {
+                request.setAttribute("usernameError", "Username is already exist");
+                return false;
+            }
+            ur.registerUser(user);
+
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UseGuard useGuard = new UseGuard(request, response);
 
         if (useGuard.useAuth()) {
-            response.sendRedirect("IndexServlet");
+            response.sendRedirect(Routers.INDEX_SERVLET);
             return;
         }
 
-        request.getRequestDispatcher("WEB-INF/JSP/register.jsp").forward(request, response);
+        request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (processRequest(request, response)) {
-            response.sendRedirect("LoginServlet");
-            return;
+        try {
+            if (processRequest(request, response)) {
+                response.sendRedirect(Routers.LOGIN_SERVLET);
+                return;
+            }
+            request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
+        } catch (Exception e) {
+            request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
-        request.getRequestDispatcher("WEB-INF/JSP/register.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

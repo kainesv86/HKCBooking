@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import guard.UseGuard;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,12 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import variables.Routers;
 
 /**
  *
  * @author kaine
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/" + Routers.LOGOUT_SERVLET})
 public class LogoutServlet extends HttpServlet {
 
     @Override
@@ -26,11 +28,11 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Remove session
-            HttpSession session = request.getSession();
-            session.invalidate();
+            UseGuard useGuard = new UseGuard(request, response);
+            useGuard.clearSession();
         } finally {
             // forward on success
-            response.sendRedirect("IndexServlet");
+            response.sendRedirect(Routers.INDEX_SERVLET);
         }
     }
 

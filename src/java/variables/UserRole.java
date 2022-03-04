@@ -12,17 +12,7 @@ package variables;
 public class UserRole {
 
     public static enum role {
-        USER {
-            @Override
-            public String toString() {
-                return "USER";
-            }
-        },
-        ADMIN {
-            @Override
-            public String toString() {
-                return "ADMIN";
-            }
-        },
+        USER,
+        ADMIN
     }
 }

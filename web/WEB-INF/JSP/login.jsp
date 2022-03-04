@@ -1,11 +1,11 @@
-
+<%@page import="variables.Routers"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>JSP Page</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <jsp:include page="common/header.jsp">
+            <jsp:param name="title" value="Login HKCBooking"/>
+        </jsp:include>
     </head>
     <body>
         <div class="flex flex-col min-h-screen">
@@ -30,8 +30,8 @@
                             </div>
 
                             <div class="mt-8">
-                                <div class="mt-6">
-                                    <form action="LoginServlet" method="POST" class="space-y-6">
+                                <div class="mt-6 fade-in ">
+                                    <form action="<%= Routers.LOGIN_SERVLET%>" method="POST" class="space-y-6">
 
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="username" />
@@ -48,7 +48,7 @@
                                     </jsp:include>
 
                                     <div class="text-right">
-                                        <a href="RegisterServlet" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Register an account?</a>
+                                        <a href="<%= Routers.REGISTER_SERVLET%>" class="text-sm font-medium text-indigo-600 hover:text-indigo-500"> Register an account?</a>
                                     </div>
 
                                     <div>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="hidden lg:block relative w-0 flex-1">
+                <div class="hidden lg:block relative w-0 flex-1 fade-in ">
                     <img class="absolute inset-0 h-full w-full object-cover" src="https://img1.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg" alt="" />
                 </div>
 

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.naming.NamingException;
 
 /**
  *
@@ -52,12 +53,12 @@ public class UserRepository {
         }
     }
 
-    public int registerUser(User user) throws ClassNotFoundException, SQLException {
+    public boolean registerUser(User user) throws ClassNotFoundException, SQLException {
 
         String INSERT_USER_SQL = "INSERT INTO hkcbooking_user"
                 + "(username,password,fullname,address,phone,role,email) VALUES"
                 + "(?,?,?,?,?,?,?)";
-        int result = 0;
+
         try {
             repo = RepoConnector.connectDatabase();
             preStm = repo.prepareStatement(INSERT_USER_SQL);
@@ -69,13 +70,12 @@ public class UserRepository {
             preStm.setString(6, user.getRole());
             preStm.setString(7, user.getEmail());
 
-            result = preStm.executeUpdate();
-            preStm.setString(result, INSERT_USER_SQL);
-            System.out.println(preStm);
-
-        } catch (Exception e) {
+            preStm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-        return result;
+        return true;
     }
 
     public User getUserByUsername(String username) throws Exception {
@@ -118,5 +118,84 @@ public class UserRepository {
             this.closeRepo();
         }
         return null;
+    }
+
+    public boolean updateInforUser(User u) throws NamingException, SQLException {
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_user SET Fullname=?, "
+                    + "Phone=?, Email=?, Address=? WHERE UserId=? ";
+            repo = RepoConnector.connectDatabase();
+            preStm = repo.prepareStatement(query);
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, u.getFullname());
+                preStm.setString(2, u.getPhone());
+                preStm.setString(3, u.getEmail());
+                preStm.setString(4, u.getAddress());
+                preStm.setInt(5, u.getUserId());
+
+                preStm.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (repo != null) {
+                repo.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean changePassword(User u) throws SQLException, Exception {
+        Connection repo = null;
+        try {
+            String query = "UPDATE hkcbooking_user SET password=? Where UserId=?";
+            repo = RepoConnector.connectDatabase();
+
+            if (repo != null) {
+                preStm = repo.prepareStatement(query);
+                preStm.setString(1, u.getPassword());
+                preStm.setInt(2, u.getUserId());
+                preStm.executeUpdate();
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeRepo();
+        }
+        return false;
+    }
+
+    public ArrayList<User> getAllUserList() throws Exception {
+        try {
+            repo = RepoConnector.connectDatabase();
+            String sql = "SELECT userId,username,password,fullname,address,phone,role,email FROM hkcbooking_user";
+            preStm = repo.prepareStatement(sql);
+            rs = preStm.executeQuery();
+            ArrayList<User> list = new ArrayList<User>();
+            while (rs.next()) {
+                Integer userId = rs.getInt("userId");
+                String username = rs.getString("username");
+                String fullname = rs.getString("fullname");
+                String password = rs.getString("password");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String role = rs.getString("role");
+                list.add(new User(userId, username, password, fullname, address, phone, role, email));
+            }
+            return list;
+        } finally {
+            this.closeRepo();
+        }
     }
 }
