@@ -119,6 +119,7 @@
                                     <!-- 'Customer Reviews' panel, show/hide based on tab state -->
                                     <div id="tab-panel-reviews" class="-mb-10" aria-labelledby="tab-reviews" role="tabpanel" tabindex="0">
                                         <h3 class="sr-only">Customer Reviews</h3>
+                                        <% if (fullname != null) {%>
                                         <form action="<%= Routers.REVIEW_SERVLET%>" method="POST">
                                             <input name="roomId" value="<%= roomId%>" readonly hidden/>
                                             <input name="fullname" value="<%= fullname%>" readonly hidden/>
@@ -137,6 +138,7 @@
                                                 <button type="submit" class="text-white inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600">Comment</button>
                                             </div>
                                         </form>
+                                        <% } %>
                                         <% for (Review review : reviews) {
                                         %>
                                         <div class="flex text-sm text-gray-500 space-x-4">
