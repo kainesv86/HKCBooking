@@ -23,7 +23,7 @@ jobs:
                           id: docker_build
                           with:
                                   context: ./
-                                  file: ./Dockerfile
+                                  file: ./dockerFile
                                   push: true
                                   tags: ${{ secrets.DOCKER_HUB_USERNAME }}/hkcbooking:latest
         deploy:
@@ -38,6 +38,6 @@ jobs:
                                   password: ${{ secrets.PASSWORD }}
                                   port: ${{ secrets.PORT }}
                                   script: |
-                                          cd /app/hkcbook
+                                          cd /app/hkc
                                           docker-compose pull
                                           docker-compose up -d
