@@ -7,6 +7,7 @@ package controllers;
 
 import entities.CartItem;
 import entities.History;
+import entities.Review;
 import entities.Room;
 import entities.RoomDetail;
 import entities.RoomType;
@@ -26,10 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import repositories.HistoryRepository;
+import repositories.ReviewRepository;
 import repositories.RoomDetailRepository;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 import services.HistoryService;
+import services.ReviewService;
 import variables.Routers;
 
 @WebServlet(name = "RoomDetailServlet", urlPatterns = {"/" + Routers.ROOM_DETAIL_SERVLET})
@@ -60,9 +63,16 @@ public class RoomDetailServlet extends HttpServlet {
             minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
         }
 
+        ReviewRepository reviewRepo = new ReviewRepository();
+        ArrayList<Review> reviews = reviewRepo.getReviewByRoomId(roomId);
+        Float rateOverall = ReviewService.reviewRateOverall(reviews);
+
+        request.setAttribute("rateOverall", rateOverall);
+        request.setAttribute("reviews", reviews);
         request.setAttribute("minCheckIn", minCheckIn.toString());
         request.setAttribute("minCheckOut", minCheckOut.toString());
         request.setAttribute("roomDetail", roomDetail);
+        request.setAttribute("roomId", roomId);
 
         return true;
     }
