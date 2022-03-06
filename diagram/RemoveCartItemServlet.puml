@@ -1,0 +1,39 @@
+hide footbox
+mainframe <b>sd</b> Login Servlet
+actor User
+participant "Browser" as Browser
+participant ":LoginServlet" as LoginServlet
+participant ":RemoveCartItemServlet" as RemoveCartItemServlet 
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+
+User -->> Browser: GET/RemoveCartItemServlet
+activate Browser
+Browser -->> RemoveCartItemServlet:
+activate RemoveCartItemServlet
+    RemoveCartItemServlet -->> GetVariable: gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
+    activate GetVariable
+    GetVariable -->> RemoveCartItemServlet: return index
+    deactivate GetVariable
+    alt index == null
+        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
+    else index not null
+        RemoveCartItemServlet-->> RemoveCartItemServlet: cart.remove(cart.get(index))
+        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
+    end
+    deactivate RemoveCartItemServlet
+Browser -->> RemoveCartItemServlet:POST/RemoveCartItemServlet
+    activate RemoveCartItemServlet
+    RemoveCartItemServlet -->> GetVariable: gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
+    activate GetVariable
+    GetVariable -->> RemoveCartItemServlet: return index
+    deactivate GetVariable
+    alt index == null
+        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
+    else index not null
+        RemoveCartItemServlet-->> RemoveCartItemServlet: cart.remove(cart.get(index))
+        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
+    end
+    deactivate RemoveCartItemServlet
+    deactivate Browser
+
