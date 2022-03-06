@@ -29,13 +29,23 @@ User ->> Browser: Click on login link
 User ->> Browser: Submit form
     Browser ->> RegisterServlet : Post /RegisterServlet
     activate RegisterServlet
-        RegisterServlet ->> GetVariable: GetVariable.getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        RegisterServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
             activate GetVariable
                 GetVariable ->> RegisterServlet: return username
+
+                RegisterServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
                 GetVariable ->> RegisterServlet: return password
+
+                RegisterServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
                 GetVariable ->> RegisterServlet: return confirmPassword
+
+                RegisterServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
                 GetVariable ->> RegisterServlet: return fullname
+
+                RegisterServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
                 GetVariable ->> RegisterServlet: return fullname
+                
+                RegisterServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
                 GetVariable ->> RegisterServlet: return email
             deactivate GetVariable
         alt invalid data 

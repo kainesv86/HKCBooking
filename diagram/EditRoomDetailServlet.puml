@@ -66,8 +66,8 @@ User ->> Browser: Submit form
                 alt role not Admin
                     EditRoomDetailServlet -->> Browser: sendRedirect(IndexServlet)
                 else Admin
-                    activate GetVariable
                         EditRoomDetailServlet -->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
+                        activate GetVariable
                         GetVariable ->> EditRoomDetailServlet: return roomId
 
                         EditRoomDetailServlet -->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
