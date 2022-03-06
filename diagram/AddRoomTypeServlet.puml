@@ -1,0 +1,60 @@
+@startuml addRoomTypeServlet
+
+hide footbox
+mainframe <b>sd</b> Login Servlet
+actor User
+participant "Browser" as Browser
+participant ":AddRoomTypeServlet" as AddRoomTypeServlet
+participant ":GetVariable(request)" as GetVariable
+participant ":RoomTypeRepository" as RoomTypeRepository
+participant "Database" as Database
+
+User ->> Browser: Click on Add room type link
+activate Browser
+    Browser ->> AddRoomTypeServlet: GET / AddRoomTypeServlet
+    activate AddRoomTypeServlet
+        AddRoomTypeServlet -->> UseGuard: UseGuard.UserAuth(): boolean
+        activate UseGuard 
+        UseGuard -->> AddRoomTypeServlet:return isLogin
+        deactivate UseGuard
+        alt not Login
+            AddRoomTypeServlet -->> Browser: sendRedirect("LoginServlet")
+        else check User
+        alt is not Admin
+            EditRoomServlet -->> Browser: forward index.jsp
+        else is Admin
+            AddRoomTypeServlet -->> AddRoomTypeServlet: handleOnGet(request,response): boolean
+            alt Valid
+                AddRoomTypeServlet -->> Browser: forward addRoomType.jsp           
+            else Invalid 
+                EditRoomServlet -->> Browser: forward 500Page.jsp
+            end
+        end
+    deactivate AddRoomTypeServlet
+
+User ->> Browser: Submit form
+    Browser ->> AddRoomTypeServlet : Post / AddRoomTypeServlet   
+    activate AddRoomTypeServlet
+        AddRoomTypeServlet ->> GetVariable: GetVariable.getString(String roomName, int capacity, int acreage)
+        activate GetVariable
+                GetVariable ->> AddRoomTypeServlet: return RoomName
+        deactivate GetVariable
+    alt invalid data
+        AddRoomTypeServlet -->> Browser: setAttribute("message", "Add room type failed, roomTypeId or RoomName existed")
+    else valid data
+    AddRoomTypeServlet -->> RoomTypeRepository: addRoomType(roomType)
+        activate RoomTypeRepository
+            RoomTypeRepository -->>  Database: executeQuery()
+                activate Database 
+                    Database ->> RoomTypeRepository: return result set
+                deactivate Database
+            RoomTypeRepository -->> AddRoomTypeServlet: return roomType
+            deactivate RoomTypeRepository
+        alt roomType
+        AddRoomTypeServlet -->> Browser: setAttribute("message", "Add room type successful")
+        else not roomType
+        AddRoomTypeServlet -->> Browser: forward 500Page.jsp
+        end
+    end
+    AddRoomTypeServlet -->> Browser: sendRedirect(AddRoomTypeServlet)
+    deactivate AddRoomTypeServlet

@@ -1,0 +1,10 @@
+@startuml loginAccount
+
+hide footbox
+mainframe <b>sd</b> Login Account
+actor User
+participant "Browser" as Browser
+participant ":LoginController" as LoginController
+participant ":GetParam" as GetParam
+participant ":UserDAO" as UserDao
+participant "Database" as DB
