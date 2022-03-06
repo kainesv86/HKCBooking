@@ -1,0 +1,75 @@
+hide footbox
+mainframe <b>sd</b> Login Servlet
+actor User
+participant "Browser" as Browser
+participant ":LoginServlet" as LoginServlet
+participant ":EditRoomDetailServlet" as EditRoomDetailServlet 
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+participant ":HandleOnGet" as HandleOnGet
+
+User -->> Browser: GET/EditRoomDetailServlet
+activate Browser
+    Browser -->> EditRoomDetailServlet:
+    
+    GetVariable -->> EditRoomDetailServlet
+    activate EditRoomDetailServlet
+    
+    EditRoomDetailServlet --> GetVariable: gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
+    activate GetVariable
+        GetVariable -->> EditRoomDetailServlet: return room = roomRepo.getRoomById(roomId);
+    deactivate GetVariable
+    alt roomId is null
+        EditRoomDetailServlet -->> EditRoomDetailServlet: return false
+    else roomId not null
+        EditRoomDetailServlet -->> EditRoomDetailServlet: return true
+    end
+    alt false
+        EditRoomDetailServlet -->> Browser: forward 404Page.jsp
+    else true
+        EditRoomDetailServlet -->> Browser: forward editRoomDetail.jsp
+    end
+    deactivate EditRoomDetailServlet
+
+Browser -->> EditRoomDetailServlet: POST/EditRoomDetailServlet
+    activate EditRoomDetailServlet
+    EditRoomDetailServlet -->> UseGuard: UseGuard.UserAuth(): boolean
+    activate UseGuard
+        UseGuard -->> EditRoomDetailServlet: return login
+    deactivate UseGuard
+    alt not login
+        EditRoomDetailServlet -->> Browser: sendRedirect(LoginServlet)
+    else Login
+    EditRoomDetailServlet -->> UseGuard: useGuard.useRole(): boolean
+        activate UseGuard
+        UseGuard -->> EditRoomDetailServlet: return role
+        deactivate UseGuard
+        alt role not Admin
+            EditRoomDetailServlet -->> Browser: sendRedirect(IndexServlet)
+        else Admin
+            EditRoomDetailServlet -->> GetVariable: gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
+            EditRoomDetailServlet -->> GetVariable: gv.getInt("roomTypeId", "Room Type Id", 0, Integer.MAX_VALUE, null);
+            EditRoomDetailServlet -->> GetVariable: gv.getFloat("price", "price", 0, Float.MAX_VALUE, null);
+            EditRoomDetailServlet -->> GetVariable: gv.getFile("imageUrl", "Room Image", 1080 * 1080);
+            EditRoomDetailServlet -->> GetVariable: gv.getString("description", "desciption", 0, 500, "");
+            EditRoomDetailServlet -->> GetVariable: gv.getString("roomStatus", "Room Status", 1, 30, null);
+            activate GetVariable
+                GetVariable -->> EditRoomDetailServlet: return boolean
+            deactivate GetVariable
+            alt (roomId == null || roomTypeId == null || price == null || description == null || roomStatus == null)
+                EditRoomDetailServlet -->> Browser: sendRedirect(EditRoomServlet)
+            else roomId = (Integer) request.getAttribute("roomId");
+                
+                EditRoomDetailServlet -->> Browser:sendRedirect(EditRoomDetailServlet + + "?roomId" + roomId)
+
+            end
+        end
+    end
+    deactivate EditRoomDetailServlet
+    deactivate Browser
+    
+    
+    
+    
+    
+    
