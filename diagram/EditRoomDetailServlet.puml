@@ -6,7 +6,8 @@ participant ":LoginServlet" as LoginServlet
 participant ":EditRoomDetailServlet" as EditRoomDetailServlet 
 participant ":UseGuard" as UseGuard
 participant ":GetVariable(request)" as GetVariable
-
+participant ":RoomRepository" as RoomRepository
+participant ":RoomTypeRepository" as RoomTypeRepository
 
 User -->> Browser: GET/EditRoomDetailServlet
 activate Browser
@@ -17,12 +18,17 @@ activate Browser
     
     EditRoomDetailServlet --> GetVariable: gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
     activate GetVariable
-        GetVariable -->> EditRoomDetailServlet: return room = roomRepo.getRoomById(roomId);
+        GetVariable -->> EditRoomDetailServlet: return roomID
     deactivate GetVariable
     alt roomId is null
         EditRoomDetailServlet -->> EditRoomDetailServlet: return false
-    else roomId not null
-        EditRoomDetailServlet -->> EditRoomDetailServlet: return true
+    else roomId not null    
+        EditRoomDetailServlet -->> EditRoomDetailServlet: request.setAttribute("room", room);
+        EditRoomDetailServlet -->> RoomTypeRepository:  roomTypeRepo.getAllRoomType();
+        activate RoomTypeRepository
+        RoomTypeRepository -->> EditRoomDetailServlet: ArrayList<RoomType> roomTypes
+        deactivate RoomTypeRepository
+        EditRoomDetailServlet -->> EditRoomDetailServlet: request.setAttribute("roomTypes", roomTypes);
     end
     alt false
         EditRoomDetailServlet -->> Browser: forward 404Page.jsp
@@ -59,7 +65,15 @@ Browser -->> EditRoomDetailServlet: POST/EditRoomDetailServlet
             alt (roomId == null || roomTypeId == null || price == null || description == null || roomStatus == null)
                 EditRoomDetailServlet -->> Browser: sendRedirect(EditRoomServlet)
             else roomId = (Integer) request.getAttribute("roomId");
-                
+                 EditRoomDetailServlet -->> RoomRepository:  roomRepo.getRoomById(roomId);
+                    activate RoomRepository
+                    RoomRepository -->> EditRoomDetailServlet: return RoomID
+                    alt are update 
+                    EditRoomDetailServlet -->> RoomRepository: roomRepo.updateRoom(new Room(roomId, roomTypeId, description, price, imageUrl, roomStatus))
+                    RoomRepository -->> EditRoomDetailServlet: return true
+                    else not
+                    RoomRepository -->>EditRoomDetailServlet: return false
+                    end 
                 EditRoomDetailServlet -->> Browser:sendRedirect(EditRoomDetailServlet + + "?roomId" + roomId)
 
             end
