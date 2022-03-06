@@ -6,7 +6,7 @@ participant ":LoginServlet" as LoginServlet
 participant ":EditRoomDetailServlet" as EditRoomDetailServlet 
 participant ":UseGuard" as UseGuard
 participant ":GetVariable(request)" as GetVariable
-participant ":HandleOnGet" as HandleOnGet
+
 
 User -->> Browser: GET/EditRoomDetailServlet
 activate Browser
