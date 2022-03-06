@@ -47,7 +47,26 @@ User ->> Browser: Submit form
                         activate Database 
                             Database ->> UserRepository: return result set
                         deactivate Database
-                    UserRepository ->> LoginServlet: return User
+                    UserRepository ->> RegisterServlet: return User
+            deactivate UserRepository
+            alt username already exist
+                RegisterServlet ->> Browser: forward register.jsp
+            else username not exist
+                RegisterServlet ->> UserRepository: registerUser(new User(username, password, fullname, "", phone, "USER", email))
+                activate UserRepository
+                    UserRepository ->> Database: executeQuery()
+                        activate Database 
+                            Database ->> UserRepository: return result set
+                        deactivate Database
+                    UserRepository ->> RegisterServlet: return isSuccess
                 deactivate UserRepository
+                alt register success
+                    RegisterServlet ->> Browser: sendDirect LoginServlet
+                else register not success
+                    RegisterServlet ->> Browser: forward register.jsp
+                end
+    deactivate RegisterServlet                     
+deactivate Browser
+            end
         end
         

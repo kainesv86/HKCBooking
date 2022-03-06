@@ -110,7 +110,7 @@ public class EditRoomDetailServlet extends HttpServlet {
             }
             Integer roomId = (Integer) request.getAttribute("roomId");
 
-            response.sendRedirect(Routers.EDIT_ROOM_DETAIL_SERVLET + "?roomId" + roomId);
+            response.sendRedirect(Routers.EDIT_ROOM_DETAIL_SERVLET + "?roomId=" + roomId);
 
         } catch (Exception ex) {
             ex.printStackTrace();

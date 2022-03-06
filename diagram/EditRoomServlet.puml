@@ -1,11 +1,9 @@
 hide footbox
-mainframe <b>sd</b> Login Servlet
+mainframe <b>sd</b> Edit Room Servlet
 actor User
 participant "Browser" as Browser
-participant ":LoginServlet" as LoginServlet
 participant ":EditRoomServlet" as EditRoomServlet
 participant ":UseGuard" as UseGuard
-participant ":GetVariable(request)" as GetVariable
 
 User ->> Browser: GET /EditRoomServlet
 activate Browser
@@ -14,13 +12,14 @@ activate EditRoomServlet
     EditRoomServlet -->> UseGuard
     activate UseGuard
             UseGuard -->> EditRoomServlet:return isLogin
-    deactivate UseGuard
     alt not Login
         EditRoomServlet -->> Browser: sendRedirect("LoginServlet")
-    else check User
-        alt is not Admin
-            EditRoomServlet -->> Browser: forward index.jsp
-        else is Admin
+    else is login
+            UseGuard -->> EditRoomServlet: return isAdmin
+    deactivate UseGuard
+        alt not Admin
+            EditRoomServlet -->> Browser: sendRedirect("IndexServlet")
+        else Admin
             EditRoomServlet -->> EditRoomServlet: handleOnGet(request,response): boolean
             alt Invalid 
                 EditRoomServlet -->> Browser: forward 404Page.jsp
@@ -28,8 +27,6 @@ activate EditRoomServlet
                  EditRoomServlet -->> Browser: forward editRoom.jsp
             end
         end
-    else Login not success
-        EditRoomServlet -->> Browser: forward 505Page.jsp
     end
     deactivate EditRoomServlet
 
