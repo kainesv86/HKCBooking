@@ -1,7 +1,7 @@
 @startuml registerServlet
 
 hide footbox
-mainframe <b>sd</b> Login Servlet
+mainframe <b>sd</b> Register Servlet
 actor User
 participant "Browser" as Browser
 participant ":RegisterServlet" as RegisterServlet
