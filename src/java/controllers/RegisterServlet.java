@@ -63,9 +63,7 @@ public class RegisterServlet extends HttpServlet {
         } catch (Exception e) {
             return false;
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("userId", user.getUserId());
-        session.setAttribute("fullname", user.getFullname());
+
         return true;
     }
 

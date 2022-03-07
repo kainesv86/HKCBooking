@@ -1,0 +1,72 @@
+@startuml registerServlet
+
+hide footbox
+mainframe <b>sd</b> Login Servlet
+actor User
+participant "Browser" as Browser
+participant ":RegisterServlet" as RegisterServlet
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+participant ":UserRepository" as UserRepository
+participant "Database" as Database
+
+
+User ->> Browser: Click on login link
+    activate Browser
+        Browser ->> RegisterServlet : GET /RegisterServlet
+        activate RegisterServlet
+            RegisterServlet ->> UseGuard: UseGuard.UseAuth(): boolean
+                activate UseGuard
+                    UseGuard ->> RegisterServlet: return isLogin
+                deactivate UseGuard
+            alt already login
+                RegisterServlet ->> Browser: Redirect /IndexServlet
+            else not already login
+                RegisterServlet ->> Browser: forward register.jsp
+            end
+        deactivate RegisterServlet
+
+User ->> Browser: Submit form
+    Browser ->> RegisterServlet : Post /RegisterServlet
+    activate RegisterServlet
+        RegisterServlet ->> GetVariable: GetVariable.getString(String key, String label, int minLength, int maxLength, String defaultValue)
+            activate GetVariable
+                GetVariable ->> RegisterServlet: return username
+                GetVariable ->> RegisterServlet: return password
+                GetVariable ->> RegisterServlet: return confirmPassword
+                GetVariable ->> RegisterServlet: return fullname
+                GetVariable ->> RegisterServlet: return fullname
+                GetVariable ->> RegisterServlet: return email
+            deactivate GetVariable
+        alt invalid data 
+            RegisterServlet ->> Browser: forward register.jsp
+        else
+            RegisterServlet ->> UserRepository: getUserByUsername(username)
+            activate UserRepository
+                    UserRepository ->> Database: executeQuery()
+                        activate Database 
+                            Database ->> UserRepository: return result set
+                        deactivate Database
+                    UserRepository ->> RegisterServlet: return User
+            deactivate UserRepository
+            alt username already exist
+                RegisterServlet ->> Browser: forward register.jsp
+            else username not exist
+                RegisterServlet ->> UserRepository: registerUser(new User(username, password, fullname, "", phone, "USER", email))
+                activate UserRepository
+                    UserRepository ->> Database: executeQuery()
+                        activate Database 
+                            Database ->> UserRepository: return result set
+                        deactivate Database
+                    UserRepository ->> RegisterServlet: return isSuccess
+                deactivate UserRepository
+                alt register success
+                    RegisterServlet ->> Browser: sendDirect LoginServlet
+                else register not success
+                    RegisterServlet ->> Browser: forward register.jsp
+                end
+    deactivate RegisterServlet                     
+deactivate Browser
+            end
+        end
+        
