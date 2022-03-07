@@ -1,0 +1,75 @@
+@startuml userInfo
+
+hide footbox
+mainframe <b>sd</b> User Info Servlet
+actor User
+participant "Browser" as Browser
+participant ":UserInfoServlet" as UserInfoServlet
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+participant ":UserRepository" as UserRepository
+participant "Database" as Database
+
+User -->> Browser: GET/UserInfoServlet
+activate Browser    
+    Browser -->> UserInfoServlet :
+    activate UserInfoServlet
+    UserInfoServlet -->> UseGuard: useAuth():boolean 
+    activate UseGuard
+        UseGuard -->> UserInfoServlet: return islogin
+    deactivate UseGuard
+    alt not login
+        UserInfoServlet -->> Browser: sendRedirect("LoginServlet")
+    else is login
+        UserInfoServlet -->> Browser: forward userInfo.jsp
+    end
+    deactivate UserInfoServlet
+
+    Browser -->> UserInfoServlet: POST/UserInfoServlet
+    activate UserInfoServlet
+    UserInfoServlet -->> UseGuard: useAuth():boolean 
+    activate UseGuard
+     UseGuard -->> UserInfoServlet: return islogin
+    deactivate UseGuard
+    alt not login
+        UserInfoServlet -->> Browser: sendRedirect("LoginServlet")
+    end
+    UserInfoServlet -->> UserInfoServlet:request.getSession();
+    UserInfoServlet -->> UserInfoServlet:session.getAttribute("userId");
+    UserInfoServlet -->> GetVariable:getString(String key, String label, int minLength, int maxLength, String defaultValue): String
+    activate GetVariable
+    GetVariable -->> UserInfoServlet: return fullname
+
+    UserInfoServlet -->> GetVariable:getString(String key, String label, int minLength, int maxLength, String defaultValue): String
+    GetVariable -->> GetVariable:return address
+
+    UserInfoServlet -->> GetVariable:getString(String key, String label, int minLength, int maxLength, String defaultValue): String
+    GetVariable -->> GetVariable:return phone
+
+    UserInfoServlet -->> GetVariable:getString(String key, String label, int minLength, int maxLength, String defaultValue): String
+    GetVariable -->> GetVariable:return email
+
+    deactivate GetVariable
+    alt Invalid Data 
+        UserInfoServlet -->> Browser: request.setAttribute("messageError", "Update failed, please check on fields above");
+    else 
+        UserInfoServlet -->> UserRepository: getUserByUserId(userId)
+        activate UserRepository
+        UserRepository -->> Database: executeQuery()
+        activate Database
+            Database ->> UserRepository: return result set
+        deactivate Database
+        UserRepository -->> UserInfoServlet: return User
+        deactivate UserRepository
+        
+        UserInfoServlet -->> UserRepository: updateInforUser(User)
+        alt Invalid
+            UserInfoServlet -->> Browser: request.setAttribute("messageError", "Update failed, please check on fields above");
+        else
+            UserInfoServlet -->> UserInfoServlet: session.setAttribute("fullname", fullname);
+            UserInfoServlet -->> UserInfoServlet: request.setAttribute("message", "Update successful");
+            UserInfoServlet -->> UseGuard: useGuard.useAuth();
+        end
+    end
+    deactivate UserInfoServlet
+    deactivate Browser
