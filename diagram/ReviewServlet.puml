@@ -1,0 +1,44 @@
+@startuml reviewServlet
+
+hide footbox
+mainframe <b>sd</b> Login Servlet
+actor User
+participant "Browser" as Browser
+participant ":ReviewServlet" as ReviewServlet
+participant ":GetVariable(request)" as GetVariable
+participant ":ReviewRepository" as ReviewRepository
+participant "Database" as Database
+
+
+User ->> Browser: Click on review link
+activate Browser
+    Browser ->> ReviewServlet: GET /ReviewServlet
+activate ReviewServlet
+ReviewServlet -->> Browser: sendRedirect(ReviewServlet)
+deactivate ReviewServlet
+
+User ->> Browser: Submit form
+    Browser ->> ReviewServlet : Post / ReviewServlet
+    activate ReviewServlet
+        ReviewServlet ->> GetVariable: GetVariable.getString(int roomId, String fullname, String comment, int rate)
+        activate GetVariable
+                GetVariable ->> ReviewServlet: return fullname
+        deactivate GetVariable
+    alt invalid data
+        ReviewServlet -->> Browser: sendRedirect(IndexServlet)
+    else valid data
+    ReviewServlet -->> ReviewRepository: addReview(review)
+        activate ReviewRepository
+            ReviewRepository -->>  Database: executeQuery()
+                activate Database 
+                    Database ->> ReviewRepository: return result set
+                deactivate Database
+            ReviewRepository -->> ReviewServlet: return review
+            deactivate ReviewRepository
+        alt not review 
+            ReviewServlet -->> Browser: sendRedirect(IndexServlet)
+        else review 
+            ReviewServlet -->> Browser: sendRedirect(RoomDetailServlet(+rommID))
+        end
+    end
+deactivate ReviewServlet
