@@ -1,39 +1,26 @@
 hide footbox
-mainframe <b>sd</b> Login Servlet
+mainframe <b>sd</b> Remove Cart Item Servlet
 actor User
 participant "Browser" as Browser
-participant ":LoginServlet" as LoginServlet
 participant ":RemoveCartItemServlet" as RemoveCartItemServlet 
-participant ":UseGuard" as UseGuard
-participant ":GetVariable(request)" as GetVariable
+participant ":GetVariable" as GetVariable
 
-User -->> Browser: GET/RemoveCartItemServlet
+User -->> Browser: Click Remove Cart Item Link
 activate Browser
-Browser -->> RemoveCartItemServlet:
-activate RemoveCartItemServlet
-    RemoveCartItemServlet -->> GetVariable: gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
-    activate GetVariable
-    GetVariable -->> RemoveCartItemServlet: return index
-    deactivate GetVariable
-    alt index == null
-        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
-    else index not null
-        RemoveCartItemServlet-->> RemoveCartItemServlet: cart.remove(cart.get(index))
-        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
-    end
-    deactivate RemoveCartItemServlet
-Browser -->> RemoveCartItemServlet:POST/RemoveCartItemServlet
+    Browser -->> RemoveCartItemServlet: GET || POST /RemoveCartItemServlet
     activate RemoveCartItemServlet
-    RemoveCartItemServlet -->> GetVariable: gv.getInt("index", "Index", 0, Integer.MAX_VALUE, null);
-    activate GetVariable
-    GetVariable -->> RemoveCartItemServlet: return index
-    deactivate GetVariable
-    alt index == null
-        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
-    else index not null
-        RemoveCartItemServlet-->> RemoveCartItemServlet: cart.remove(cart.get(index))
-        RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
-    end
+        RemoveCartItemServlet -->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
+        activate GetVariable
+            GetVariable -->> RemoveCartItemServlet: return index
+        deactivate GetVariable
+        alt index == null
+            RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
+        else index not null
+            RemoveCartItemServlet ->> RemoveCartItemServlet: ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");   
+            RemoveCartItemServlet-->> RemoveCartItemServlet: cart.remove(cart.get(index))
+            RemoveCartItemServlet ->> RemoveCartItemServlet: session.setAttribute("cart", cart);   
+            RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
+        end
     deactivate RemoveCartItemServlet
-    deactivate Browser
+deactivate Browser
 
