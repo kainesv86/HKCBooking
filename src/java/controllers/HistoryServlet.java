@@ -101,9 +101,9 @@ public class HistoryServlet extends HttpServlet {
         }
 
         try {
-            if (handleOnPost(request, response)) {
-                response.sendRedirect(Routers.HISTORY_SERVLET + location);
-            }
+            handleOnPost(request, response);
+            response.sendRedirect(Routers.HISTORY_SERVLET + location);
+
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }

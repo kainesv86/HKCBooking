@@ -1,4 +1,4 @@
-@startuml loginAccount
+@startuml logoutAccount
 
 hide footbox
 mainframe <b>sd</b> Logout Servlet
