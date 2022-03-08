@@ -1,0 +1,47 @@
+@startuml reviewServlet
+
+hide footbox
+mainframe <b>sd</b> Review Servlet
+actor User
+participant "Browser" as Browser
+participant ":ReviewServlet" as ReviewServlet
+participant ":GetVariable(request)" as GetVariable
+participant ":ReviewRepository" as ReviewRepository
+participant "Database" as Database
+
+
+activate Browser
+User ->> Browser: Submit form
+    Browser ->> ReviewServlet : Post / ReviewServlet
+    activate ReviewServlet
+         ReviewServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
+            activate GetVariable
+            GetVariable ->> ReviewServlet: return roomId
+
+            ReviewServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+            GetVariable ->> ReviewServlet: return fullname
+
+            ReviewServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+            GetVariable ->> ReviewServlet: return comment
+
+            ReviewServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
+            GetVariable ->> ReviewServlet: return rate
+        deactivate GetVariable
+    alt invalid data
+        ReviewServlet -->> Browser: sendRedirect(IndexServlet)
+    else valid data
+        ReviewServlet -->> ReviewRepository: addReview(review)
+        activate ReviewRepository
+            ReviewRepository -->>  Database: executeQuery()
+                activate Database 
+                    Database ->> ReviewRepository: return result set
+                deactivate Database
+            ReviewRepository -->> ReviewServlet: return review
+            deactivate ReviewRepository
+        alt not success 
+            ReviewServlet -->> Browser: sendRedirect(IndexServlet)
+        else success 
+            ReviewServlet -->> Browser: sendRedirect("RoomDetailServlet" + "?roomId=" + roomId)
+        end
+    end
+deactivate ReviewServlet

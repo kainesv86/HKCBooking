@@ -9,8 +9,6 @@ import entities.User;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +34,6 @@ public class UserInfoServlet extends HttpServlet {
             String email = gv.getString("email", "Email", 1, 50, null);
 
             if (fullname == null || phone == null || email == null) {
-                System.out.println("WTF: " + fullname);
                 return false;
             }
 

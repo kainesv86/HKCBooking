@@ -1,0 +1,24 @@
+@startuml logoutAccount
+
+hide footbox
+mainframe <b>sd</b> Logout Servlet
+actor User
+participant "Browser" as Browser
+participant ":LogoutServlet" as LogoutServlet
+participant ":UseGuard" as UseGuard
+
+
+User ->> Browser: Click on logout link
+activate Browser
+
+Browser ->> LogoutServlet: GET /LogoutServlet
+    activate LogoutServlet
+        LogoutServlet ->> UseGuard: clearSession()
+        activate UseGuard
+            UseGuard ->> LogoutServlet: return void
+        deactivate UseGuard
+        LogoutServlet -->> Browser: sendRedirect("IndexServlet")
+    deactivate LogoutServlet
+deactivate Browser
+
+@enduml

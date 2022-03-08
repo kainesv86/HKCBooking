@@ -35,7 +35,6 @@ public class ReviewRepository {
     }
 
     public boolean addReview(Review review) {
-
         String sql = "INSERT INTO hkcbooking_review"
                 + "(roomId, fullname, comment, rate) VALUES "
                 + "(?,?,?,?)";

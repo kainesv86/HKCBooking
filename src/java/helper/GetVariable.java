@@ -70,8 +70,7 @@ public class GetVariable {
         return number;
     }
 
-    public Integer getInt(String key, String label, int minValue, int maxValue,
-            Integer defaultValue) {
+    public Integer getInt(String key, String label, int minValue, int maxValue, Integer defaultValue) {
 
         String valueInt = (String) this.request.getParameter(key);
         Integer numValue;

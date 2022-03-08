@@ -1,0 +1,79 @@
+hide footbox
+mainframe <b>sd</b> Edit Room Servlet
+actor User
+participant "Browser" as Browser
+participant ":EditRoomServlet" as EditRoomServlet
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+participant ":RoomDetailRepository" as RoomDetailRepository
+participant ":RoomTypeRepository" as RoomTypeRepository 
+participant "Database" as Database
+
+User ->> Browser: GET /EditRoomServlet
+activate Browser
+Browser -->> EditRoomServlet:
+activate EditRoomServlet
+    EditRoomServlet -->> UseGuard: useAuth():boolean 
+    activate UseGuard
+            UseGuard -->> EditRoomServlet:return isLogin
+    deactivate UseGuard
+    alt not Login
+        EditRoomServlet -->> Browser: sendRedirect("LoginServlet")
+    else is login
+    EditRoomServlet -->> UseGuard: useRole(UserRole.role role): boolean 
+        activate UseGuard
+            UseGuard -->> EditRoomServlet: return isAdmin
+        deactivate UseGuard
+        alt not Admin
+            EditRoomServlet -->> Browser: sendRedirect("IndexServlet")
+        else Admin
+            
+            EditRoomServlet -->> RoomDetailRepository: getAllRoomDetail()
+            activate RoomDetailRepository
+                RoomDetailRepository ->> Database: executeQuery()
+                activate Database 
+                    Database ->> RoomDetailRepository: return result set
+                deactivate Database
+                RoomDetailRepository ->> EditRoomServlet: return roomDetails
+            deactivate RoomDetailRepository
+            
+            EditRoomServlet -->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
+            activate GetVariable
+            GetVariable ->> EditRoomServlet: return roomName
+
+            EditRoomServlet -->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
+            GetVariable ->> EditRoomServlet: return capacity
+
+            EditRoomServlet -->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue): Float
+            GetVariable ->> EditRoomServlet: return minPrice
+
+            EditRoomServlet -->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue): Float
+            GetVariable ->> EditRoomServlet: return maxPrice
+
+            EditRoomServlet -->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
+            GetVariable ->> EditRoomServlet: return roomTypeId
+
+            EditRoomServlet -->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
+            GetVariable ->> EditRoomServlet: return roomStatus
+            deactivate GetVariable
+
+            EditRoomServlet ->> EditRoomServlet: filterRoom : ArrayList<RoomDetail>
+
+            EditRoomServlet -->> RoomTypeRepository: getAllRoomType()
+                activate RoomTypeRepository
+                    RoomTypeRepository ->> Database: executeQuery()
+                        activate Database 
+                            Database ->> RoomTypeRepository: return result set
+                        deactivate Database
+                    RoomTypeRepository ->> EditRoomServlet: return roomTypes
+                deactivate RoomTypeRepository
+            EditRoomServlet ->> EditRoomServlet: request.setAttribute("roomTypes", roomTypes);
+            EditRoomServlet ->> EditRoomServlet: request.setAttribute("roomDetails", roomDetails);
+
+            EditRoomServlet ->> Browser: forward editRoom.jsp 
+        end
+    deactivate EditRoomServlet
+deactivate Browser
+    end
+
+    

@@ -1,0 +1,85 @@
+hide footbox
+mainframe <b>sd</b> History Servlet
+actor User
+participant "Browser" as Browser
+participant ":HistoryServlet" as HistoryServlet
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+participant "HistoryDetailRepository" as HistoryDetailRepository
+participant "HistoryRepository" as HistoryRepository
+participant "Database" as Database
+
+User ->> Browser: GET /HistoryServlet
+activate Browser
+    Browser -->> HistoryServlet:
+    activate HistoryServlet
+        HistoryServlet -->> UseGuard: useAuth():boolean 
+        activate UseGuard
+                UseGuard -->> HistoryServlet:return isLogin
+        deactivate UseGuard
+        alt not Login
+            HistoryServlet -->> Browser: sendRedirect("LoginServlet")
+        else is login
+            HistoryServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue) 
+            activate GetVariable
+                GetVariable ->> HistoryServlet: return status
+            deactivate GetVariable
+            HistoryServlet ->> HistoryServlet: Integer userId = (Integer) session.getAttribute("userId");
+            HistoryServlet ->> HistoryDetailRepository: public ArrayList<HistoryDetail> getHistoryDetailByUserId(Integer userId, String status): ArrayList<HistoryDetail>
+                activate HistoryDetailRepository
+                    HistoryDetailRepository ->> Database: executeQuery()
+                            activate Database 
+                                Database ->> HistoryDetailRepository: return result set
+                            deactivate Database
+                    HistoryDetailRepository ->> HistoryServlet: return list
+                deactivate HistoryDetailRepository
+            alt status not null
+                HistoryServlet ->> HistoryServlet:request.setAttribute("location", status);
+            end
+
+            HistoryServlet ->> HistoryServlet: request.setAttribute("list", list);
+            
+            HistoryServlet ->> Browser: forward history.jsp
+    deactivate HistoryServlet
+        end
+
+User ->> Browser: submit form
+    Browser ->> HistoryServlet
+    activate HistoryServlet
+        HistoryServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        activate GetVariable
+            GetVariable ->> HistoryServlet: return location
+        deactivate GetVariable
+        alt location is null
+            HistoryServlet ->> HistoryServlet: location = "" 
+        else location is not null
+            HistoryServlet ->> HistoryServlet: location = "?status=" + location 
+        end
+
+        HistoryServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        activate GetVariable
+        GetVariable ->> HistoryServlet: return historyId
+
+        HistoryServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        GetVariable ->> HistoryServlet: return note
+        deactivate GetVariable
+
+        alt invalid value
+            HistoryServlet ->> Browser: sendRedirect("HistoryServlet" + location)
+        else valid value
+            HistoryServlet ->> HistoryServlet: History history = new History();
+            HistoryServlet ->> HistoryServlet: history.setHistoryId(historyId);
+            HistoryServlet ->> HistoryServlet: history.setNote(note);
+
+            HistoryServlet ->> HistoryRepository: updateNoteHistory(History history): boolean
+                activate HistoryRepository
+                HistoryRepository ->> Database: executeQuery()
+                        activate Database 
+                            Database ->> HistoryRepository: return result set
+                        deactivate Database
+                    HistoryRepository ->> HistoryServlet: return isSuccess
+                deactivate HistoryRepository
+            HistoryServlet ->> Browser: sendRedirect("HistoryServlet" + location)
+    deactivate HistoryServlet  
+deactivate Browser         
+        end

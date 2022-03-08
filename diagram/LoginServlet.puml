@@ -29,9 +29,10 @@ User ->> Browser: Click on login link
 User ->> Browser: Submit form
     Browser ->> LoginServlet : Post /LoginServlet
     activate LoginServlet
-        LoginServlet ->> GetVariable: GetVariable.getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        LoginServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
             activate GetVariable
                 GetVariable ->> LoginServlet: return username
+                LoginServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
                 GetVariable ->> LoginServlet: return password
             deactivate GetVariable
         alt invalid data 
