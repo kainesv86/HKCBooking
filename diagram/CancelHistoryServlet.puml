@@ -9,9 +9,9 @@ participant ":GetVariable" as GetVariable
 participant ":HistoryRepository" as HistoryRepository
 participant ":Database" as Database
 
-User ->> Browser: GET || POST / CancelHistoryServlet
+User ->> Browser: click or submit form cancel history 
 activate Browser
-Browser -->> CancelHistoryServlet: 
+Browser -->> CancelHistoryServlet: GET || POST / CancelHistoryServlet
 activate CancelHistoryServlet
     CancelHistoryServlet -->> UseGuard
     activate UseGuard 
