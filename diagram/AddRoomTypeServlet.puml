@@ -1,7 +1,7 @@
 @startuml addRoomTypeServlet
 
 hide footbox
-mainframe <b>sd</b> Login Servlet
+mainframe <b>sd</b> Add Room Type Servlet
 actor User
 participant "Browser" as Browser
 participant ":AddRoomTypeServlet" as AddRoomTypeServlet
@@ -67,3 +67,4 @@ User ->> Browser: Submit form
     deactivate AddRoomTypeServlet
 deactivate Browser
 end
+

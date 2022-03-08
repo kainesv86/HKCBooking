@@ -1,0 +1,101 @@
+@startuml addRoomTypeServlet
+
+hide footbox
+mainframe <b>sd</b> Add Room Type Servlet
+actor User
+participant "Browser" as Browser
+participant ":AddRoomServlet" as AddRoomServlet
+participant ":UseGuard" as UseGuard
+participant ":GetVariable(request)" as GetVariable
+participant ":RoomTypeRepository" as RoomTypeRepository
+participant ":RoomRepository" as RoomRepository
+participant "Database" as Database
+
+User ->> Browser: Click on Add room type link
+activate Browser
+    Browser ->> AddRoomServlet: GET / AddRoomTypeServlet
+    activate AddRoomServlet
+        AddRoomServlet -->> UseGuard: UseGuard.UserAuth(): boolean
+        activate UseGuard 
+            UseGuard -->> AddRoomServlet:return isLogin
+        deactivate UseGuard
+
+        alt not Login
+            AddRoomServlet -->> Browser: sendRedirect("LoginServlet")
+        else check User
+            AddRoomServlet -->> UseGuard: UseGuard.UserRole("ADMIN"): boolean
+            activate UseGuard 
+                UseGuard -->> AddRoomServlet:return isAdmin
+            deactivate UseGuard
+            alt is not Admin
+                AddRoomServlet -->> Browser: forward index.jsp
+            else is Admin
+                AddRoomServlet ->> RoomTypeRepository: getAllRoomType(): ArrayList<RoomType> 
+                activate RoomTypeRepository
+                    RoomTypeRepository -->>  Database: executeQuery()
+                        activate Database 
+                            Database ->> RoomTypeRepository: return result set
+                        deactivate Database
+                    RoomTypeRepository -->> AddRoomServlet: return roomTypes
+                deactivate RoomTypeRepository
+
+                AddRoomServlet ->> AddRoomServlet: request.setAttribute("roomTypes", roomTypes);
+                AddRoomServlet -->> Browser: forward addRoom.jsp           
+        deactivate AddRoomServlet
+            end
+        end
+
+User ->> Browser: Submit form
+    Browser ->> AddRoomServlet: Post / AddRoomTypeServlet   
+    activate AddRoomServlet
+        AddRoomServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+    activate GetVariable
+        GetVariable ->> AddRoomServlet: roomTypeId
+
+        AddRoomServlet ->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue)
+        GetVariable ->> AddRoomServlet: price
+
+        AddRoomServlet ->> GetVariable: getFile(String key, String label, long maxSize)
+        GetVariable ->> AddRoomServlet: imageUrl
+
+        AddRoomServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        GetVariable ->> AddRoomServlet: description
+    deactivate GetVariable
+
+        alt invalid data 
+            AddRoomServlet ->> AddRoomServlet: request.setAttribute("message", "Add room failed");
+        else valid data
+            AddRoomServlet ->> AddRoomServlet: Room room = new Room()
+            AddRoomServlet ->> AddRoomServlet: room.setRoomTypeId(roomTypeId); 
+            AddRoomServlet ->> AddRoomServlet: room.setPrice(price); 
+            AddRoomServlet ->> AddRoomServlet: room.setUrlImage(imageUrl); 
+            AddRoomServlet ->> AddRoomServlet: room.setDescription(description); 
+            AddRoomServlet ->> AddRoomServlet: room.setRoomStatus("READY"); 
+
+            AddRoomServlet ->> RoomRepository: addRoom(Room room): boolean
+            activate RoomRepository
+                RoomRepository -->>  Database: executeQuery()
+                    activate Database 
+                        Database ->> RoomRepository: return result set
+                    deactivate Database
+                RoomRepository -->> AddRoomServlet: return isSuccess
+            deactivate RoomRepository
+            alt not success 
+                AddRoomServlet ->> AddRoomServlet: request.setAttribute("message", "Add room failed");
+            else success
+                AddRoomServlet ->> AddRoomServlet: request.setAttribute("message", "Add room successful");
+            end
+        end
+        AddRoomServlet ->> RoomTypeRepository: getAllRoomType(): ArrayList<RoomType> 
+            activate RoomTypeRepository
+                RoomTypeRepository -->>  Database: executeQuery()
+                    activate Database 
+                        Database ->> RoomTypeRepository: return result set
+                    deactivate Database
+                RoomTypeRepository -->> AddRoomServlet: return roomTypes
+            deactivate RoomTypeRepository
+        AddRoomServlet ->> AddRoomServlet: request.setAttribute("roomTypes", roomTypes);
+        AddRoomServlet ->> Browser: sendRedirect("AddRoomServlet");
+
+    deactivate AddRoomServlet
+deactivate Browser
