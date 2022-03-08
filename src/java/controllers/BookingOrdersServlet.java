@@ -102,9 +102,8 @@ public class BookingOrdersServlet extends HttpServlet {
         }
 
         try {
-            if (handleOnPost(request, response)) {
-                response.sendRedirect(Routers.BOOKING_ORDERS_SERVLET + location);
-            }
+            handleOnPost(request, response);
+            response.sendRedirect(Routers.BOOKING_ORDERS_SERVLET + location);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }

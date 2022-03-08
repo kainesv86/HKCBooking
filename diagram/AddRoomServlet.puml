@@ -28,7 +28,7 @@ activate Browser
                 UseGuard -->> AddRoomServlet:return isAdmin
             deactivate UseGuard
             alt is not Admin
-                AddRoomServlet -->> Browser: forward index.jsp
+                AddRoomServlet -->> Browser: forward IndexServlet
             else is Admin
                 AddRoomServlet ->> RoomTypeRepository: getAllRoomType(): ArrayList<RoomType> 
                 activate RoomTypeRepository
