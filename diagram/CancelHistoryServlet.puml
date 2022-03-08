@@ -1,0 +1,53 @@
+
+hide footbox
+mainframe <b>sd</b> Cancel History Account
+actor User
+participant "Browser" as Browser
+participant ":CancelHistoryServlet" as CancelHistoryServlet
+participant ":UseGuard" as UseGuard
+participant ":GetVariable" as GetVariable
+participant ":HistoryRepository" as HistoryRepository
+participant ":Database" as Database
+
+User ->> Browser: GET || POST / CancelHistoryServlet
+activate Browser
+Browser -->> CancelHistoryServlet: 
+activate CancelHistoryServlet
+    CancelHistoryServlet -->> UseGuard
+    activate UseGuard 
+     UseGuard -->>  CancelHistoryServlet: return isLogin
+ deactivate UseGuard
+    alt not Login
+        CancelHistoryServlet -->> Browser: sendRedirect("LoginServlet")
+    else Login
+        CancelHistoryServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        activate GetVariable
+        GetVariable ->> CancelHistoryServlet: return historyId
+        deactivate GetVariable
+
+        CancelHistoryServlet ->> CancelHistoryServlet: Integer userId = (Integer) session.getAttribute("userId")
+
+        CancelHistoryServlet ->> CancelHistoryServlet: History history = new History(); 
+        CancelHistoryServlet ->> CancelHistoryServlet: history.setUserId(userId);
+        CancelHistoryServlet ->> CancelHistoryServlet: history.setHistoryId(historyId);
+        CancelHistoryServlet ->> CancelHistoryServlet: history.setHistoryStatus(HistoryStatus.status.CANCEL.toString());
+        
+        alt historyId not null 
+            CancelHistoryServlet ->> HistoryRepository: updateHistoryByBookingCancel(History history)
+            activate HistoryRepository
+            HistoryRepository ->> Database: executeQuery()
+            activate Database 
+                        Database ->> HistoryRepository: return result set
+                    deactivate Database
+            HistoryRepository ->> CancelHistoryServlet: return true
+        deactivate HistoryRepository
+        end
+
+        CancelHistoryServlet ->> Browser: sendRedirect("HistoryServlet")
+    deactivate CancelHistoryServlet
+deactivate Browser
+    end
+
+    
+    
+
