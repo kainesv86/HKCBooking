@@ -3,13 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/UserInfoServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/ChangePasswordServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/guard/UseGuard.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/ReviewServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/repositories/UserRepository.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/entities/User.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/AddRoomTypeServlet.java</file>
+            <file>file:/F:/Java/HKCBooking/src/java/controllers/DeleteRoomServlet.java</file>
         </group>
     </open-files>
 </project-private>

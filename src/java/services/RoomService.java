@@ -48,7 +48,6 @@ public class RoomService {
     }
 
     public static ArrayList<RoomDetail> filterRoomByPriceBooking(ArrayList<RoomDetail> roomDetails, Float minValue, Float maxValue) throws Exception {
-
         if (minValue != null || maxValue != null) {
             if ((minValue != null && minValue.compareTo(NaN) != 0) && (maxValue != null && maxValue.compareTo(NaN) != 0)) {
                 if (minValue > maxValue) {
@@ -73,7 +72,6 @@ public class RoomService {
                     }
                 }
             } else {
-                System.out.println(minValue + " : " + maxValue);
                 roomDetails.clear();
             }
 

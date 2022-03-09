@@ -83,6 +83,7 @@ public class HistoryServlet extends HttpServlet {
             };
             request.getRequestDispatcher(Routers.HISTORY_PAGE).forward(request, response);
         } catch (Exception ex) {
+            ex.printStackTrace();
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
 

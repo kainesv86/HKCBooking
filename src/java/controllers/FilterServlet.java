@@ -77,14 +77,15 @@ public class FilterServlet extends HttpServlet {
         request.setAttribute("roomName", roomName);
 
         //Filter by price (NaN for someone try to make wrong in param)
-        Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, Float.valueOf("-1"));
+        Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, Float.valueOf(0));
 
-        Float maxPrice = gv.getFloat("maxPrice", "Max Price", minPrice != null && !minPrice.equals(NaN) ? minPrice : 0, Float.MAX_VALUE, Float.valueOf("-1"));
+        Float maxPrice = gv.getFloat("maxPrice", "Max Price", minPrice != null && !minPrice.equals(NaN) ? minPrice : 0, Float.MAX_VALUE, Float.MAX_VALUE);
 
         // -1 only set by getFloat function when that min or max price didn't provide and if it had, it will dependent on condition
-        if (minPrice != -1 && maxPrice != -1) {
-            roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
-        }
+        roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
+//        if (minPrice != -1 && maxPrice != -1) {
+//            System.out.println(minPrice + " : " + maxPrice);
+//        }
 
         String minPriceError = (String) request.getAttribute("minPriceError");
         String maxPriceError = (String) request.getAttribute("maxPriceError");
