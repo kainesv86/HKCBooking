@@ -66,11 +66,14 @@ public class HistoryDetailRepository {
                     + "LEFT JOIN hkcbooking_room\n"
                     + "ON hkcbooking_history.roomId = hkcbooking_room.roomId\n"
                     + "LEFT JOIN hkcbooking_room_type\n"
-                    + "ON hkcbooking_room_type.roomTypeId = hkcbooking_room.roomTypeId ORDER BY historyId DESC\n";
+                    + "ON hkcbooking_room_type.roomTypeId = hkcbooking_room.roomTypeId \n";
 
             if (status != null) {
                 sql += "WHERE historyStatus=?";
             }
+
+            sql += " ORDER BY historyId DESC";
+
             preStm = repo.prepareStatement(sql);
             if (status != null) {
                 preStm.setString(1, status);

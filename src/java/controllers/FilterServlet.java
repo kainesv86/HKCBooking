@@ -66,6 +66,9 @@ public class FilterServlet extends HttpServlet {
             roomDetails = RoomService.filterRoomByDateBooking(roomDetails, checkIn, checkOut);
             request.setAttribute("checkIn", checkIn.toString());
             request.setAttribute("checkOut", checkOut.toString());
+
+            session.setAttribute("checkIn", checkIn.toString());
+            session.setAttribute("checkOut", checkOut.toString());
             if (!HistoryService.isValidDateInput(checkIn, checkOut)) {
                 roomDetails.clear();
                 request.setAttribute("checkOutError", "End date must greater than start date");
@@ -83,9 +86,6 @@ public class FilterServlet extends HttpServlet {
 
         // -1 only set by getFloat function when that min or max price didn't provide and if it had, it will dependent on condition
         roomDetails = RoomService.filterRoomByPriceBooking(roomDetails, minPrice, maxPrice);
-//        if (minPrice != -1 && maxPrice != -1) {
-//            System.out.println(minPrice + " : " + maxPrice);
-//        }
 
         String minPriceError = (String) request.getAttribute("minPriceError");
         String maxPriceError = (String) request.getAttribute("maxPriceError");

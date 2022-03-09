@@ -19,6 +19,15 @@
             RoomDetail roomDetail = (RoomDetail) request.getAttribute("roomDetail");
             String minCheckIn = (String) request.getAttribute("minCheckIn");
             String minCheckOut = (String) request.getAttribute("minCheckOut");
+
+            String checkIn = (String) request.getAttribute("checkIn");
+            String checkOut = (String) request.getAttribute("checkOut");
+
+            if (checkIn == null || checkOut == null) {
+                checkIn = "";
+                checkOut = "";
+            }
+
             String message = (String) session.getAttribute("message");
             request.setAttribute("message", message);
             String fullname = (String) session.getAttribute("fullname");
@@ -84,6 +93,7 @@
 
                                         <div class="mb-2">
                                             <jsp:include page="./Components/InputDate.jsp">
+                                                <jsp:param name="inputValue" value="<%=checkIn%>"/>
                                                 <jsp:param name="key" value="checkIn"/>
                                                 <jsp:param name="label" value="Check In"/>
                                                 <jsp:param name="min" value="<%=minCheckIn%>" />
@@ -91,6 +101,7 @@
                                         </div>
 
                                         <jsp:include page="./Components/InputDate.jsp">
+                                            <jsp:param name="inputValue" value="<%=checkOut%>"/>
                                             <jsp:param name="key" value="checkOut"/>
                                             <jsp:param name="label" value="Check out"/>
                                             <jsp:param name="min" value="<%=minCheckOut%>" />

@@ -58,6 +58,12 @@ public class RoomDetailServlet extends HttpServlet {
         Date minCheckIn = (Date) session.getAttribute("minCheckIn");
         Date minCheckOut = (Date) session.getAttribute("minCheckOut");
 
+        String checkInString = (String) session.getAttribute("checkIn");
+        String checkOutString = (String) session.getAttribute("checkOut");
+
+        request.setAttribute("checkIn", checkInString);
+        request.setAttribute("checkOut", checkOutString);
+
         if (minCheckIn == null || minCheckOut == null) {
             minCheckIn = new Date(System.currentTimeMillis());
             minCheckOut = Date.valueOf(minCheckIn.toLocalDate().plusDays(1));
