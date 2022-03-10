@@ -8,6 +8,28 @@
         </jsp:include>
     </head>
     <body>
+        <%
+            String username = (String) request.getAttribute("username");
+            if (username == null) {
+                username = "";
+            }
+
+            String fullname = (String) request.getAttribute("fullname");
+            if (fullname == null) {
+                fullname = "";
+            }
+
+            String phone = (String) request.getAttribute("phone");
+            if (phone == null) {
+                phone = "";
+            }
+
+            String email = (String) request.getAttribute("email");
+            if (email == null) {
+                email = "";
+            }
+
+        %>
         <div class="flex flex-col min-h-screen">
 
             <jsp:include page="./common/navbar.jsp"></jsp:include>
@@ -35,6 +57,7 @@
 
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="username" />
+                                        <jsp:param name="inputValue" value="<%=username%>" />
                                         <jsp:param name="type" value="text" />
                                         <jsp:param name="label" value="Username" />
                                         <jsp:param name="error" value="${requestScope.usernameError}"/>
@@ -56,6 +79,7 @@
 
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="fullname" />
+                                        <jsp:param name="inputValue" value="<%=fullname%>" />
                                         <jsp:param name="type" value="text" />
                                         <jsp:param name="label" value="Fullname" />
                                         <jsp:param name="error" value="${requestScope.fullnameError}"/>
@@ -63,6 +87,7 @@
 
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="phone" />
+                                        <jsp:param name="inputValue" value="<%=phone%>" />
                                         <jsp:param name="type" value="text" />
                                         <jsp:param name="label" value="Phone" />
                                         <jsp:param name="error" value="${requestScope.phoneError}"/>
@@ -70,6 +95,7 @@
 
                                     <jsp:include page="./Components/InputField.jsp">
                                         <jsp:param name="key" value="email" />
+                                        <jsp:param name="inputValue" value="<%=email%>" />
                                         <jsp:param name="type" value="email" />
                                         <jsp:param name="label" value="Email" />
                                         <jsp:param name="error" value="${requestScope.emailError}"/>

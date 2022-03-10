@@ -14,7 +14,7 @@
     <body>
         <%
             ArrayList<CartItem> cart = (ArrayList<CartItem>) request.getAttribute("cart");
-
+            Integer userId = (Integer) session.getAttribute("userId");
         %>
 
         <div class="flex flex-col min-h-screen">
@@ -30,21 +30,32 @@
 
                             <c:choose>
                                 <c:when test="<%= cart.size() > 0%>" >
-                                    <ul role="list" class="border-t border-b border-gray-200 divide-y divide-gray-200">
+                                    <form action="<%= Routers.CART_SERVLET%>" method="POST">
+
+                                        <ul role="list" class="border-t border-b border-gray-200 divide-y divide-gray-200">
+                                            <%
+                                                for (int index = 0; index < cart.size(); index++) {
+                                            %>
+                                            <jsp:include page="./Components/CartItem.jsp">
+                                                <jsp:param name="imageUrl" value="<%= cart.get(index).getRoom().getUrlImage()%>"/>
+                                                <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
+                                                <jsp:param name="startDate" value="<%= cart.get(index).getCheckIn()%>" />
+                                                <jsp:param name="endDate" value="<%= cart.get(index).getCheckOut()%>" />
+                                                <jsp:param name="total" value="<%= cart.get(index).getTotal()%>" />
+                                                <jsp:param name="index" value="<%= index%>"/>
+                                                <jsp:param name="errorMessage" value="<%= cart.get(index).getError()%>"/>
+                                            </jsp:include>
+
+                                            <% }%>
+                                        </ul>
                                         <%
-                                            for (int index = 0; index < cart.size(); index++) {
+                                            if (userId != null) {
                                         %>
-                                        <jsp:include page="./Components/CartItem.jsp">
-                                            <jsp:param name="imageUrl" value="<%= cart.get(index).getRoom().getUrlImage()%>"/>
-                                            <jsp:param name="roomName" value="<%= cart.get(index).getRoomName()%>"/>
-                                            <jsp:param name="startDate" value="<%= cart.get(index).getCheckIn()%>" />
-                                            <jsp:param name="endDate" value="<%= cart.get(index).getCheckOut()%>" />
-                                            <jsp:param name="total" value="<%= cart.get(index).getTotal()%>" />
-                                            <jsp:param name="index" value="<%= index%>"/>
-                                            <jsp:param name="errorMessage" value="<%= cart.get(index).getError()%>"/>
-                                        </jsp:include>
+                                        <div class="flex justify-end">
+                                            <button type="submit" class="text-sm font-medium text-green-600 hover:text-green-500 cursor-pointer">Book with checked box</button>
+                                        </div>
                                         <% }%>
-                                    </ul>
+                                    </form>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="flex flex-col items-center">

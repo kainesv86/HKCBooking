@@ -15,6 +15,10 @@
 
     <div class="ml-4 flex-1 flex flex-col sm:ml-6">
         <div>
+            <div class="text-sm flex items-center justify-end">
+                <p class="font-semibold mr-2 text-gray-800">Check to book</p>
+                <input type="checkbox" value="${param.index}" name="bookIndex"/>
+            </div>
             <div class="flex justify-between">
                 <h4 class="text-sm">
                     <a href="#" class="font-medium text-gray-700 hover:text-gray-800">${param.roomName}</a>
@@ -24,34 +28,7 @@
             <p class="mt-1 text-sm text-gray-500">Check In: ${param.startDate}</p>
             <p class="mt-1 text-sm text-gray-500">Check Out: ${param.endDate}</p>
         </div>
-
-        <form action="<%= Routers.CART_SERVLET%>" method="POST" class="flex flex-col">
-            <% if (user != null) {%>
-            <div class="mt-4">
-
-                <jsp:include page="./InputField.jsp">
-                    <jsp:param name="key" value="fullname" />
-                    <jsp:param name="type" value="text" />
-                    <jsp:param name="label" value="Fullname" />
-                    <jsp:param name="error" value="${requestScope.fullnameError}"/>
-                    <jsp:param name="inputValue" value="<%= user.getFullname()%>"/>
-                </jsp:include>
-                <jsp:include page="./InputField.jsp">
-                    <jsp:param name="key" value="phone" />
-                    <jsp:param name="type" value="text" />
-                    <jsp:param name="label" value="Phone" />
-                    <jsp:param name="error" value="${requestScope.phoneError}"/>
-                    <jsp:param name="inputValue" value="<%= user.getPhone()%>"/>
-                </jsp:include>
-                <jsp:include page="./InputField.jsp">
-                    <jsp:param name="key" value="address" />
-                    <jsp:param name="type" value="text" />
-                    <jsp:param name="label" value="Address" />
-                    <jsp:param name="error" value="${requestScope.addressError}"/>
-                    <jsp:param name="inputValue" value="<%= user.getAddress()%>"/>
-                </jsp:include>
-            </div>
-            <% }%>
+        <div class="flex flex-col">
             <div class="mt-4 flex-1 flex items-end justify-between">
                 <input type="text" value="${param.index}" name="index" class="hidden">
                 <c:choose>
@@ -59,10 +36,7 @@
                         <a href="<%=Routers.LOGIN_SERVLET%>" class="text-sm font-medium cursor-pointer text-rose-600 hover:text-rose-500">You need to login before booking</a>
                     </c:when>
                     <c:otherwise>
-                        <p class="flex items-center text-sm text-gray-700 space-x-2">
-                            <!-- Heroicon name: solid/check -->
-                            <button type="submit" class="text-sm font-medium text-green-600 hover:text-green-500 cursor-pointer">Book now</button>
-                        </p>
+
                     </c:otherwise>
                 </c:choose>
                 <a  class="text-sm font-medium text-rose-600 hover:text-rose-500 cursor-pointer text-left" href="<%=Routers.REMOVE_CART_ITEM_SERVLET%>?index=${param.index}">
@@ -71,6 +45,6 @@
 
             </div>
             <p class="text-sm font-medium text-rose-600">${param.errorMessage}</p>
-        </form>
+        </div>
     </div>
 </li>

@@ -71,7 +71,7 @@
 
                     </a>
                     <c:choose>
-                        <c:when test="${fullname != null}">
+                        <c:when test="${userId != null}">
                             <div class="flex items-center">
                                 <!-- Profile dropdown -->
                                 <div class="ml-4 relative flex-shrink-0">

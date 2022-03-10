@@ -42,6 +42,11 @@ public class RegisterServlet extends HttpServlet {
         String phone = gv.getString("phone", "Phone", 9, 11, null);
         String email = gv.getString("email", "Email", 1, 50, null);
 
+        request.setAttribute("username", username);
+        request.setAttribute("fullname", fullname);
+        request.setAttribute("phone", phone);
+        request.setAttribute("email", email);
+
         if (username == null || password == null || fullname == null || confirmPassword == null || phone == null || email == null) {
             return false;
         }
