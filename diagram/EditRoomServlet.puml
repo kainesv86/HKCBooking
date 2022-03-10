@@ -9,9 +9,9 @@ participant ":RoomDetailRepository" as RoomDetailRepository
 participant ":RoomTypeRepository" as RoomTypeRepository 
 participant "Database" as Database
 
-User ->> Browser: GET /EditRoomServlet
+User ->> Browser: click on edit room link
 activate Browser
-Browser -->> EditRoomServlet:
+Browser -->> EditRoomServlet: GET /EditRoomServlet
 activate EditRoomServlet
     EditRoomServlet -->> UseGuard: useAuth():boolean 
     activate UseGuard

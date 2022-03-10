@@ -10,9 +10,9 @@ participant ":GetVariable(request)" as GetVariable
 participant ":UserRepository" as UserRepository
 participant "Database" as Database
 
-User -->> Browser: GET/UserInfoServlet
+User -->> Browser: click user info link
 activate Browser    
-    Browser -->> UserInfoServlet :
+    Browser -->> UserInfoServlet :  GET/UserInfoServlet
     activate UserInfoServlet
     UserInfoServlet -->> UseGuard: useAuth():boolean 
     activate UseGuard

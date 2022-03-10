@@ -9,8 +9,9 @@ participant ":RoomRepository" as RoomRepository
 participant ":HistoryRepository" as HistoryRepository 
 participant "Database" as Database
 
+User ->> Browser: click or submit delete room
 activate Browser
-    Browser -->> DeleteRoomServlet: GET || POST/EditRoomDetailServlet
+    Browser -->> DeleteRoomServlet: GET || POST /EditRoomDetailServlet
     activate DeleteRoomServlet
         DeleteRoomServlet ->> UseGuard: UseAuth(): boolean
         activate UseGuard

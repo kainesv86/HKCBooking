@@ -9,9 +9,9 @@ participant "HistoryDetailRepository" as HistoryDetailRepository
 participant "HistoryRepository" as HistoryRepository
 participant "Database" as Database
 
-User ->> Browser: GET /HistoryServlet
+User ->> Browser: click on history link
 activate Browser
-    Browser -->> HistoryServlet:
+    Browser -->> HistoryServlet: GET /HistoryServlet
     activate HistoryServlet
         HistoryServlet -->> UseGuard: useAuth():boolean 
         activate UseGuard

@@ -10,9 +10,9 @@ participant ":UserRepository" as UserRepository
 participant ":HistoryRepository" as HistoryRepository
 participant ":Database" as Database
 
-User ->> Browser: GET / CartServlet
+User ->> Browser: click cart link
 activate Browser
-    Browser -->> CartServlet: click cart link
+    Browser -->> CartServlet: GET / CartServlet 
     activate CartServlet
         CartServlet ->> CartServlet: Integer userId = (Integer) session.getAttribute("userId");
         alt userId not null
