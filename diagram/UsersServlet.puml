@@ -33,7 +33,7 @@ activate Browser
                 activate Database
                     Database ->> UserRepository: return result set
                 deactivate Database
-            UserRepository -->> UserInfoServlet: return users
+            UserRepository -->> UsersServlet: return users
         deactivate UserRepository
 
         UsersServlet ->> UsersServlet: request.setAttribute("users", users)
