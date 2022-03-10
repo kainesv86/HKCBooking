@@ -91,8 +91,6 @@ public class RoomDetailServlet extends HttpServlet {
         Date checkIn = gv.getDate("checkIn", "Check In", null);
         Date checkOut = gv.getDate("checkOut", "Check Out", null);
 
-        System.out.println(checkIn + " : " + checkOut);
-
         request.setAttribute("roomId", roomId);
 
         if (roomId == null || checkOut == null || checkIn == null) {
