@@ -28,7 +28,7 @@ activate EditRoomServlet
             EditRoomServlet -->> Browser: sendRedirect("IndexServlet")
         else Admin
             
-            EditRoomServlet -->> RoomDetailRepository: getAllRoomDetail()
+            EditRoomServlet -->> RoomDetailRepository: getAllRoomDetail(): ArrayList<RoomDetail>
             activate RoomDetailRepository
                 RoomDetailRepository ->> Database: executeQuery()
                 activate Database 

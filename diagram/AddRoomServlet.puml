@@ -13,7 +13,7 @@ participant "Database" as Database
 
 User ->> Browser: Click on Add room type link
 activate Browser
-    Browser ->> AddRoomServlet: GET / AddRoomTypeServlet
+    Browser ->> AddRoomServlet: GET / AddRoomServlet
     activate AddRoomServlet
         AddRoomServlet -->> UseGuard: UseGuard.UserAuth(): boolean
         activate UseGuard 

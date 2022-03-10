@@ -16,7 +16,7 @@ User ->> Browser: Click on room detail link
     activate Browser
         Browser ->> RoomDetailServlet : GET /RoomDetailServlet
         activate RoomDetailServlet
-            RoomDetailServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+            RoomDetailServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
             activate GetVariable
                 GetVariable ->> RoomDetailServlet: roomId
             deactivate GetVariable
@@ -24,7 +24,7 @@ User ->> Browser: Click on room detail link
             alt roomId is null
                 RoomDetailServlet ->> Browser: forward 404Page.jsp
             else roomId not null
-                RoomDetailServlet ->> RoomDetailRepository: getRoomDetailByRoomId(Integer roomId)
+                RoomDetailServlet ->> RoomDetailRepository: getRoomDetailByRoomId(Integer roomId): RoomDetail
                 activate RoomDetailRepository
                 RoomDetailRepository ->> Database: executeQuery()
                         activate Database 
@@ -76,14 +76,14 @@ User ->> Browser: Click on room detail link
 User ->> Browser: Submit form
     Browser -->> RoomDetailServlet: POST/RoomDetailServlet
     activate RoomDetailServlet
-        RoomDetailServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        RoomDetailServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         activate GetVariable
             GetVariable ->> RoomDetailServlet: return roomId
 
-            RoomDetailServlet ->> GetVariable: getDate(String key, String label, Date defaultValue)
+            RoomDetailServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
             GetVariable ->> RoomDetailServlet: return checkIn
 
-            RoomDetailServlet ->> GetVariable: getDate(String key, String label, Date defaultValue)
+            RoomDetailServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
             GetVariable ->> RoomDetailServlet: return checkOut
         deactivate GetVariable
     alt invalid data

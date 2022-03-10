@@ -20,7 +20,7 @@ User ->> Browser: Click on login link
                     UseGuard ->> RegisterServlet: return isLogin
                 deactivate UseGuard
             alt already login
-                RegisterServlet ->> Browser: Redirect /IndexServlet
+                RegisterServlet ->> Browser: Redirect("IndexServlet")
             else not already login
                 RegisterServlet ->> Browser: forward register.jsp
             end
@@ -51,7 +51,7 @@ User ->> Browser: Submit form
         alt invalid data 
             RegisterServlet ->> Browser: forward register.jsp
         else
-            RegisterServlet ->> UserRepository: getUserByUsername(username)
+            RegisterServlet ->> UserRepository: getUserByUsername(username): User
             activate UserRepository
                     UserRepository ->> Database: executeQuery()
                         activate Database 
@@ -62,7 +62,7 @@ User ->> Browser: Submit form
             alt username already exist
                 RegisterServlet ->> Browser: forward register.jsp
             else username not exist
-                RegisterServlet ->> UserRepository: registerUser(new User(username, password, fullname, "", phone, "USER", email))
+                RegisterServlet ->> UserRepository: registerUser(new User(username, password, fullname, "", phone, "USER", email)): boolean
                 activate UserRepository
                     UserRepository ->> Database: executeQuery()
                         activate Database 

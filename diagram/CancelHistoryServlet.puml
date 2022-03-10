@@ -20,7 +20,7 @@ activate CancelHistoryServlet
     alt not Login
         CancelHistoryServlet -->> Browser: sendRedirect("LoginServlet")
     else Login
-        CancelHistoryServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        CancelHistoryServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         activate GetVariable
         GetVariable ->> CancelHistoryServlet: return historyId
         deactivate GetVariable
@@ -33,7 +33,7 @@ activate CancelHistoryServlet
         CancelHistoryServlet ->> CancelHistoryServlet: history.setHistoryStatus(HistoryStatus.status.CANCEL.toString());
         
         alt historyId not null 
-            CancelHistoryServlet ->> HistoryRepository: updateHistoryByBookingCancel(History history)
+            CancelHistoryServlet ->> HistoryRepository: updateHistoryByBookingCancel(History history): boolean
             activate HistoryRepository
             HistoryRepository ->> Database: executeQuery()
             activate Database 

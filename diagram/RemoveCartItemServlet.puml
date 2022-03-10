@@ -13,7 +13,7 @@ activate Browser
         activate GetVariable
             GetVariable -->> RemoveCartItemServlet: return index
         deactivate GetVariable
-        alt index == null
+        alt index is null
             RemoveCartItemServlet -->> Browser: sendRedirect(CartServlet)
         else index not null
             RemoveCartItemServlet ->> RemoveCartItemServlet: ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");   

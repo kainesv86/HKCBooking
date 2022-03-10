@@ -12,9 +12,9 @@ participant "Database" as Database
 
 User -->> Browser: Click on edit room detail link 
 activate Browser
-    Browser -->> EditRoomDetailServlet: GET/EditRoomDetailServlet
+    Browser -->> EditRoomDetailServlet: GET / EditRoomDetailServlet
     activate EditRoomDetailServlet
-        EditRoomDetailServlet --> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        EditRoomDetailServlet --> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         activate GetVariable
             GetVariable -->> EditRoomDetailServlet: return roomId
         deactivate GetVariable
@@ -50,7 +50,7 @@ activate Browser
         end
 
 User ->> Browser: Submit form
-    Browser -->> EditRoomDetailServlet: POST/EditRoomDetailServlet
+    Browser -->> EditRoomDetailServlet: POST / EditRoomDetailServlet
         activate EditRoomDetailServlet
             EditRoomDetailServlet -->> UseGuard: UseGuard.UserAuth(): boolean
             activate UseGuard
@@ -88,7 +88,7 @@ User ->> Browser: Submit form
                     alt invalid data
                         EditRoomDetailServlet -->> Browser: sendRedirect(EditRoomDetailServlet + + "?roomId=" + roomId)
                     else valid data
-                        EditRoomDetailServlet ->> RoomRepository: updateRoom(new Room(roomId, roomTypeId, description, price, imageUrl, roomStatus)
+                        EditRoomDetailServlet ->> RoomRepository: updateRoom(new Room(roomId, roomTypeId, description, price, imageUrl, roomStatus): boolean
                         activate RoomRepository
                             RoomRepository ->> Database: executeQuery()
                             activate Database 

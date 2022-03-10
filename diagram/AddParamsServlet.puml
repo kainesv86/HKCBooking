@@ -9,7 +9,7 @@ participant ":GetVariable(request)" as GetVariable
 
 User ->> Browser: Submit form
 activate Browser
-    Browser ->> AddParamsServlet: Post / AddRoomTypeServlet
+    Browser ->> AddParamsServlet: Post / AddParamsServlet
     activate AddParamsServlet
     AddParamsServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
     activate GetVariable

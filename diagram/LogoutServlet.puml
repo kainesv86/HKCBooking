@@ -13,7 +13,7 @@ activate Browser
 
 Browser ->> LogoutServlet: GET /LogoutServlet
     activate LogoutServlet
-        LogoutServlet ->> UseGuard: clearSession()
+        LogoutServlet ->> UseGuard: clearSession(): void
         activate UseGuard
             UseGuard ->> LogoutServlet: return void
         deactivate UseGuard

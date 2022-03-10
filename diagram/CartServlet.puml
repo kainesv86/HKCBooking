@@ -1,6 +1,6 @@
 
 hide footbox
-mainframe <b>sd</b> Cart Account
+mainframe <b>sd</b> Cart Servlet
 actor User
 participant "Browser" as Browser
 participant ":CartServlet" as CartServlet

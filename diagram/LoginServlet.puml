@@ -29,16 +29,16 @@ User ->> Browser: Click on login link
 User ->> Browser: Submit form
     Browser ->> LoginServlet : Post /LoginServlet
     activate LoginServlet
-        LoginServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        LoginServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
             activate GetVariable
                 GetVariable ->> LoginServlet: return username
-                LoginServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+                LoginServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
                 GetVariable ->> LoginServlet: return password
             deactivate GetVariable
         alt invalid data 
             LoginServlet ->> Browser: forward login.jsp
         else valid data
-            LoginServlet ->> UserRepository: getUserByUsername(String username):User
+            LoginServlet ->> UserRepository: getUserByUsername(String username) : User
                 activate UserRepository
                     UserRepository ->> Database: executeQuery()
                         activate Database 

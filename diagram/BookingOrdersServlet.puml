@@ -1,7 +1,7 @@
-@startuml addRoomTypeServlet
+@startuml bookingOrdersServlet
 
 hide footbox
-mainframe <b>sd</b> Add Room Type Servlet
+mainframe <b>sd</b> Booking Orders Servlet
 actor User
 participant "Browser" as Browser
 participant ":BookingOrdersServlet" as BookingOrdersServlet
@@ -13,7 +13,7 @@ participant "Database" as Database
 
 User ->> Browser: Click on Add room type link
 activate Browser
-    Browser ->> BookingOrdersServlet: GET / AddRoomTypeServlet
+    Browser ->> BookingOrdersServlet: GET / BookingOrdersServlet
     activate BookingOrdersServlet
         BookingOrdersServlet -->> UseGuard: UseGuard.UserAuth(): boolean
         activate UseGuard 
@@ -53,7 +53,7 @@ activate Browser
 User ->> Browser: Submit form
     Browser ->> BookingOrdersServlet : POST / BookingOrdersServlet   
     
-    BookingOrdersServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+    BookingOrdersServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
     activate GetVariable
     GetVariable ->> BookingOrdersServlet: return location
     deactivate GetVariable
@@ -64,14 +64,14 @@ User ->> Browser: Submit form
         BookingOrdersServlet ->> BookingOrdersServlet: location = "?status=" + location
     end
 
-    BookingOrdersServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+    BookingOrdersServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
     activate GetVariable
     GetVariable ->> BookingOrdersServlet: return historyId
     
-    BookingOrdersServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+    BookingOrdersServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
     GetVariable ->> BookingOrdersServlet: return historyStatus
 
-    BookingOrdersServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+    BookingOrdersServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
     GetVariable ->> BookingOrdersServlet: return message
     deactivate GetVariable
 
