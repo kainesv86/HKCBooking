@@ -5,7 +5,6 @@ actor User
 participant "Browser" as Browser
 participant ":CartServlet" as CartServlet
 participant ":UseGuard" as UseGuard
-participant ":GetVariable" as GetVariable
 participant ":HistoryService" as HistoryService
 participant ":UserRepository" as UserRepository
 participant ":HistoryRepository" as HistoryRepository
@@ -41,27 +40,25 @@ activate Browser
 User ->> Browser: Submit form
     Browser ->> CartServlet : POST / CartServlet   
     activate CartServlet
-        CartServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
-        activate GetVariable
-        GetVariable ->> CartServlet: return index
-
-        CartServlet ->> GetVariable: String getString(String key, String label, int minLength, int maxLength, String defaultValue): String
-        GetVariable ->> CartServlet: return fullname
-
-        CartServlet ->> GetVariable: String getString(String key, String label, int minLength, int maxLength, String defaultValue): String
-        GetVariable ->> CartServlet: return phone
-
-        CartServlet ->> GetVariable: String getString(String key, String label, int minLength, int maxLength, String defaultValue): String
-        GetVariable ->> CartServlet: return address
-        deactivate GetVariable
+        CartServlet ->> CartServlet: String[] bookIndexs = request.getParameterValues("bookIndex")
+        CartServlet ->> CartServlet: ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart")
     
-    alt index is null or cart is null
+    alt bookingIndexs is null or cart is null
         CartServlet ->> CartServlet: ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart")
         CartServlet ->> CartServlet: request.setAttribute("cart", cart)
 
         CartServlet ->> Browser: forward cart.jsp
     else
-        CartServlet ->> CartServlet: CartItem cartItem = cart.get(index)
+        CartServlet ->> UserRepository: getUserByUserId(Integer id): User
+        activate UserRepository
+            UserRepository ->> Database: executeQuery()
+            activate Database 
+                Database ->> UserRepository: return result set
+            deactivate Database
+            UserRepository ->> CartServlet: return user
+        deactivate UserRepository
+
+        CartServlet ->> CartServlet: CartItem cartItem = cart.get(Integer.valueOf(index)) (index from bookIndexs)
 
         CartServlet ->> HistoryRepository:  getAllHistoryByRoomId(Integer roomId): ArrayList<History>
         activate HistoryRepository
@@ -79,10 +76,10 @@ User ->> Browser: Submit form
 
         alt not valid date
             CartServlet ->> CartServlet: cartItem.setError("This room had been booked by someone else, please try remove this in the cart and try to another date or another room")
-            CartServlet ->> CartServlet: cart.set(index, cartItem);  
+            CartServlet ->> CartServlet: cart.set(Integer.valueOf(index), cartItem);  
         else valid date
-            CartServlet ->> CartServlet: cart.remove(cartItem);
-            CartServlet ->> CartServlet: History history = new History(userId, userId, message, historyStatus, fullname, phone, address, roomId, checkIn, checkOut, note, total)
+            CartServlet ->> CartServlet: successBooked.add(cartItem);
+            CartServlet ->> CartServlet: History history = new History(null, user.userId, message, historyStatus, user.fullname, user.phone, user.address, roomId, checkIn, checkOut, note, total)
             CartServlet ->> HistoryRepository: addHistory(History history):boolean
             activate HistoryRepository
                 HistoryRepository ->> Database: executeQuery()
@@ -92,6 +89,8 @@ User ->> Browser: Submit form
                 HistoryRepository ->> CartServlet: return true
             deactivate HistoryRepository
         end
+
+        CartServlet ->> CartServlet: while (!successBooked.isEmpty()) {cart.remove(successBooked.pop());}
 
         CartServlet ->> CartServlet: session.setAttribute("cart", cart)
 

@@ -59,7 +59,7 @@ User ->> Browser: Submit form
             alt not login
                 EditRoomDetailServlet -->> Browser: sendRedirect(LoginServlet)
             else Login
-                EditRoomDetailServlet -->> UseGuard: useGuard.useRole(): boolean
+                EditRoomDetailServlet -->> UseGuard: useGuard.useRole(User.role.ADMIN): boolean
                 activate UseGuard
                     UseGuard -->> EditRoomDetailServlet: return role
                 deactivate UseGuard

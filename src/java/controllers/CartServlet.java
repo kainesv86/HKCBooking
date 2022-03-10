@@ -61,6 +61,9 @@ public class CartServlet extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException, SQLException, Exception {
 
         String[] bookIndexs = request.getParameterValues("bookIndex");
+        if (bookIndexs == null) {
+            return false;
+        }
 
         HttpSession session = request.getSession();
 
@@ -96,7 +99,7 @@ public class CartServlet extends HttpServlet {
                 cart.set(Integer.valueOf(index), cartItem);
             } else {
                 successBooked.add(cartItem);
-                History history = new History(userId, userId, message, historyStatus, user.getFullname(), user.getPhone(), user.getAddress(), roomId, checkIn, checkOut, note, total);
+                History history = new History(null, userId, message, historyStatus, user.getFullname(), user.getPhone(), user.getAddress(), roomId, checkIn, checkOut, note, total);
                 historyRepo.addHistory(history);
             }
         }
