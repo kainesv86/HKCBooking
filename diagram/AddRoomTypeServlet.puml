@@ -37,14 +37,14 @@ activate Browser
 User ->> Browser: Submit form
     Browser ->> AddRoomTypeServlet : Post / AddRoomTypeServlet   
     activate AddRoomTypeServlet
-        AddRoomTypeServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        AddRoomTypeServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
         activate GetVariable
         GetVariable ->> AddRoomTypeServlet: return roomName
 
-        AddRoomTypeServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddRoomTypeServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddRoomTypeServlet: return capacity
 
-        AddRoomTypeServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddRoomTypeServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddRoomTypeServlet: return acreage
         deactivate GetVariable 
     alt invalid data

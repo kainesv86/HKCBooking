@@ -28,7 +28,7 @@ activate Browser
             alt not admin 
                 DeleteRoomServlet ->> Browser: sendRedirect("IndexServlet")
             else admin
-                DeleteRoomServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+                DeleteRoomServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
                 activate GetVariable
                     GetVariable ->> DeleteRoomServlet: roomId
                 deactivate GetVariable
