@@ -10,6 +10,7 @@ import entities.RoomType;
 import guard.UseGuard;
 import helper.GetVariable;
 import java.io.IOException;
+import static java.lang.Float.NaN;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +39,7 @@ public class AddRoomServlet extends HttpServlet {
         String imageUrl = gv.getFile("imageUrl", "Room Image", 1080 * 1080);
         String description = gv.getString("description", "desciption", 0, 500, "");
 
-        if (price == null || imageUrl == null || description == null) {
+        if (price == null || imageUrl == null || description == null || price.equals(NaN)) {
             return false;
         }
 
@@ -117,7 +118,7 @@ public class AddRoomServlet extends HttpServlet {
             Logger.getLogger(AddRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        response.sendRedirect("AddRoomServlet");
+        request.getRequestDispatcher(Routers.ADD_ROOM_PAGE).forward(request, response);
     }
 
     /**
