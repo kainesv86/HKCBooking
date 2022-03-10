@@ -1,4 +1,4 @@
-@startuml loginServlet
+@startuml userHistoriesServlet
 hide footbox
 mainframe <b>sd</b> User Histories Servlet
 actor User
