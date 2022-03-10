@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/BookingOrdersServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/common/searchBar.jsp</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/RegisterServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/repositories/HistoryDetailRepository.java</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/history.jsp</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/RoomDetailServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/helper/GetVariable.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/FilterServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/HistoryServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/src/java/controllers/AddParamsServlet.java</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/roomDetail.jsp</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/Components/InputDate.jsp</file>
-            <file>file:/F:/Java/HKCBooking/web/WEB-INF/JSP/filter.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

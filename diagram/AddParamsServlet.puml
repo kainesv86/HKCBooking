@@ -1,4 +1,4 @@
-@startuml addRoomTypeServlet
+@startuml addParamsServlet
 
 hide footbox
 mainframe <b>sd</b> Add Params Servlet
@@ -11,66 +11,66 @@ User ->> Browser: Submit form
 activate Browser
     Browser ->> AddParamsServlet: Post / AddRoomTypeServlet
     activate AddParamsServlet
-    AddParamsServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+    AddParamsServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
     activate GetVariable
         GetVariable ->> AddParamsServlet: return redirectTo
 
         AddParamsServlet ->> AddParamsServlet: String urlParams = redirectTo
 
-        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddParamsServlet: return roomId
         AddParamsServlet ->> AddParamsServlet: urlParams += roomId != null ? "&?roomId=" + roomId : ""
 
-        AddParamsServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        AddParamsServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
         GetVariable ->> AddParamsServlet: return roomName
         AddParamsServlet ->> AddParamsServlet: urlParams += roomName != null ? "&?roomName=" + roomName : ""
 
-        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddParamsServlet: return capacity
         AddParamsServlet ->> AddParamsServlet: urlParams += capacity != null ? "&?capacity=" + capacity : ""
 
-        AddParamsServlet ->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue)
+        AddParamsServlet ->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue): Float
         GetVariable ->> AddParamsServlet: return minPrice
         AddParamsServlet ->> AddParamsServlet: urlParams += minPrice != null ? "&?minPrice=" + minPrice : "" 
 
 
-        AddParamsServlet ->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue)
+        AddParamsServlet ->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue): Float
         GetVariable ->> AddParamsServlet: return maxPrice
         AddParamsServlet ->> AddParamsServlet: urlParams += maxPrice != null ? "&?maxPrice=" + maxPrice : ""
 
 
-        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddParamsServlet: return roomTypeId
         AddParamsServlet ->> AddParamsServlet: urlParams += roomTypeId != null ? "&?roomTypeId=" + roomTypeId : ""
 
-        AddParamsServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue)
+        AddParamsServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
         GetVariable ->> AddParamsServlet: return roomStatus
         AddParamsServlet ->> AddParamsServlet: urlParams += roomStatus != null ? "&?roomStatus=" + roomStatus : ""
 
-        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddParamsServlet: return roomTypeId
         AddParamsServlet ->> AddParamsServlet: 
 
-        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue)
+        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
         GetVariable ->> AddParamsServlet: return checkIn
 
-        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue)
+        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
         GetVariable ->> AddParamsServlet: return checkOut
 
         AddParamsServlet ->> AddParamsServlet:  urlParams += checkIn != null && checkOut != null ? "&?checkIn=" + checkIn + "&?checkOut=" + checkOut : ""
 
-        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddParamsServlet: return page
         AddParamsServlet ->> AddParamsServlet: urlParams += page != null ? "&?page=" + page : ""
 
-        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue)
+        AddParamsServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
         GetVariable ->> AddParamsServlet: return userId
         AddParamsServlet ->> AddParamsServlet:  urlParams += page != null ? "&?page=" + page : "" 
         
-        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue)
+        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
         GetVariable ->> AddParamsServlet: return startDate
 
-        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue)
+        AddParamsServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
         GetVariable ->> AddParamsServlet: return endDate
 
         AddParamsServlet ->> AddParamsServlet: urlParams += startDate != null && endDate != null ? "&?startDate=" + startDate + "&?endDate=" + endDate : ""
