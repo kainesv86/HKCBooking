@@ -4,7 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/F:/Java/HKCBooking/src/java/controllers/UsersServlet.java</file>
+            <file>file:/F:/Java/HKCBooking/src/java/controllers/ReviewServlet.java</file>
             <file>file:/F:/Java/HKCBooking/src/java/controllers/UserHistoriesServlet.java</file>
+            <file>file:/F:/Java/HKCBooking/src/java/controllers/EditRoomServlet.java</file>
+            <file>file:/F:/Java/HKCBooking/src/java/controllers/RoomDetailServlet.java</file>
+            <file>file:/F:/Java/HKCBooking/src/java/controllers/FilterServlet.java</file>
         </group>
     </open-files>
 </project-private>

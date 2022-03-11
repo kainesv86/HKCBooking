@@ -84,7 +84,7 @@ public class AddRoomTypeServlet extends HttpServlet {
             } else {
                 request.setAttribute("message", "Add room type successful");
             }
-            response.sendRedirect("AddRoomTypeServlet");
+            request.getRequestDispatcher(Routers.ADD_ROOM_TYPE_PAGE).forward(request, response);
         } catch (Exception ex) {
             request.getRequestDispatcher(Routers.ERROR_500_PAGE).forward(request, response);
         }
