@@ -17,7 +17,7 @@
         <div>
             <div class="text-sm flex items-center justify-end">
                 <p class="font-semibold mr-2 text-gray-800">Check to book</p>
-                <input type="checkbox" value="${param.index}" name="bookIndex"/>
+                <input type="checkbox" value="${param.index}" name="bookIndex" />
             </div>
             <div class="flex justify-between">
                 <h4 class="text-sm">
