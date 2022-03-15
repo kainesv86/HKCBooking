@@ -73,10 +73,12 @@
                                 <%
                                     for (RoomStatus.status status
                                             : RoomStatus.status.values()) {
+                                        if (status != RoomStatus.status.DELETED) {
                                 %>
                                 <option value="<%= status.toString()%>" <% if (status.toString().equals(room.getRoomStatus())) {
                                         %> selected <% }%> ><%= status.toString()%></option>
-                                <% }%>
+                                <% }
+                                    }%>
                             </select>
                         </div>
 
