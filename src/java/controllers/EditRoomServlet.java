@@ -34,6 +34,7 @@ public class EditRoomServlet extends HttpServlet {
         ArrayList<RoomDetail> roomDetails = roomDetailRepository.getAllRoomDetail();
 
         GetVariable gv = new GetVariable(request);
+        Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
         String roomName = gv.getString("roomName", "Room Name", 0, 100, null);
         Integer capacity = gv.getInt("capacity", "Capacity", 0, Integer.MAX_VALUE, null);
         Float minPrice = gv.getFloat("minPrice", "Min Price", 0, Float.MAX_VALUE, null);
@@ -43,13 +44,14 @@ public class EditRoomServlet extends HttpServlet {
 
         for (RoomDetail roomDetail : (ArrayList<RoomDetail>) roomDetails.clone()) {
 
+            boolean isValidRoomId = roomId == null || (roomId != null && Objects.equals(roomId, roomDetail.getRoom().getRoomId()));
             boolean isValidExistRoom = !roomDetail.getRoom().getRoomStatus().equals(RoomStatus.status.DELETED.toString());
             boolean isValidRoomTypeId = roomTypeId == null || Objects.equals(roomTypeId, roomDetail.getRoomType().getRoomTypeId());
             boolean isValidRoomName = roomName == null || (roomName != null && roomDetail.getRoomType().getRoomName().toLowerCase().contains(roomName.toLowerCase()));
             boolean isValidCapacity = capacity == null || Objects.equals(roomDetail.getRoomType().getCapacity(), capacity);
             boolean isValidRoomStatus = roomStatus == null || (roomStatus != null && roomDetail.getRoom().getRoomStatus().equals(roomStatus));
 
-            boolean isValid = isValidExistRoom && isValidRoomTypeId && isValidRoomName && isValidCapacity && isValidRoomStatus;
+            boolean isValid = isValidExistRoom && isValidRoomTypeId && isValidRoomName && isValidCapacity && isValidRoomStatus && isValidRoomId;
             if (!isValid) {
                 roomDetails.remove(roomDetail);
             }
