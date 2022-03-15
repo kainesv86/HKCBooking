@@ -38,7 +38,7 @@
                                 <jsp:param name="key" value="startDate"/>
                                 <jsp:param name="label" value="Start date"/>
                                 <jsp:param name="inputValue" value="<%=startDate%>"/>
-                                <jsp:param name="error" value="${requestScope.startDateError}" />
+
                             </jsp:include>
                         </div>
                         <div class="mr-4">
@@ -46,7 +46,7 @@
                                 <jsp:param name="key" value="endDate"/>
                                 <jsp:param name="label" value="End date"/>
                                 <jsp:param name="inputValue" value="<%=endDate%>"/>
-                                <jsp:param name="error" value="${requestScope.endDateError}" />
+
                             </jsp:include>
                         </div>
                         <div class="-translate-y-2">
