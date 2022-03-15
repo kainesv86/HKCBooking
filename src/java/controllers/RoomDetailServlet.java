@@ -31,6 +31,7 @@ import repositories.ReviewRepository;
 import repositories.RoomDetailRepository;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
+import services.CartService;
 import services.HistoryService;
 import services.ReviewService;
 import variables.Routers;
@@ -98,6 +99,9 @@ public class RoomDetailServlet extends HttpServlet {
             return false;
         }
 
+        session.setAttribute("checkIn", checkIn.toString());
+        session.setAttribute("checkOut", checkOut.toString());
+
         if (!HistoryService.isValidDateInput(checkIn, checkOut)) {
             session.setAttribute("message", "End date must greater than start date");
             return false;
@@ -125,13 +129,25 @@ public class RoomDetailServlet extends HttpServlet {
             cart = new ArrayList<CartItem>();
         }
 
+        ArrayList<CartItem> sameRoomIdCartItem = new ArrayList<CartItem>();
+        for (CartItem cartItem : cart) {
+            if (cartItem.getRoom().getRoomId().equals(roomId)) {
+                sameRoomIdCartItem.add(cartItem);
+            };
+        }
+
+        if (!CartService.isValidDateBooking(sameRoomIdCartItem, checkIn, checkOut)) {
+            session.setAttribute("message", "Can't book room with duplicate day in your cart from " + checkIn.toString() + " to " + checkOut.toString());
+            return false;
+        }
+
         RoomTypeRepository roomTypeRepo = new RoomTypeRepository();
         RoomType roomType = roomTypeRepo.getRoomTypeById(room.getRoomTypeId());
 
         cart.add(new CartItem(room, roomType.getRoomName(), checkIn, checkOut, total, ""));
 
         session.setAttribute("cart", cart);
-        session.setAttribute("message", "Add cart successful");
+        session.setAttribute("message", "Add cart successful from " + checkIn.toString() + " to " + checkOut.toString());
         return true;
 
     }

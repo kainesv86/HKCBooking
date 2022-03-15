@@ -70,7 +70,6 @@ public class FilterServlet extends HttpServlet {
             session.setAttribute("checkIn", checkIn.toString());
             session.setAttribute("checkOut", checkOut.toString());
             if (!HistoryService.isValidDateInput(checkIn, checkOut)) {
-                roomDetails.clear();
                 request.setAttribute("checkOutError", "End date must greater than start date");
             }
         }
