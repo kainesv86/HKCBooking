@@ -1,0 +1,98 @@
+hide footbox
+mainframe <b>sd</b> Filter Servlet
+actor User
+participant "Browser" as Browser
+participant ":FilterServlet" as FilterServlet
+participant ":UseGuard" as UseGuard
+participant ":RoomService" as RoomService
+participant ":HistoryService" as HistoryService
+participant ":GetVariable(request)" as GetVariable
+participant "RoomDetailRepository" as RoomDetailRepository
+participant "Database" as Database
+
+User ->> Browser: click on filter link
+activate Browser
+    Browser -->> FilterServlet: GET | POST /FilterServlet
+    activate FilterServlet
+    FilterServlet ->> GetVariable: getInt(String key, String label, int minValue, int maxValue, Integer defaultValue): Integer
+        activate GetVariable
+            GetVariable ->> FilterServlet: return page
+        deactivate GetVariable
+    FilterServlet ->> FilterServlet: request.setAttribute("page", page != null ? page : 1);
+
+    FilterServlet ->> RoomDetailRepository: getAllRoomDetail(): ArrayList<RoomDetail>
+        activate RoomDetailRepository
+            RoomDetailRepository ->> Database: executeQuery()
+                activate Database 
+                    Database ->> RoomDetailRepository: return result set
+                deactivate Database
+            RoomDetailRepository ->> FilterServlet: return roomDetails
+        deactivate RoomDetailRepository
+    FilterServlet ->> RoomService: filterRoomByStatus(ArrayList<RoomDetail> roomDetails, RoomStatus.status status): ArrayList<RoomDetail>
+        activate RoomService
+            RoomService ->> FilterServlet: return roomDetails
+        deactivate RoomService
+    FilterServlet ->> FilterServlet: Date minCheckIn = (Date) session.getAttribute("minCheckIn")
+    FilterServlet ->> FilterServlet: Date minCheckOut = (Date) session.getAttribute("minCheckOut")
+
+    alt minCheckIn is null or maxCheckIn is null
+        FilterServlet ->> FilterServlet: minCheckIn = new Date(System.currentTimeMillis())
+        FilterServlet ->> FilterServlet: Date.valueOf(minCheckIn.toLocalDate().plusDays(1))
+    end
+
+    FilterServlet ->> FilterServlet: request.setAttribute("minCheckIn", minCheckIn.toString());
+    FilterServlet ->> FilterServlet: request.setAttribute("minCheckOut", minCheckOut.toString());
+
+    FilterServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
+    activate GetVariable
+        GetVariable ->> FilterServlet: return checkIn
+        FilterServlet ->> GetVariable: getDate(String key, String label, Date defaultValue): Date
+        GetVariable ->> FilterServlet: return checkOut
+    deactivate GetVariable
+
+    alt checkIn not null and checkOut not null
+        FilterServlet ->> RoomService: filterRoomByDateBooking(ArrayList<RoomDetail> roomDetails, Date checkInDate, Date checkOutDate): ArrayList<RoomDetail>
+        activate RoomService
+            RoomService ->> FilterServlet: return roomDetails
+        deactivate RoomService
+        FilterServlet ->> HistoryService: isValidDateInput(Date inputCheckIn, Date inputCheckOut): boolean
+        activate HistoryService
+            HistoryService ->> FilterServlet: return isValid
+        deactivate HistoryService
+        alt not valid input date 
+            FilterServlet ->> FilterServlet: roomDetails.clear()
+            FilterServlet ->> FilterServlet: request.setAttribute("checkOutError", "End date must greater than start date")
+        end
+
+        FilterServlet ->> GetVariable: getString(String key, String label, int minLength, int maxLength, String defaultValue): String
+        activate GetVariable
+            GetVariable ->> FilterServlet: return roomName
+        deactivate GetVariable
+        FilterServlet ->> RoomService: filterRoomByName(ArrayList<RoomDetail> roomDetails, String roomName): ArrayList<RoomDetail>
+        
+        activate RoomService
+            RoomService ->> FilterServlet:  return roomDetails
+        deactivate RoomService
+        FilterServlet ->> FilterServlet: request.setAttribute("roomName", roomName)
+
+        FilterServlet ->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue): Float
+        activate GetVariable
+            GetVariable ->> FilterServlet: return minPrice
+            FilterServlet ->> GetVariable: getFloat(String key, String label, float minValue, float maxValue, Float defaultValue): Float
+            GetVariable ->> FilterServlet: return maxPrice
+        deactivate GetVariable
+
+        FilterServlet ->> RoomService: filterRoomByPriceBooking(ArrayList<RoomDetail> roomDetails, Float minValue, Float maxValue): ArrayList<RoomDetail>
+        activate RoomService
+            RoomService ->> FilterServlet: return roomDetails
+        deactivate RoomService
+
+        FilterServlet ->> FilterServlet: request.setAttribute("minPrice", minPrice)
+        FilterServlet ->> FilterServlet: request.setAttribute("maxPrice", maxPrice)
+
+        FilterServlet ->> FilterServlet: request.setAttribute("roomDetails", roomDetails)
+
+    end
+        FilterServlet ->> Browser: forward filter.jsp
+    deactivate FilterServlet
+deactivate Browser
