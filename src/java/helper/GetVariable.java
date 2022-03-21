@@ -89,11 +89,11 @@ public class GetVariable {
             return null;
         }
         if (numValue < minValue) {
-            request.setAttribute(key + "Error", label + " is less than or equal " + minValue);
+            request.setAttribute(key + "Error", label + "  is greater than or equal " + minValue);
             return null;
         }
         if (numValue > maxValue) {
-            request.setAttribute(key + "Error", label + "  is greater than or equal " + maxValue);
+            request.setAttribute(key + "Error", label + " is less than or equal " + maxValue);
             return null;
         }
 

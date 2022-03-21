@@ -64,6 +64,7 @@
                                 <div class="mt-1">
                                     <textarea id="description" name="description" rows="10" class="shadow-sm focus:ring-rose-500 focus:border-rose-500 block w-full sm:text-sm border border-gray-300 rounded-md"><%=room.getDescription()%></textarea>
                                 </div>
+                                <p class="mt-2 text-sm text-red-600" id="${requestScope.descriptionError}">${param.descriptionError == "null" ? "" : descriptionError}</p>
                             </div>
                         </div>
 

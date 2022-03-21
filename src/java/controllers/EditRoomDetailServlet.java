@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import repositories.RoomRepository;
 import repositories.RoomTypeRepository;
 import variables.Routers;
@@ -50,6 +51,7 @@ public class EditRoomDetailServlet extends HttpServlet {
     protected boolean handlOnPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         GetVariable gv = new GetVariable(request);
+        HttpSession session = request.getSession();
 
         Integer roomId = gv.getInt("roomId", "Room Id", 0, Integer.MAX_VALUE, null);
 
@@ -62,6 +64,13 @@ public class EditRoomDetailServlet extends HttpServlet {
         String roomStatus = gv.getString("roomStatus", "Room Status", 1, 30, null);
 
         if (roomId == null || roomTypeId == null || price == null || description == null || roomStatus == null) {
+            if (price == null) {
+                session.setAttribute("priceError", request.getAttribute("priceError"));
+            }
+            if (description == null) {
+                session.setAttribute("descriptionError", request.getAttribute("descriptionError"));
+            }
+
             return false;
         }
 
@@ -78,6 +87,22 @@ public class EditRoomDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+
+            HttpSession session = request.getSession();
+
+            String priceError = (String) session.getAttribute("priceError");
+            if (priceError != null) {
+                request.setAttribute("priceError", priceError);
+            }
+
+            session.setAttribute("priceError", null);
+
+            String descriptionError = (String) session.getAttribute("descriptionError");
+            if (descriptionError != null) {
+                request.setAttribute("descriptionError", descriptionError);
+            }
+            session.setAttribute("descriptionError", null);
+
             if (!handlOnGet(request, response)) {
                 request.getRequestDispatcher(Routers.ERROR_404_PAGE).forward(request, response);
                 return;

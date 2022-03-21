@@ -34,6 +34,7 @@ import repositories.RoomTypeRepository;
 import services.CartService;
 import services.HistoryService;
 import services.ReviewService;
+import variables.HistoryStatus;
 import variables.Routers;
 
 @WebServlet(name = "RoomDetailServlet", urlPatterns = {"/" + Routers.ROOM_DETAIL_SERVLET})
@@ -109,6 +110,7 @@ public class RoomDetailServlet extends HttpServlet {
 
         HistoryRepository historyRepo = new HistoryRepository();
         ArrayList<History> histories = historyRepo.getAllHistoryByRoomId(roomId);
+        histories = HistoryService.filterHistoryByStatus(histories, HistoryStatus.status.CANCEL, false);
 
         if (!HistoryService.isValidDateBooking(histories, checkIn, checkOut)) {
             session.setAttribute("message", "Someone have booked this room in those date, please try to another date");
