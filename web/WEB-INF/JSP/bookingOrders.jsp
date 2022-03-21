@@ -64,8 +64,8 @@
                                                     <img class="h-20 w-20" src="<%= historyDetail.getRoom().getUrlImage()%>" alt="" />
                                                 </div>
                                                 <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900">Id: #<%= historyDetail.getHistory().getHistoryId()%></div>
-                                                    <div class="text-sm font-medium text-gray-900"><%= historyDetail.getRoomType().getRoomName()%></div>
+                                                    <div class="text-sm font-medium text-gray-900">History ID: #<%= historyDetail.getHistory().getHistoryId()%></div>
+                                                    <div class="text-sm font-medium text-gray-900"><%= historyDetail.getRoomType().getRoomName()%> #<%= historyDetail.getRoom().getRoomId()%></div>
                                                     <div class="text-sm text-gray-500"><%= historyDetail.getHistory().getTotal()%>$</div>
                                                     <div class="text-sm text-gray-500"><%= historyDetail.getHistory().getStartDate()%> ~ <%= historyDetail.getHistory().getEndDate()%></div>
                                                 </div>

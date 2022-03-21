@@ -52,8 +52,13 @@
                                             if (userId != null) {
                                         %>
                                         <div class="flex justify-end">
-                                            <button type="submit" class="text-sm font-medium text-green-600 hover:text-green-500 cursor-pointer">Book with checked box</button>
+                                            <button type="button" id="btnAllCheck" class="text-sm font-medium bg-blue-400 text-gray-100 px-2 py-1 rounded-md cursor-pointer mr-2">Check All Room</button>
+                                            <button type="button" id="btnAllUncheck" class="text-sm font-medium bg-rose-600 text-gray-100 px-2 py-1 rounded-md cursor-pointer">Un-check All Room</button>
                                         </div>
+                                        <div class="flex justify-end mt-2">
+                                            <button type="submit" class="text-sm font-medium text-gray-100 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md cursor-pointer">Book with checked box</button>
+                                        </div>
+
                                         <% }%>
                                     </form>
                                 </c:when>
@@ -79,7 +84,7 @@
 
                             <div class="mt-6 text-sm text-center">
                                 <p>
-                                    or <a href="<%=Routers.INDEX_SERVLET%>" class="text-rose-600 font-medium hover:text-rose-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
+                                    <a href="<%=Routers.HISTORY_SERVLET%>" class="text-rose-600 font-medium hover:text-rose-500">View your history<a/> or <a href="<%=Routers.INDEX_SERVLET%>" class="text-rose-600 font-medium hover:text-rose-500">Continue find other room<span aria-hidden="true"> &rarr;</span></a>
                                 </p>
                             </div>
                         </section>
@@ -88,4 +93,22 @@
             </div>
         </div>
     </body>
+    <script>
+
+        document.getElementById("btnAllCheck").onclick = () => {
+
+            var checkBoxes = document.getElementsByName("bookIndex");
+            for (var i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].checked = true;
+            }
+        }
+
+        document.getElementById("btnAllUncheck").onclick = () => {
+            var checkBoxes = document.getElementsByName("bookIndex");
+            for (var i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].checked = false;
+            }
+        }
+
+    </script>
 </html>
