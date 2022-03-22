@@ -54,11 +54,11 @@ public class UseGuard {
     public void clearSession() {
 
         HttpSession session = request.getSession();
-        ArrayList<CartItem> cart = this.holdCart();
+//        ArrayList<CartItem> cart = this.holdCart();
 
         session.invalidate();
         session = request.getSession();
-        session.setAttribute("cart", cart);
+//        session.setAttribute("cart", cart);
     }
 
     public boolean useAuth() {
