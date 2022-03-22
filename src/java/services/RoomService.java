@@ -51,7 +51,6 @@ public class RoomService {
         if (minValue != null || maxValue != null) {
             if ((minValue != null && minValue.compareTo(NaN) != 0) && (maxValue != null && maxValue.compareTo(NaN) != 0)) {
                 if (minValue > maxValue) {
-                    roomDetails.clear();
                     return roomDetails;
                 }
 
@@ -71,8 +70,6 @@ public class RoomService {
                         }
                     }
                 }
-            } else {
-                roomDetails.clear();
             }
 
         }

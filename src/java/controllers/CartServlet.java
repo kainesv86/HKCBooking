@@ -94,6 +94,7 @@ public class CartServlet extends HttpServlet {
             HistoryRepository historyRepo = new HistoryRepository();
 
             ArrayList<History> histories = historyRepo.getAllHistoryByRoomId(roomId);
+            histories = HistoryService.filterHistoryByStatus(histories, HistoryStatus.status.CANCEL, false);
             if (!HistoryService.isValidDateBooking(histories, checkIn, checkOut)) {
                 cartItem.setError("This room had been booked by someone else, please try remove this in the cart and try to another date or another room");
                 cart.set(Integer.valueOf(index), cartItem);
